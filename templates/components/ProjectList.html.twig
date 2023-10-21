@@ -1,0 +1,5 @@
+<div class="container-fit grid grids-col-1 md:grid-cols-2 gap-6">
+    {% for project in this.projects %}
+        {{ component('ProjectCard', {project: project}) }}
+    {% endfor %}
+</div>

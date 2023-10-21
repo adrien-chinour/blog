@@ -3,8 +3,12 @@
 {% block main %}
     {{ component('Hero', {
         title: 'Undefined',
-        description: 'Un blog centré sur le développement web en PHP. Retrouvez des articles sur les dernières actualité du langage et son écosystème.',
+        description: 'Un blog centré sur le développement web en PHP. Retrouvez des articles sur mes trouvailles et expérimentations.',
     }) }}
 
     {{ component('LatestArticleList', {size: 3}) }}
+
+    <div class="py-4"></div>
+
+    {{ component('LatestProjectList', {size: 3}) }}
 {% endblock %}

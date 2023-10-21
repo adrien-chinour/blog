@@ -19,12 +19,6 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
 
     public function buildQuery(ReflectionClass $class, array $filters = []): string
     {
-        // prevent injection in filters : only allow alphanumeric characters and underscore
-        $filters = array_filter(
-            $filters,
-            fn($value, $key) => preg_match($p = '/^\w+$/', $value) && preg_match($p, $key)
-        );
-
         $query = sprintf("query {%s %s {%s}}", $this->getName($class), $this->buildFilters($filters), $this->buildFields($class));
 
         $this->logger?->debug("GraphQL query: $query", [

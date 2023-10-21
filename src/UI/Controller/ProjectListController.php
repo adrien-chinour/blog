@@ -11,12 +11,12 @@ use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[AsController]
-#[Route('/a-propos/', name: 'about', methods: ['GET'])]
+#[Route('/projets/', name: 'project_list', methods: ['GET'])]
 #[Cache(maxage: 3600, public: true)]
-final class AboutController extends AbstractController
+final class ProjectListController extends AbstractController
 {
     public function __invoke(): Response
     {
-        return $this->render('pages/about.html.twig');
+        return $this->render('pages/project_list.html.twig');
     }
 }

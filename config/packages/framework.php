@@ -80,11 +80,21 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
 
     $framework->httpClient()
         ->scopedClient('contentful.client', [
-            'base_uri' => '%env(CONTENTFUL_ENDPOINT)%',
+            'base_uri' => 'https://graphql.contentful.com',
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer %env(CONTENTFUL_ACCESS_TOKEN)%',
+            ],
+        ]);
+
+    $framework->httpClient()
+        ->scopedClient('github.client', [
+            'base_uri' => 'https://api.github.com',
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer %env(GITHUB_ACCESS_TOKEN)%',
             ],
         ]);
 

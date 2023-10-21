@@ -15,7 +15,7 @@ final class HeaderComponent
     {
         return [
             ['route' => 'article_list', 'label' => 'Articles'],
-            ['route' => 'about', 'label' => 'À Propos'],
+            ['route' => 'project_list', 'label' => 'Projets'],
         ];
     }
 }
