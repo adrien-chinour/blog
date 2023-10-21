@@ -1,0 +1,10 @@
+{% extends 'layout/default.html.twig' %}
+
+{% block main %}
+    {{ component('Hero', {
+        title: 'Undefined',
+        description: 'Un blog centré sur le développement web en PHP. Retrouvez des articles sur les dernières actualité du langage et son écosystème.',
+    }) }}
+
+    {{ component('LatestArticleList', {size: 3}) }}
+{% endblock %}

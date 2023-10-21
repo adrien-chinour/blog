@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% block header %}
+        {{ component('Header') }}
+    {% endblock %}
+
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+
+    {% block footer %}
+        {{ component('Footer') }}
+    {% endblock %}
+{% endblock %}

@@ -1,0 +1,25 @@
+<hr>
+<article class="mt-4">
+    <header id="article-header" class="my-4 mx-3">
+        <div class="container-fit">
+            <time datetime="{{ this.article.publicationDate | date('Y-m-d\TH:i:s') }}"
+                  class="uppercase text-zinc-400 text-xs font-bold">
+                Publié le {{ this.article.publicationDate | format_datetime(locale='fr') }}
+            </time>
+            <h1 class="font-serif text-5xl mb-2 mt-3">{{ article.title }}</h1>
+            <p class="text-lg text-zinc-400">{{ article.description }}</p>
+        </div>
+
+        <img class="rounded mt-4 mx-auto" src="{{ article.imageUrl }}" alt="">
+    </header>
+
+    <div id="article-content" class="container-fit">
+        {{ article.content | raw }}
+    </div>
+
+    <div class="container-fit">
+        {{ component('ArticleSuggestions', {identifiers: article.recommendations}) }}
+
+        {{ component('TagList', {tags: article.tags}) }}
+    </div>
+</article>

@@ -1,0 +1,8 @@
+<div class="bg-grid px-4 md:px-16 lg:px-32 py-16 my-8">
+    {% if this.title is not null %}
+        <p class="font-serif text-5xl mb-4">{{ this.title }}</p>
+    {% endif %}
+    {% if this.description is not null %}
+        <p class="text-xl">{{ this.description }}</p>
+    {% endif %}
+</div>

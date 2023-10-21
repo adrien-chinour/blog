@@ -1,0 +1,15 @@
+<article class="mb-6 md:mb-0 md:flex-1">
+    <a href="{{ path('article_view', {'slug': this.article.slug}) }}" class="group">
+        <img class="rounded mb-2 aspect-video"
+             src="{{ this.article.imageUrl }}"
+             alt="">
+        <div class="px-2 md:px-0">
+            <time datetime="{{ this.article.publicationDate | date('Y-m-d\TH:i:s') }}"
+                  class="uppercase text-zinc-400 text-xs font-bold">
+                {{ this.article.publicationDate | format_datetime(locale='fr') }}
+            </time>
+            <p class="text-xl font-serif my-1 group-hover:underline">{{ this.article.title }}</p>
+            <p class="line-clamp-3">{{ this.article.description }}</p>
+        </div>
+    </a>
+</article>
