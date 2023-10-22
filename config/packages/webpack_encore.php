@@ -11,7 +11,7 @@ return static function (WebpackEncoreConfig $encore, ContainerConfigurator $cont
         ->linkAttributes('data-turbo-track', 'reload');
 
     if ($container->env() === 'prod') {
-        $encore->cache('true');
+        $encore->cache(true);
     }
 
     if ($container->env() === 'test') {

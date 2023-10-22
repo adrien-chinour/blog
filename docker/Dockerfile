@@ -1,4 +1,4 @@
-FROM php:8.2-apache as app
+FROM php:8.2-apache AS app
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
