@@ -121,10 +121,10 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
 
     $framework->messenger()
         ->bus('messenger.bus.default', [
-            'middleware' => [
+            'middleware' => array_filter([
                 $container->env() === 'dev' ? StopwatchMiddleware::class : null,
                 LoggerMiddleware::class,
                 CacheMiddleware::class,
-            ],
+            ]),
         ]);
 };
