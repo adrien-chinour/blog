@@ -25,6 +25,6 @@ final readonly class ProjectFactory
      */
     public function fromGithubRepositoryCollection(array $collection): array
     {
-        return array_map(fn(GithubRepository $project) => $this->fromGithubRepository($project), $collection);
+        return array_map(fn (GithubRepository $project) => $this->fromGithubRepository($project), $collection);
     }
 }

@@ -24,6 +24,6 @@ final readonly class BlogTagFactory
      */
     public function fromCategoryCollection(CategoryCollection $collection): array
     {
-        return array_map(fn(Category $category) => $this->fromCategory($category), $collection->items);
+        return array_map(fn (Category $category) => $this->fromCategory($category), $collection->items);
     }
 }

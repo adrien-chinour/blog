@@ -4,25 +4,34 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Contentful\Http;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-final readonly class ContentfulApiClient
+final class ContentfulApiClient implements LoggerAwareInterface
 {
-    public function __construct(private HttpClientInterface $contentfulClient) {}
+    use LoggerAwareTrait;
+
+    public function __construct(private readonly HttpClientInterface $contentfulClient)
+    {
+        $this->logger = new NullLogger();
+    }
 
     public function query(string $query): array
     {
         try {
-            $response = $this->contentfulClient->request('POST', '/content/v1/spaces/0c7qlubj8id5', [
+            $options = [
                 'body' => ['query' => $query],
-            ])->toArray();
+            ];
+
+            $response = $this->contentfulClient->request('POST', '/content/v1/spaces/0c7qlubj8id5', $options)->toArray();
         } catch (\Throwable $e) {
-            dd($e);
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+
             return [];
         }
 
         return $response['data'] ?? [];
     }
 }
-
-

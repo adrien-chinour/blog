@@ -5,16 +5,24 @@ declare(strict_types=1);
 namespace App\Infrastructure\Github\Http;
 
 use App\Infrastructure\Github\Model\GithubRepository;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
-final readonly class GithubApiClient
+final class GithubApiClient implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     public function __construct(
-        private HttpClientInterface $githubClient,
-        private string              $githubUser,
-        private SerializerInterface $serializer,
-    ) {}
+        private readonly HttpClientInterface $githubClient,
+        private readonly string              $githubUser,
+        private readonly SerializerInterface $serializer
+    ) {
+        $this->logger = new NullLogger();
+    }
 
     /**
      * @return GithubRepository[]
@@ -35,12 +43,13 @@ final readonly class GithubApiClient
             );
 
             return $this->serializer->deserialize(
-                $response->getContent() ?? [],
+                $response->getContent(),
                 GithubRepository::class . '[]',
                 'json',
             );
-        } catch (\Throwable $t) {
-            dd($t);
+        } catch (Throwable $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+
             return [];
         }
     }

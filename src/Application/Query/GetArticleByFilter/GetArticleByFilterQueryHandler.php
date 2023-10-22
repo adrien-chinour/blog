@@ -11,9 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class GetArticleByFilterQueryHandler
 {
-    public function __construct(private BlogArticleRepository $articleRepository)
-    {
-    }
+    public function __construct(private BlogArticleRepository $articleRepository) {}
 
     public function __invoke(GetArticleByFilterQuery $query): ?BlogArticle
     {

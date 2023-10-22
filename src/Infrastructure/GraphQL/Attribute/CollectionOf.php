@@ -7,7 +7,5 @@ namespace App\Infrastructure\GraphQL\Attribute;
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
 final readonly class CollectionOf
 {
-    public function __construct(public string $type)
-    {
-    }
+    public function __construct(public string $type) {}
 }

@@ -31,7 +31,7 @@ final readonly class BlogArticleFactory
             title: $blogPage->title,
             description: $blogPage->description,
             content: $this->contentParser->parse($blogPage->content),
-            imageUrl: $blogPage->image?->url,
+            imageUrl: $blogPage->image->url,
             slug: $blogPage->slug,
             publicationDate: $blogPage->sys->publishedAt ?? new DateTimeImmutable(),
             tags: $this->blogTagFactory->fromCategoryCollection($blogPage->categoriesCollection),
@@ -47,6 +47,6 @@ final readonly class BlogArticleFactory
      */
     public function fromBlogPageCollection(BlogPageCollection $collection): array
     {
-        return array_map(fn(BlogPage $blogPage) => $this->fromBlogPage($blogPage), $collection->items);
+        return array_map(fn (BlogPage $blogPage) => $this->fromBlogPage($blogPage), $collection->items);
     }
 }

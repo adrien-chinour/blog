@@ -11,9 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class GetLatestArticlesQueryHandler
 {
-    public function __construct(private BlogArticleRepository $blogArticleRepository)
-    {
-    }
+    public function __construct(private BlogArticleRepository $blogArticleRepository) {}
 
     /**
      * @param GetLatestArticlesQuery $query

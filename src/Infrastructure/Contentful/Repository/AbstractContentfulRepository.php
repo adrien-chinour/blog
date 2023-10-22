@@ -12,12 +12,10 @@ use Symfony\Component\Serializer\SerializerInterface;
 abstract class AbstractContentfulRepository
 {
     public function __construct(
-        private ContentfulApiClient $apiClient,
-        private SerializerInterface $serializer,
-        private GraphQLQueryBuilder $queryBuilder,
-    )
-    {
-    }
+        private readonly ContentfulApiClient $apiClient,
+        private readonly SerializerInterface $serializer,
+        private readonly GraphQLQueryBuilder $queryBuilder
+    ) {}
 
     protected function query(string $resource, array $filters = [], bool $hydrate = true): object|array|null
     {

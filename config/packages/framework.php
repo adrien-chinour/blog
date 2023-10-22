@@ -7,7 +7,6 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Config\FrameworkConfig;
 
 return static function (FrameworkConfig $framework, ContainerConfigurator $container): void {
-
     /**
      * Framework Configuration
      * @see FrameworkConfig

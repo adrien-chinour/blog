@@ -12,7 +12,7 @@ final readonly class GetArticleByFilterQuery implements CacheableQueryInterface
 
     public function getCacheKey(): string
     {
-        return sprintf('article_filters_%s', md5(json_encode($this->filters)));
+        return sprintf('article_filters_%s', md5((string)json_encode($this->filters)));
     }
 
     public function getCacheTtl(): int

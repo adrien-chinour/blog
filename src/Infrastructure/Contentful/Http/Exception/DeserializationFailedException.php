@@ -6,6 +6,4 @@ namespace App\Infrastructure\Contentful\Http\Exception;
 
 use RuntimeException;
 
-final class DeserializationFailedException extends RuntimeException
-{
-}
+final class DeserializationFailedException extends RuntimeException {}

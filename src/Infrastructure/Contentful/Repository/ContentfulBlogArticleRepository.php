@@ -20,8 +20,7 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
         ContentfulApiClient                 $apiClient,
         SerializerInterface                 $serializer,
         GraphQLQueryBuilder                 $queryBuilder
-    )
-    {
+    ) {
         parent::__construct($apiClient, $serializer, $queryBuilder);
     }
 

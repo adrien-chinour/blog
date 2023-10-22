@@ -17,6 +17,9 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    /**
+     * @throws \ReflectionException
+     */
     public function buildQuery(ReflectionClass $class, array $filters = []): string
     {
         $query = sprintf("query {%s %s {%s}}", $this->getName($class), $this->buildFilters($filters), $this->buildFields($class));
@@ -37,7 +40,7 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
 
         return sprintf(
             '(%s)',
-            implode(', ', array_map(fn($key, $value) => $this->buildFilter($key, $value), array_keys($filters), $filters))
+            implode(', ', array_map(fn ($key, $value) => $this->buildFilter($key, $value), array_keys($filters), $filters))
         );
     }
 
@@ -51,6 +54,9 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
         };
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function buildFields(ReflectionClass $class): string
     {
         $fields = [];
@@ -61,13 +67,30 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
                 continue;
             }
 
-            if ($property->getType()->getName() === 'array' && $property->getAttributes(CollectionOf::class) !== []) {
-                $fields[] = sprintf('%s {%s}', $property->getName(), $this->buildFields(new ReflectionClass($property->getAttributes(CollectionOf::class)[0]->getArguments()[0])));
-            } elseif ($property->getType()->isBuiltin() || $property->getType()->getName() === 'DateTimeInterface') {
-                $fields[] = $property->getName();
-            } else {
-                $fields[] = sprintf('%s {%s}', $property->getName(), $this->buildFields(new ReflectionClass($property->getType()->getName())));
+            // Using CollectionOf to handle array types
+            if ([] !== $property->getAttributes(CollectionOf::class)) {
+                $fields[] = sprintf(
+                    '%s {%s}',
+                    $property->getName(),
+                    $this->buildFields(new ReflectionClass($property->getAttributes(CollectionOf::class)[0]->getArguments()[0]))
+                );
+                continue;
             }
+
+            // Return property if it's build-in type or Datetime
+            if (
+                ($property->getType() instanceof \ReflectionNamedType && ($property->getType()->isBuiltin()))
+                || (1 === preg_match('/^\??\\?DateTime(Immutable)?(Interface)?$/', (string)$property->getType()))
+            ) {
+                $fields[] = $property->getName();
+                continue;
+            }
+
+            $fields[] = sprintf(
+                '%s {%s}',
+                $property->getName(),
+                $this->buildFields(new ReflectionClass((string)$property->getType()))
+            );
         }
 
         return implode(', ', $fields);
