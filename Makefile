@@ -10,6 +10,10 @@ start: ## Build and start docker environment
 	docker compose up -d
 	@echo "$(ECHO_START)✅ Docker environment is ready.$(ECHO_END)"
 
+stop: ## Stop docker environment
+	docker compose stop
+	@echo "$(ECHO_START)✅ Docker environment is stopped.$(ECHO_END)"
+
 init: ## Run init scripts
 	$(EXEC) 'composer install'
 	@echo "$(ECHO_START)✅ Local php environment is ready.$(ECHO_END)"
@@ -19,7 +23,7 @@ install: start init ## Start and init
 ##<
 
 ##@ Utils
-ssh: ## Start bash on container
+sh: ## Start bash on container
 	docker compose exec -it web bash
 
 quality: ## Run quality scripts
