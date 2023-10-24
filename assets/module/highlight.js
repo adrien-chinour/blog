@@ -1,4 +1,5 @@
 import hljs from 'highlight.js';
+import onPageLoaded from "./loader";
 
 import('highlight.js/styles/github-dark.css');
 
@@ -11,10 +12,6 @@ hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
 hljs.registerLanguage('diff', require('highlight.js/lib/languages/diff'));
 hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
 
-window.addEventListener('DOMContentLoaded', () => {
-  hljs.highlightAll();
-});
-
-window.addEventListener('turbo:render', () => {
+onPageLoaded(() => {
   hljs.highlightAll();
 });

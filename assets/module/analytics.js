@@ -1,6 +1,7 @@
 import * as ackeeTracker from 'ackee-tracker';
+import onPageLoaded from "./loader";
 
-window.addEventListener('DOMContentLoaded', () => {
+onPageLoaded(() => {
   const ackeeConfigElement = document.querySelector('[data-ackee-domain-id]')
   if (ackeeConfigElement == null) return;
 
@@ -11,12 +12,15 @@ window.addEventListener('DOMContentLoaded', () => {
 
   ackeeInstance.record(ackeeConfigElement.getAttribute('data-ackee-domain-id'));
 
-  document.querySelectorAll('.analytics-suggestions').forEach((e) => {
-    e.addEventListener('click', () => {
+  // Suggestion event on analytics-suggestions links clicked
+  document.querySelectorAll('.analytics-suggestions').forEach((link) => {
+    link.addEventListener('click', () => {
+      console.debug('Suggestion click');
+
       ackeeInstance.action('3ef7a44b-8e08-4588-92ae-b8a933dd92cb', {
         key: 'Suggestion',
         value: 1
       });
     })
-  })
-})
+  });
+});
