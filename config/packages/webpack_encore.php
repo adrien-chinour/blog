@@ -8,7 +8,8 @@ return static function (WebpackEncoreConfig $encore, ContainerConfigurator $cont
         ->outputPath('%kernel.project_dir%/public/build')
         ->scriptAttributes('defer', true)
         ->scriptAttributes('data-turbo-track', 'reload')
-        ->linkAttributes('data-turbo-track', 'reload');
+        ->linkAttributes('data-turbo-track', 'reload')
+        ->preload(true);
 
     if ($container->env() === 'prod') {
         $encore->cache(true);

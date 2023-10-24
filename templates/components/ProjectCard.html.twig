@@ -4,7 +4,7 @@
     </a>
     <p class="text-sm my-3 line-clamp-1 text-ellipsis">{{ this.project.description ?? '...' }}</p>
     {% if this.project.language is not empty %}
-        <span class="uppercase font-bold rounded bg-zinc-400 p-0.5 text-xs text-zinc-800">
+        <span class="tag">
             {{ this.project.language }}
         </span>
     {% endif %}

@@ -1,21 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Serif+Display:ital@0;1&family=Inter:wght@100;300;400;500;700&display=swap');
-@import "./content.scss";
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: 'Inter', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .bg-grid {
-  background-size: 18px 18px;
-  background-image: linear-gradient(to right, rgba(200, 200, 200, 0.3) 1px, transparent 1px),
-  linear-gradient(to bottom, rgba(200, 200, 200, 0.3) 1px, transparent 1px);
-  background-position: center;
+    background-size: 18px 18px;
+    background-image: linear-gradient(to right, rgba(200, 200, 200, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(200, 200, 200, 0.3) 1px, transparent 1px);
+    background-position: center;
 }
 
 .container-fit {
-  @apply mx-4 lg:mx-32 xl:mx-60;
+    @apply mx-4 lg:mx-32 xl:mx-60;
+}
+
+.text-muted {
+    @apply text-zinc-500 dark:text-zinc-300
+}
+
+.tag {
+    @apply uppercase font-bold rounded bg-zinc-600 dark:bg-zinc-300 text-zinc-100 dark:text-zinc-800 py-0.5 px-1 text-xs
 }

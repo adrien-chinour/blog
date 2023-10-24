@@ -13,6 +13,7 @@ Encore
     .enableStimulusBridge('./assets/controllers.json')
 
     .addEntry('app', './assets/entrypoint/app.js')
+    .addEntry('article-content', './assets/entrypoint/article-content.js')
 
     .splitEntryChunks()
 
@@ -23,8 +24,7 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     .configureBabelPresetEnv((config) => {
-        config.useBuiltIns = 'usage';
-        config.corejs = '3.23';
+        config.targets = '> .5%, not dead, not op_mini all, last 2 versions';
     })
 
     .enablePostCssLoader()

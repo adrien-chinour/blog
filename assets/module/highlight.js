@@ -1,4 +1,5 @@
 import hljs from 'highlight.js';
+
 import('highlight.js/styles/github-dark.css');
 
 hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
@@ -11,9 +12,9 @@ hljs.registerLanguage('diff', require('highlight.js/lib/languages/diff'));
 hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
 
 window.addEventListener('DOMContentLoaded', () => {
-    hljs.highlightAll();
+  hljs.highlightAll();
 });
 
 window.addEventListener('turbo:render', () => {
-    hljs.highlightAll();
+  hljs.highlightAll();
 });
