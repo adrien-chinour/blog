@@ -17,9 +17,6 @@
     {{ encore_entry_script_tags('app') }}
     {% block javascripts %}{% endblock %}
 
-    <script async src="https://ackee.chinour.dev/tracker.js" data-ackee-server="https://ackee.chinour.dev"
-            data-ackee-domain-id="6d481dc1-4c37-48a7-975f-b6faf28183c2"></script>
-
     <link rel="dns-prefetch" href="https://images.ctfassets.net">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -29,5 +26,7 @@
 </head>
 <body class="dark:bg-zinc-800 dark:text-zinc-100 container mx-auto">
 {% block body %}{% endblock %}
+
+<div hidden data-ackee-server="https://ackee.chinour.dev" data-ackee-domain-id="6d481dc1-4c37-48a7-975f-b6faf28183c2"></div>
 </body>
 </html>
