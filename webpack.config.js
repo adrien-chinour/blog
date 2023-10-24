@@ -13,7 +13,6 @@ Encore
     .enableStimulusBridge('./assets/controllers.json')
 
     .addEntry('app', './assets/entrypoint/app.js')
-    .addEntry('article-content', './assets/entrypoint/article-content.js')
 
     .splitEntryChunks()
 
