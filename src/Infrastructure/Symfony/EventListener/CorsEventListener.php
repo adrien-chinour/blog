@@ -13,7 +13,38 @@ class CorsEventListener
     public function __invoke(ResponseEvent $event): void
     {
         $event->getResponse()->headers->add([
-            'Access-Control-Allow-Origin' => 'https://ackee.chinour.dev'
+            'Access-Control-Allow-Origin' => 'https://*.chinour.dev, https://*.grafana.net',
+            'Content-Security-Policy' => $this->getContentSecurityPolicy(),
         ]);
+    }
+
+    private function getContentSecurityPolicy(): string
+    {
+        $policies = [
+            'default-src' => [
+                "'self'",
+                'https://fonts.gstatic.com',
+                'https://fonts.googleapis.com',
+                'https://*.chinour.dev',
+                'https://*.grafana.net',
+                "'unsafe-inline'"
+            ],
+            'img-src' => [
+                'data:',
+                'https://images.ctfassets.net',
+            ],
+            'child-src' => [
+                "'none'"
+            ],
+        ];
+
+        return implode(
+            ' ; ',
+            array_map(
+                fn (string $policy, array $rules) => sprintf('%s %s', $policy, implode(' ', $rules)),
+                array_keys($policies),
+                array_values($policies),
+            )
+        );
     }
 }
