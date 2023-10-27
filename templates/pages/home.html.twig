@@ -1,11 +1,6 @@
 {% extends 'layout/default.html.twig' %}
 
 {% block main %}
-    {{ component('Hero', {
-        title: 'Undefined',
-        description: 'Un blog centré sur le développement web en PHP. Retrouvez des articles sur mes trouvailles et expérimentations.',
-    }) }}
-
     {{ component('LatestArticleList', {size: 3}) }}
 
     <div class="py-4"></div>

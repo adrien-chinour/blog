@@ -11,6 +11,9 @@ final readonly class ParsedownContentParser implements ContentParserInterface
 {
     public function parse(string $content): string
     {
-        return (new \Parsedown())->text($content);
+        $content = \Parsedown::instance()->text($content);
+
+        // add on all content links target blank and nofollow
+        return str_replace('<a', '<a target="_blank" rel="nofollow"', $content);
     }
 }
