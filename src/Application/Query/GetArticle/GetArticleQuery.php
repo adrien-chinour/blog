@@ -8,7 +8,7 @@ use App\Application\Query\CacheableQueryInterface;
 
 final readonly class GetArticleQuery implements CacheableQueryInterface
 {
-    public function __construct(public string $identifier) {}
+    public function __construct(public string $identifier, public bool $preview = false) {}
 
     public function getCacheKey(): string
     {
@@ -17,6 +17,6 @@ final readonly class GetArticleQuery implements CacheableQueryInterface
 
     public function getCacheTtl(): int
     {
-        return 3600;
+        return $this->preview ? 0 : 3600;
     }
 }

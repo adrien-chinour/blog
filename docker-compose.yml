@@ -1,13 +1,13 @@
 version: '3.4'
 
 services:
-  web:
-    container_name: blog.web
-    build:
-      context: .
-      dockerfile: ./docker/Dockerfile
-      target: app
-    volumes:
-      - ".:/var/www"
-    ports:
-      - "8080:80"
+    web:
+        container_name: blog.web
+        build:
+            context: .
+            dockerfile: ./docker/Dockerfile
+            target: app
+        volumes:
+            - ".:/var/www"
+        ports:
+            - "8080:80"

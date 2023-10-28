@@ -32,10 +32,10 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
         return $this->blogArticleFactory->fromBlogPageCollection($data);
     }
 
-    public function getById(string $identifier): ?BlogArticle
+    public function getById(string $identifier, bool $preview = false): ?BlogArticle
     {
         /** @var BlogPage $data */
-        $data = $this->query(BlogPage::class, ['id' => $identifier]);
+        $data = $this->query(BlogPage::class, ['id' => $identifier, 'preview' => $preview]);
 
         return $this->blogArticleFactory->fromBlogPage($data);
     }

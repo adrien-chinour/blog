@@ -49,6 +49,7 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
         return match (true) {
             null === $value => '',
             is_string($value) => sprintf('%s: "%s"', $name, $value),
+            is_bool($value) => sprintf('%s: %s', $name, $value ? 'true' : 'false'),
             is_array($value) => sprintf('%s: %s', $name, str_replace(['(', ')'], ['{', '}'], $this->buildFilters($value))),
             default => sprintf('%s: %s', $name, $value),
         };

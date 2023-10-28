@@ -8,7 +8,7 @@ interface BlogArticleRepository
 {
     public function getLatestArticles(int $length): array;
 
-    public function getById(string $identifier): ?BlogArticle;
+    public function getById(string $identifier, bool $preview = false): ?BlogArticle;
 
     public function getOneBy(array $filters): ?BlogArticle;
 

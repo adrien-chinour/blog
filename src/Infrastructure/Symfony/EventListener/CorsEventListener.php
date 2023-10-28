@@ -27,14 +27,14 @@ class CorsEventListener
                 'https://fonts.googleapis.com',
                 'https://*.chinour.dev',
                 'https://*.grafana.net',
-                "'unsafe-inline'"
+                "'unsafe-inline'",
             ],
             'img-src' => [
                 'data:',
                 'https://images.ctfassets.net',
             ],
             'child-src' => [
-                "'none'"
+                "'none'",
             ],
         ];
 
