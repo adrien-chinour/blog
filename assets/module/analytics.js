@@ -17,8 +17,8 @@ onPageLoaded(() => {
     link.addEventListener('click', () => {
       console.debug('Suggestion click');
 
-      ackeeInstance.action('3ef7a44b-8e08-4588-92ae-b8a933dd92cb', {
-        key: 'Suggestion',
+      ackeeInstance.action('e45189f9-dc5b-411a-a50f-5811b67cf15c', {
+        key: 'Click',
         value: 1
       });
     })
