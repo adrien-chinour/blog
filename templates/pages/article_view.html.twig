@@ -2,4 +2,8 @@
 
 {% block main %}
     {{ component('ArticleContent', {'article': article}) }}
+
+    <hr class="container-fit my-8">
+
+    <div class="container-fit mt-8" {{ react_component('ArticleCommentList', {articleId: article.id}) }}></div>
 {% endblock %}

@@ -1,0 +1,15 @@
+POST {{mongo-api-host}}/action/findOne
+Access-Control-Request-Headers: *
+api-key: {{mongo-api-key}}
+Content-Type: application/json
+
+{
+    "collection": "comments",
+    "database": "social",
+    "dataSource": "udfn-prod",
+    "projection": {
+        "_id": 1
+    }
+}
+
+###

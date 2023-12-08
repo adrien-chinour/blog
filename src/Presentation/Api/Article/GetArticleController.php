@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api;
+namespace App\Presentation\Api\Article;
 
 use App\Application\Query\GetArticle\GetArticleQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
