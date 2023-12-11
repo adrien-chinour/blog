@@ -31,7 +31,7 @@ webpage : [adrien-chinour.github.io/blog.](https://adrien-chinour.github.io/blog
 
 ### Features
 
-- [ ] **Secure endpoint for admin actions**
+- [x] **Secure endpoint for admin actions**
 - [ ] Webhook on Contentful (cache invalidation on article update)
 - [ ] Add comments on blog posts
 - [ ] Add tag list page (need more articles)

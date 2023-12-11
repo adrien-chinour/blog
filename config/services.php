@@ -11,7 +11,8 @@ return function (ContainerConfigurator $container): void {
     $services->defaults()
         ->autowire()
         ->autoconfigure()
-        ->bind('$githubUser', '%env(GITHUB_USER)%');
+        ->bind('$githubUser', '%env(GITHUB_USER)%')
+        ->bind('$adminToken', '%env(ADMIN_TOKEN)%');
 
     /**
      * Automatically registers App namespace has services
