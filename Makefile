@@ -1,38 +1,75 @@
-EXEC=docker compose exec web bash -c
-ECHO_START=\n\e[1;37m$(tput bold)
-ECHO_END=\e[0m\n$(tput sgr0)
+# Executables (local)
+DOCKER_COMP = docker compose
 
-.DEFAULT_GOAL:=help
+# Docker containers
+PHP_CONT = $(DOCKER_COMP) exec app
+NODE_CONT = $(DOCKER_COMP) run --rm node
+DOC_CONT = $(DOCKER_COMP) run --rm docsify
 
-##@ Install
-start: ## Build and start docker environment
-	docker compose build
-	docker compose up -d
-	@echo "$(ECHO_START)✅ Docker environment is ready.$(ECHO_END)"
+# Executables
+PHP      = $(PHP_CONT) php
+COMPOSER = $(PHP_CONT) composer
+SYMFONY  = $(PHP) bin/console
+NPM  = $(NODE_CONT) npm
 
-stop: ## Stop docker environment
-	docker compose stop
-	@echo "$(ECHO_START)✅ Docker environment is stopped.$(ECHO_END)"
+# Misc
+.DEFAULT_GOAL = help
+.PHONY        : help build up start down logs sh install composer vendor console cc npm watch
 
-init: ## Run init scripts
-	$(EXEC) 'composer install'
-	@echo "$(ECHO_START)✅ Local php environment is ready.$(ECHO_END)"
+## —— 🎵 🐳 The Symfony Docker Makefile 🐳 🎵 ——————————————————————————————————
+help: ## Outputs this help screen
+	@grep -E '(^[a-zA-Z0-9\./_-]+:.*?##.*$$)|(^##)' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
-install: start init ## Start and init
-	@echo "$(ECHO_START)🚀 Ready to code !$(ECHO_END)"
-##<
+## —— Docker 🐳 ————————————————————————————————————————————————————————————————
+build: ## Builds the Docker images
+	@$(DOCKER_COMP) build --pull --no-cache
 
-##@ Utils
-sh: ## Start bash on container
-	docker compose exec -it web bash
+up: ## Start the docker hub in detached mode (no logs)
+	@$(DOCKER_COMP) up --detach
 
-quality: ## Run quality scripts
-	$(EXEC) 'composer run-script quality'
-	@echo "$(ECHO_START)✅ All check succeed.$(ECHO_END)"
-##<
+start: build up ## Build and start the containers
 
-## Help
-.PHONY: help
-help:
-	@awk 'BEGIN {FS = ":.*##"; printf "Usage: make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-25s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
-##<
+down: ## Stop the docker hub
+	@$(DOCKER_COMP) down --remove-orphans
+
+logs: ## Show live logs
+	@$(DOCKER_COMP) logs --tail=0 --follow
+
+sh: ## Connect to the PHP FPM container
+	@$(PHP_CONT) sh
+
+install: build up ## Start docker environnement and install php/node js dependencies
+	@$(COMPOSER) install
+	@$(NPM) install
+	echo "Project available at http://localhost:8080."
+
+## —— Composer 🧙 ——————————————————————————————————————————————————————————————
+composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'
+	@$(eval c ?=)
+	@$(COMPOSER) $(c)
+
+vendor: ## Install vendors according to the current composer.lock file
+vendor: c=install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
+vendor: composer
+
+## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
+console: ## List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
+	@$(eval c ?=)
+	@$(SYMFONY) $(c)
+
+cc: c=c:c ## Clear the cache
+cc: console
+
+## —— Node 🧊 ——————————————————————————————————————————————————————————————————
+npm: ## List all NPM commands or pass the parameter "c=" to run a given command, example: make npm c="run build"
+	@$(eval c ?=)
+	@$(NPM) $(c)
+
+watch: ## Build assets in development mode with hot-reloading
+	@$(NPM) run watch
+
+## —— Docsify 📚 ———————————————————————————————————————————————————————————————
+doc: ## Start documentation in local environment (without docker)
+	@(docsify serve docs) || echo "\n\e[31minstall Docsify : 'npm i -g docsify-cli'\e[0m\n"
+
+# Thanks https://github.com/dunglas/symfony-docker/blob/main/docs/makefile.md <3
