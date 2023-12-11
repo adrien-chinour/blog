@@ -11,23 +11,23 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "erusev/parsedown": "^1.7",
-        "symfony/console": "6.3.*",
-        "symfony/dotenv": "6.3.*",
+        "symfony/console": "7.0.*",
+        "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "6.3.*",
-        "symfony/http-client": "6.3.*",
-        "symfony/messenger": "6.3.*",
-        "symfony/property-access": "6.3.*",
-        "symfony/runtime": "6.3.*",
-        "symfony/security-bundle": "6.3.*",
-        "symfony/serializer": "6.3.*",
+        "symfony/framework-bundle": "7.0.*",
+        "symfony/http-client": "7.0.*",
+        "symfony/messenger": "7.0.*",
+        "symfony/property-access": "7.0.*",
+        "symfony/runtime": "7.0.*",
+        "symfony/security-bundle": "7.0.*",
+        "symfony/serializer": "7.0.*",
         "symfony/stimulus-bundle": "^2.10",
-        "symfony/twig-bundle": "6.3.*",
+        "symfony/twig-bundle": "7.0.*",
         "symfony/ux-turbo": "^2.10",
         "symfony/ux-twig-component": "^2.10",
-        "symfony/web-link": "6.3.*",
+        "symfony/web-link": "7.0.*",
         "symfony/webpack-encore-bundle": "^2.0",
-        "symfony/yaml": "6.3.*",
+        "symfony/yaml": "7.0.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "^3.7",
         "twig/twig": "^2.12|^3.0"
@@ -82,13 +82,13 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "6.3.*"
+            "require": "7.0.*"
         }
     },
     "require-dev": {
         "phpstan/phpstan": "^1.10",
-        "symfony/stopwatch": "6.3.*",
-        "symfony/web-profiler-bundle": "6.3.*",
+        "symfony/stopwatch": "7.0.*",
+        "symfony/web-profiler-bundle": "7.0.*",
         "symplify/easy-coding-standard": "^12.0"
     }
 }

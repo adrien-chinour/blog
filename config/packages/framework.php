@@ -25,8 +25,7 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
 
     $framework->serializer()
         ->enabled(true)
-        ->enableAnnotations(true);
-
+        ->enableAttributes(true);
 
     /**
      * Assets Configuration
