@@ -1,7 +1,7 @@
 import * as ackeeTracker from 'ackee-tracker';
 import onPageLoaded from "./loader";
 
-onPageLoaded(() => {
+onPageLoaded().then(() => {
   const ackeeConfigElement = document.querySelector('[data-ackee-domain-id]')
   if (ackeeConfigElement == null) return;
 

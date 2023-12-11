@@ -47,11 +47,11 @@
         @apply bg-zinc-100 dark:bg-zinc-700 rounded p-2 border-l-4 dark:border-zinc-200 border-zinc-800;
     }
 
-    code:not(.hljs) {
+    code:not([class*="language-"])  {
         @apply text-zinc-900 bg-zinc-300 dark:bg-zinc-900 dark:text-zinc-200 rounded-sm px-1;
     }
 
-    code.hljs {
+    pre {
         @apply border border-zinc-600 bg-zinc-900 text-zinc-200 rounded-sm my-4;
     }
 }

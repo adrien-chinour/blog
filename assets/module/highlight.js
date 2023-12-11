@@ -1,17 +1,13 @@
-import hljs from 'highlight.js';
+import Prism from 'prismjs/components/prism-core';
+import 'prismjs/components/prism-php';
+import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-diff';
+import 'prismjs/components/prism-yaml';
+import 'prismjs/components/prism-markup-templating';
+import 'prismjs/themes/prism-tomorrow.min.css';
 import onPageLoaded from "./loader";
 
-import('highlight.js/styles/github-dark.css');
 
-hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'));
-hljs.registerLanguage('php', require('highlight.js/lib/languages/php'));
-hljs.registerLanguage('twig', require('highlight.js/lib/languages/twig'));
-hljs.registerLanguage('yaml', require('highlight.js/lib/languages/yaml'));
-hljs.registerLanguage('bash', require('highlight.js/lib/languages/bash'));
-hljs.registerLanguage('json', require('highlight.js/lib/languages/json'));
-hljs.registerLanguage('diff', require('highlight.js/lib/languages/diff'));
-hljs.registerLanguage('dockerfile', require('highlight.js/lib/languages/dockerfile'));
-
-onPageLoaded(() => {
-  hljs.highlightAll();
+onPageLoaded().then(() => {
+  Prism.highlightAll();
 });
