@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -15,9 +14,6 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-
-
-http/contentful/http-client.private.env.json
 
 ###> phpstan/phpstan ###
 phpstan.neon
