@@ -81,22 +81,7 @@ Integration is made with [Symfony UX](https://ux.symfony.com/turbo) with
 a [Stimulus Controller](https://stimulus.hotwired.dev/).
 
 Rendering a new page will no longer trigger Javascript reloading. If you need to trigger Javascript on every page you
-will need to listen on Turbo Event :
-
-> `turbo:render` fires after Turbo renders the page. This event fires twice during an application visit to a cached
-> location: once after rendering the cached version, and again after rendering the fresh version.
-
-Or, with an abstraction you can use `onPageLoaded` (example in `highlight.js`):
-
-```js
-import onPageLoaded from "./loader";
-
-onPageLoaded(() => {
-    hljs.highlightAll();
-});
-```
-
-> This function listen on 2 events : `turbo:render` and `DOMContentLoaded`.
+will need to listen on [Turbo Events](https://turbo.hotwired.dev/handbook/building#observing-navigation-events) : `turbo:load`.
 
 # Testing
 
