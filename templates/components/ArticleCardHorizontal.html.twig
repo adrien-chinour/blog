@@ -1,5 +1,5 @@
 <article class="mb-6">
-    <a href="{{ path('article_view', {'slug': this.article.slug}) }}" class="group sm:flex">
+    <a href="{{ path('article_view', {'slug': this.article.slug}) }}" class="group sm:flex" data-turbo-preload>
         <img class="rounded aspect-video sm:w-64"
              width="600"
              height="337"
