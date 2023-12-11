@@ -25,9 +25,9 @@ webpage : [adrien-chinour.github.io/blog.](https://adrien-chinour.github.io/blog
 
 ### DX
 
-- [ ] Improve Makefile
-- [ ] Add container for assets (Node 18)
-- [ ] Complete documentation (Docsify)
+- [x] Improve Makefile
+- [x] Add container for assets (Node 18)
+- [x] Better documentation (Docsify)
 
 ### Features
 
@@ -39,7 +39,7 @@ webpage : [adrien-chinour.github.io/blog.](https://adrien-chinour.github.io/blog
 ### DevOps
 
 - [ ] Add GitHub Actions for Quality Checks
-- [ ] Cache-Control is not set on js/css files
+- [x] Cache-Control is not set on js/css files
 
 ### Testing
 

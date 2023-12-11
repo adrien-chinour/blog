@@ -3,15 +3,22 @@
 
 # Installation
 
-Create `.env.local` file with :
+```sh
+## Create .env.local file
+cp .env .env.local
 
-- `CONTENTFUL_ACCESS_TOKEN` : Access token to query Contentful API
-- `GITHUB_USER` : User associated with project
-- `GITHUB_ACCESS_TOKEN` : Access Token to query GitHub API
+# Put values on missing environnements variables
+nano .env.local
 
-> Contentful is used as Blogging provider and GitHub is used as Coding provider.
+# Build application container and install dependencies (composer & npm)
+make install
 
-> TODO
+# Build assets
+make npm c="run dev"
+
+# Or with hot-reloading
+make watch
+```
 
 # Project Architecture
 
@@ -20,15 +27,18 @@ Create `.env.local` file with :
 
 ## Overview
 
+> TODO make a schema about project architecture
+
 ## Layers
 
-### Domain
+Project not use default Symfony structure but use a multi layer organisation. These layers are :
 
-### Infrastructure
+- **Domain** : contain business logic, in our case Models and Repositories Interface.
+- **Infrastructure** : make link with framework (Symfony) and External services (Contentful, GitHub, etc.).
+- **Application** : define actions on application, implement CQRS pattern.
+- **UI** : in charge of http request/response handling.
 
-### Application
-
-### UI
+> See [Domain-driven design](https://en.wikipedia.org/wiki/Domain-driven_design).
 
 # Query/Command Bus
 
@@ -66,7 +76,15 @@ final readonly class GetArticleQuery implements CacheableQueryInterface
 - `getCacheKey` : key used in cache system to store query result.
 - `getCacheTtl` : time-to-live for cache entry in seconds.
 
-> An endpoint allow you to invalidate cache
+## Cache invalidation
+
+```http request
+GET {app_endpoint}/admin/cache-invalidation?cacheKey={cacheKey}
+```
+
+Cache can be purged from `/admin/cache-invalidation` with `cacheKey` defined in query.
+
+> TODO : add security on /admin routes
 
 # Frontend
 
@@ -81,11 +99,12 @@ Integration is made with [Symfony UX](https://ux.symfony.com/turbo) with
 a [Stimulus Controller](https://stimulus.hotwired.dev/).
 
 Rendering a new page will no longer trigger Javascript reloading. If you need to trigger Javascript on every page you
-will need to listen on [Turbo Events](https://turbo.hotwired.dev/handbook/building#observing-navigation-events) : `turbo:load`.
+will need to listen
+on [Turbo Events](https://turbo.hotwired.dev/handbook/building#observing-navigation-events) : `turbo:load`.
 
 # Testing
 
-> TODO : Unit test will be made using Pest.
+> **TODO** 😱 😥
 
 # Analytics
 
@@ -105,18 +124,18 @@ import {getWebInstrumentations, initializeFaro} from '@grafana/faro-web-sdk';
 import {TracingInstrumentation} from '@grafana/faro-web-tracing';
 
 if (process.env.NODE_ENV === 'production') {
-  initializeFaro({
-    url: 'https://faro-collector-prod-eu-west-0.grafana.net/collect/9689c3ba5a20d52b36dec6a5da24f8eb',
-    app: {
-      name: 'udfn.fr',
-      version: '1.0.0',
-      environment: 'production'
-    },
-    instrumentations: [
-      ...getWebInstrumentations(),
-      new TracingInstrumentation(),
-    ],
-  });
+    initializeFaro({
+        url: 'https://faro-collector-prod-eu-west-0.grafana.net/collect/9689c3ba5a20d52b36dec6a5da24f8eb',
+        app: {
+            name: 'udfn.fr',
+            version: '1.0.0',
+            environment: 'production'
+        },
+        instrumentations: [
+            ...getWebInstrumentations(),
+            new TracingInstrumentation(),
+        ],
+    });
 }
 ```
 
