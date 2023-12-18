@@ -28,7 +28,9 @@ jobs:
                         ${{ runner.os }}-php-
 
             -   name: "Install Dependencies"
-                run: composer install -q --no-ansi --no-interaction --no-progress --prefer-dist --ignore-platform-reqs
+                env: 
+                    COMPOSER_NO_DEV: 0
+                run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
 
     ecs:
         runs-on: ubuntu-latest
