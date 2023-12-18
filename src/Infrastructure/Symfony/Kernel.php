@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Infrastructure\Symfony;
 
 use App\Infrastructure\Symfony\DependencyInjection\CompilerPass\CustomCompilerPass;

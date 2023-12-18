@@ -1,7 +1,7 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/adrien-chinour/blog)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/adrien-chinour/blog/main)
 
-# Installation
+# Installation 🔧
 
 ```sh
 ## Create .env.local file
@@ -20,7 +20,15 @@ make npm c="run dev"
 make watch
 ```
 
-# Project Architecture
+# Roadmap 🗺️
+
+- Add Webhook support on Contentful
+- Add Comment system on Articles
+- Add tag pages
+
+- (Add more tests)
+
+# Project Architecture 🏗️
 
 ![PHP 8.2](https://img.shields.io/badge/php_8.2-brightgreen?logo=php&logoColor=white)
 ![Symfony 6.3](https://img.shields.io/badge/Symfony_6.3-green?logo=symfony)
@@ -40,7 +48,7 @@ Project not use default Symfony structure but use a multi layer organisation. Th
 
 > See [Domain-driven design](https://en.wikipedia.org/wiki/Domain-driven_design).
 
-# Query/Command Bus
+# Query/Command Bus 🚌
 
 Application Layer of project use the [CQRS](https://en.wikipedia.org/wiki/Command_Query_Responsibility_Segregation)
 architecture pattern.
@@ -86,7 +94,7 @@ Cache can be purged from `/admin/cache-invalidation` with `cacheKey` defined in 
 
 > TODO : add security on /admin routes
 
-# Frontend
+# Frontend 🌐
 
 ## Components & Controller
 
@@ -102,13 +110,13 @@ Rendering a new page will no longer trigger Javascript reloading. If you need to
 will need to listen
 on [Turbo Events](https://turbo.hotwired.dev/handbook/building#observing-navigation-events) : `turbo:load`.
 
-# Testing
+# Testing 🧪
 
 > **TODO** 😱 😥
 
-# Analytics
+# Analytics 📊
 
-# Observability
+# Observability 🔭
 
 ## Frontend observability using Grafana Faro
 
@@ -141,6 +149,14 @@ if (process.env.NODE_ENV === 'production') {
 
 > Faro is only initialize on **production** environnement.
 
-# CI/CD
+# CI/CD ‍🔄
 
+All CI/CD pipeline is made with GitHub Actions. As defined in specification workflows are defined in `.github/workflows`
+folder.
 
+Two workflows is defined :
+
+- `quality.yaml` is the continuous integration workflow. It install and validate composer dependencies, then run quality
+  checks like PHPStan, ECS, Pest test suites and k6 load tests.
+- `release.yaml` is the Continuous deployment workflow. Il will be trigger when quality workflow succeed on `main`
+  branch. The release is basically a call to DigitalOcean Build & Deploy pipeline.

@@ -52,6 +52,10 @@ vendor: ## Install vendors according to the current composer.lock file
 vendor: c=install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
 vendor: composer
 
+quality: ## Run quality script with ECS and PHPStan
+quality: c=run-script quality
+quality: composer
+
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
 console: ## List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
 	@$(eval c ?=)

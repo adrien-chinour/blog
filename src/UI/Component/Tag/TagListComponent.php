@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\UI\Component\Tag;
 
-use App\Infrastructure\Contentful\Model\ContentType\Category;
+use App\Domain\Blogging\BlogTag;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent('TagList')]
 class TagListComponent
 {
-    /** @var Category[] $tags */
+    /** @var BlogTag[] $tags */
     public array $tags;
 }
