@@ -7,7 +7,7 @@ on:
         branches: [ "*" ]
 
 jobs:
-    install:
+    php_quality:
         runs-on: ubuntu-latest
         permissions:
             contents: read
