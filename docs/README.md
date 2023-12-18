@@ -31,7 +31,7 @@ make watch
 # Project Architecture 🏗️
 
 ![PHP 8.2](https://img.shields.io/badge/php_8.2-brightgreen?logo=php&logoColor=white)
-![Symfony 6.3](https://img.shields.io/badge/Symfony_6.3-green?logo=symfony)
+![Symfony 7.0](https://img.shields.io/badge/Symfony_7.0-brightgreen?logo=symfony)
 
 ## Overview
 
