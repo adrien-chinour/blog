@@ -1,0 +1,17 @@
+name: 'k6 load test suite'
+
+on: workflow_dispatch
+
+jobs:
+    loadtest:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            -   name: Checkout
+                uses: actions/checkout@v1
+
+            -   name: "Run k6 smoke testing"
+                uses: grafana/k6-action@v0.2.0
+                with:
+                    filename: k6/smoke_test.js
