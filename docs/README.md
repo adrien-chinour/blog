@@ -160,3 +160,4 @@ Two workflows is defined :
   checks like PHPStan, ECS, Pest test suites and k6 load tests.
 - `release.yaml` is the Continuous deployment workflow. Il will be trigger when quality workflow succeed on `main`
   branch. The release is basically a call to DigitalOcean Build & Deploy pipeline.
+- `loadsuite.yaml` allow to start k6 test suite manually from GitHub Actions
