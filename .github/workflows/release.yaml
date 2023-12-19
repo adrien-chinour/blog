@@ -2,17 +2,23 @@ name: "Release on DigitalOcean App Platform"
 
 on:
     workflow_run:
-        workflows: [ "Quality checks" ]
+        workflows: [ quality ]
         branches: [ main ]
         types:
             - completed
 
 jobs:
     deploy:
-        name: "DigitalOcean App Platform deployment"
-        # Only deploy when Quality checks is good
-        if: ${{ github.event.workflow_run.conclusion == 'success' }}
-        uses: digitalocean/app_action@v1.1.5
-        with:
-            app_name: udfn-fr
-            token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            -   name: "Checkout code"
+                uses: actions/checkout@v2
+            -   name: "DigitalOcean App Platform deployment"
+                # Only deploy when Quality checks is good
+                if: ${{ github.event.workflow_run.conclusion == 'success' }}
+                uses: digitalocean/app_action@main
+                with:
+                    app_name: udfn-fr
+                    token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
