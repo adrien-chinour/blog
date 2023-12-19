@@ -2,7 +2,7 @@ name: "Release on DigitalOcean App Platform"
 
 on:
     workflow_run:
-        workflows: [ quality ]
+        workflows: [ "Quality checks" ]
         branches: [ main ]
         types:
             - completed
