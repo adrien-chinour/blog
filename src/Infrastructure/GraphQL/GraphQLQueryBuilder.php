@@ -22,7 +22,12 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
      */
     public function buildQuery(ReflectionClass $class, array $filters = []): string
     {
-        $query = sprintf("query {%s %s {%s}}", $this->getName($class), $this->buildFilters($filters), $this->buildFields($class));
+        $query = sprintf(
+            'query {%s %s {%s}}',
+            $this->getName($class),
+            $this->buildFilters($filters),
+            $this->buildFields($class),
+        );
 
         $this->logger?->debug("GraphQL query: $query", [
             'resource' => $class->getName(),
@@ -38,19 +43,33 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
             return '';
         }
 
-        return sprintf(
-            '(%s)',
-            implode(', ', array_map(fn ($key, $value) => $this->buildFilter($key, $value), array_keys($filters), $filters))
+        $params = implode(
+            ', ',
+            array_map(fn ($key, $value) => $this->buildFilter($key, $value), array_keys($filters), $filters)
         );
+
+        return sprintf('(%s)', $params);
     }
 
     private function buildFilter(string $name, mixed $value): string
     {
         return match (true) {
             null === $value => '',
-            is_string($value) => sprintf('%s: "%s"', $name, $value),
-            is_bool($value) => sprintf('%s: %s', $name, $value ? 'true' : 'false'),
-            is_array($value) => sprintf('%s: %s', $name, str_replace(['(', ')'], ['{', '}'], $this->buildFilters($value))),
+            is_string($value) => sprintf(
+                '%s: "%s"',
+                $name,
+                $value,
+            ),
+            is_bool($value) => sprintf(
+                '%s: %s',
+                $name,
+                $value ? 'true' : 'false',
+            ),
+            is_array($value) => sprintf(
+                '%s: %s',
+                $name,
+                str_replace(['(', ')'], ['{', '}'], $this->buildFilters($value)),
+            ),
             default => sprintf('%s: %s', $name, $value),
         };
     }
@@ -73,7 +92,9 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
                 $fields[] = sprintf(
                     '%s {%s}',
                     $property->getName(),
-                    $this->buildFields(new ReflectionClass($property->getAttributes(CollectionOf::class)[0]->getArguments()[0]))
+                    $this->buildFields(
+                        new ReflectionClass($property->getAttributes(CollectionOf::class)[0]->getArguments()[0])
+                    )
                 );
                 continue;
             }

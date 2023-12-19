@@ -18,6 +18,6 @@ final readonly class GetArticlesQueryHandler
      */
     public function __invoke(GetArticlesQuery $query): array
     {
-        return $this->articleRepository->getAll();
+        return $this->articleRepository->getList($query->limit);
     }
 }

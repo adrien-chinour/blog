@@ -6,6 +6,8 @@ use App\Infrastructure\Symfony\Messenger\Middleware\StopwatchMiddleware;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\FrameworkConfig;
 
+const APPLICATION_JSON = 'application/json';
+
 return static function (FrameworkConfig $framework, ContainerConfigurator $container): void {
     /**
      * Framework Configuration
@@ -80,8 +82,8 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ->scopedClient('contentful.client', [
             'base_uri' => 'https://graphql.contentful.com',
             'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
+                'Content-Type' => APPLICATION_JSON,
+                'Accept' => APPLICATION_JSON,
                 'Authorization' => 'Bearer %env(CONTENTFUL_ACCESS_TOKEN)%',
             ],
         ]);
@@ -90,8 +92,8 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ->scopedClient('github.client', [
             'base_uri' => 'https://api.github.com',
             'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
+                'Content-Type' => APPLICATION_JSON,
+                'Accept' => APPLICATION_JSON,
                 'Authorization' => 'Bearer %env(GITHUB_ACCESS_TOKEN)%',
             ],
         ]);

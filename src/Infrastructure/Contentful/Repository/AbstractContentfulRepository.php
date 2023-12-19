@@ -19,10 +19,15 @@ abstract class AbstractContentfulRepository
 
     protected function query(string $resource, array $filters = [], bool $hydrate = true): object|array|null
     {
-        $result = $this->apiClient->query($this->queryBuilder->buildQuery($reflectionClass = new ReflectionClass($resource), $filters));
+        $result = $this->apiClient
+            ->query($this->queryBuilder->buildQuery($reflectionClass = new ReflectionClass($resource), $filters));
 
         if ($hydrate) {
-            $result = $this->serializer->deserialize(json_encode($result[$this->queryBuilder->getName($reflectionClass)]), $resource, 'json');
+            $result = $this->serializer->deserialize(
+                json_encode($result[$this->queryBuilder->getName($reflectionClass)]),
+                $resource,
+                'json',
+            );
         }
 
         return $result;

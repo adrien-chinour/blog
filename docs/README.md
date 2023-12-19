@@ -1,5 +1,8 @@
 ![GitHub repo size](https://img.shields.io/github/repo-size/adrien-chinour/blog)
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/adrien-chinour/blog/main)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=adrien-chinour_blog&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=adrien-chinour_blog)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=adrien-chinour_blog&metric=bugs)](https://sonarcloud.io/summary/new_code?id=adrien-chinour_blog)
+[![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=adrien-chinour_blog&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=adrien-chinour_blog)
 
 # Installation 🔧
 

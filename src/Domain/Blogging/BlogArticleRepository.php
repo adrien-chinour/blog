@@ -12,5 +12,5 @@ interface BlogArticleRepository
 
     public function getOneBy(array $filters): ?BlogArticle;
 
-    public function getAll(): array;
+    public function getList(?int $limit = null): array;
 }

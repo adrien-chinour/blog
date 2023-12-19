@@ -8,6 +8,10 @@ use App\Application\Query\CacheableQueryInterface;
 
 final readonly class GetArticlesQuery implements CacheableQueryInterface
 {
+    public function __construct(
+        public ?int $limit = null,
+    ) {}
+
     public function getCacheKey(): string
     {
         return 'articles';

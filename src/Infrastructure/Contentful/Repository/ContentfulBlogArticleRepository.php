@@ -48,10 +48,10 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
         return isset($data->items[0]) ? $this->blogArticleFactory->fromBlogPage($data->items[0]) : null;
     }
 
-    public function getAll(): array
+    public function getList(?int $limit = null): array
     {
         /** @var BlogPageCollection $data */
-        $data = $this->query(BlogPageCollection::class, ['limit' => 100]);
+        $data = $this->query(BlogPageCollection::class, ['limit' => $limit ?? 100]);
 
         return $this->blogArticleFactory->fromBlogPageCollection($data);
     }

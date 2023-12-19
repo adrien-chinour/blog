@@ -25,7 +25,9 @@ final class ContentfulApiClient implements LoggerAwareInterface
                 'body' => ['query' => $query],
             ];
 
-            $response = $this->contentfulClient->request('POST', '/content/v1/spaces/0c7qlubj8id5', $options)->toArray();
+            $response = $this->contentfulClient
+                ->request('POST', '/content/v1/spaces/0c7qlubj8id5', $options)
+                ->toArray();
         } catch (\Throwable $e) {
             $this->logger->error($e->getMessage(), ['exception' => $e]);
 
