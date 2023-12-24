@@ -1,17 +1,10 @@
 import * as ackeeTracker from 'ackee-tracker';
 
 window.addEventListener('turbo:load', () => {
-  const ackeeConfigElement = document.querySelector('[data-ackee-domain-id]')
-  if (ackeeConfigElement == null) return;
+  const ackeeInstance = ackeeTracker.create('https://analytics.chinour.dev', {});
+  ackeeInstance.record('2a5cd48f-fc36-4f6e-8840-0db972af81c7');
 
-  const ackeeInstance = ackeeTracker.create(
-    ackeeConfigElement.getAttribute('data-ackee-server') || '',
-    JSON.parse(ackeeConfigElement.getAttribute('data-ackee-opts') || '{}')
-  );
-
-  ackeeInstance.record(ackeeConfigElement.getAttribute('data-ackee-domain-id'));
-
-  // Suggestion event on analytics-suggestions links clicked
+  // User click on any article suggestion at the end of article
   document.querySelectorAll('.analytics-suggestions').forEach((link) => {
     link.addEventListener('click', () => {
       console.debug('Suggestion click');
