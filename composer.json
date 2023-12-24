@@ -76,7 +76,8 @@
         "quality": [
             "composer validate --strict",
             "vendor/bin/phpstan analyse",
-            "vendor/bin/ecs check"
+            "vendor/bin/ecs check",
+            "vendor/bin/pest"
         ]
     },
     "conflict": {
