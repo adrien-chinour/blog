@@ -7,7 +7,7 @@
 # Installation 🔧
 
 ```sh
-## Create .env.local file
+# Create .env.local file
 cp .env .env.local
 
 # Put values on missing environnements variables
