@@ -90,8 +90,8 @@ final readonly class GetArticleQuery implements CacheableQueryInterface
 
 ## Cache invalidation
 
-```http request
-GET {app_endpoint}/admin/cache-invalidation?cacheKey={cacheKey}
+```shell
+curl -H "Authorization: Bearer {{token}} https://www.udfn.fr/admin/cache-invalidation?cacheKey={{cacheKey}}
 ```
 
 Cache can be purged from `/admin/cache-invalidation` with `cacheKey` defined in query.
