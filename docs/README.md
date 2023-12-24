@@ -28,8 +28,7 @@ make watch
 - Add Webhook support on Contentful
 - Add Comment system on Articles
 - Add tag pages
-
-- (Add more tests)
+- _(Add more tests)_
 
 # Project Architecture 🏗️
 
@@ -59,7 +58,7 @@ architecture pattern.
 Implementation is made with [Symfony Messenger](https://symfony.com/doc/current/components/messenger.html) using the
 default `sync` Transport for Query and Command.
 
-> Improvement : Use an async Transport for Command.
+> **✨ Improvement** : Use an async Transport for Command.
 
 ## Query Caching
 
@@ -86,6 +85,8 @@ final readonly class GetArticleQuery implements CacheableQueryInterface
 
 - `getCacheKey` : key used in cache system to store query result.
 - `getCacheTtl` : time-to-live for cache entry in seconds.
+
+> **✨ Improvement** : Use an attribute instead of interface for cache metadata.
 
 ## Cache invalidation
 
@@ -117,7 +118,10 @@ on [Turbo Events](https://turbo.hotwired.dev/handbook/building#observing-navigat
 
 ## Performance Testing with Grafana k6
 
+Grafana k6 is a load testing tool. See the documentation : https://grafana.com/docs/k6/latest/
 
+Performance testing is not in main CI workflows and can be launch directly from GitHub Actions :
+https://github.com/adrien-chinour/blog/actions/workflows/loadsuite.yaml
 
 ## PHP Test with Pest
 
@@ -129,9 +133,57 @@ on [Turbo Events](https://turbo.hotwired.dev/handbook/building#observing-navigat
 
 # Analytics 📊
 
+![images/ackee.png](images/ackee.png)
+
+Website traffic analytics is made using Ackee (self-hosted) :
+> Self-hosted, Node.js based analytics tool for those who care about privacy. Ackee runs on your own server, analyzes
+> the traffic of your websites and provides useful statistics in a minimal interface.
+
+Integration is made on `analytics.js` :
+
+```javascript
+import * as ackeeTracker from 'ackee-tracker';
+
+window.addEventListener('turbo:load', () => {
+    const ackeeInstance = ackeeTracker.create('https://analytics.chinour.dev', {});
+    ackeeInstance.record('2a5cd48f-fc36-4f6e-8840-0db972af81c7');
+});
+```
+
+Analytics is loaded on turbo:load event (see [Turbo](#turbo)). Tracking is disable on localhost. See Ackee Tracker
+documentation : https://github.com/electerious/ackee-tracker
+
+> CORS is handled by `App\Infrastructure\Symfony\EventListener\CorsEventListener`.
+
+## Analytics Events
+
+For custom tracking event Ackee has a prebuild
+system (https://docs.ackee.electerious.com/#/docs/Events#creating-events).
+
+For exemple on `analytics.js` :
+
+```javascript
+// User click on any article suggestion at the end of article
+document.querySelectorAll('.analytics-suggestions').forEach((link) => {
+    link.addEventListener('click', () => {
+        console.debug('Suggestion click');
+
+        ackeeInstance.action('e45189f9-dc5b-411a-a50f-5811b67cf15c', {
+            key: 'Click',
+            value: 1
+        });
+    })
+});
+```
+
+Convention is to use `.analytics-{event-name}` for query selector of target element. Then, send this event with data
+to `ackeeInstance`.
+
 # Observability 🔭
 
 ## Frontend observability using Grafana Faro
+
+![faro.png](images/faro.png)
 
 [Grafana Faro](https://grafana.com/oss/faro/) is an OSS Project for Frontend application Observability.
 
