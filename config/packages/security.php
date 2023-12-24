@@ -6,8 +6,9 @@ use Symfony\Config\SecurityConfig;
 const ADMIN_USER_PROVIDER = 'admin_user_provider';
 
 return static function (SecurityConfig $security): void {
-    $adminUserProvider = $security->provider(ADMIN_USER_PROVIDER)->memory();
-    $adminUserProvider->user('admin')
+    $security->provider(ADMIN_USER_PROVIDER)
+        ->memory()
+        ->user('admin')
         ->password(null)
         ->roles(['ROLE_ADMIN']);
 
@@ -15,12 +16,19 @@ return static function (SecurityConfig $security): void {
         ->pattern('^/(_(profiler|wdt)|css|images|js)/')
         ->security(false);
 
-    $security->firewall('admin')
+    $adminFirewall = $security->firewall('admin')
         ->pattern('^/admin/')
         ->security(true)
-        ->provider(ADMIN_USER_PROVIDER)
+        ->stateless(true)
+        ->provider(ADMIN_USER_PROVIDER);
+
+    $adminFirewall
         ->accessToken()
         ->tokenHandler(AccessTokenHandler::class);
+
+    $adminFirewall->loginThrottling()
+        ->maxAttempts(3)
+        ->interval('60 minutes');
 
     $security->firewall('main')
         ->lazy(true);

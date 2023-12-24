@@ -128,4 +128,21 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
                 CacheMiddleware::class,
             ]),
         ]);
+
+    /**
+     * RateLimiter Configuration
+     * @see \Symfony\Config\Framework\RateLimiterConfig
+     */
+    $framework->rateLimiter()
+        ->limiter('public')
+        ->policy('sliding_window')
+        ->limit(1000)
+        ->interval('60 minutes')
+    ;
+
+    /**
+     * Lock Configuration
+     * @see \Symfony\Config\Framework\LockConfig
+     */
+    $framework->lock('flock');
 };

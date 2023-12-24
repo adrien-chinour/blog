@@ -96,7 +96,7 @@ GET {app_endpoint}/admin/cache-invalidation?cacheKey={cacheKey}
 
 Cache can be purged from `/admin/cache-invalidation` with `cacheKey` defined in query.
 
-> TODO : add security on /admin routes
+> Routes from /admin/* need a security token to be accessed : see [admin section](#Secure-routes)
 
 # Frontend 🌐
 
@@ -113,6 +113,67 @@ a [Stimulus Controller](https://stimulus.hotwired.dev/).
 Rendering a new page will no longer trigger Javascript reloading. If you need to trigger Javascript on every page you
 will need to listen
 on [Turbo Events](https://turbo.hotwired.dev/handbook/building#observing-navigation-events) : `turbo:load`.
+
+# Security 👮
+
+## Rate Limiter
+
+This app use Symfony RateLimiter component to prevent too many request. Limiter is configured like this :
+
+```php
+// framework.php
+
+$framework->rateLimiter()
+    ->limiter('public')
+    ->policy('sliding_window')
+    ->limit(1000)
+    ->interval('60 minutes')
+;
+```
+
+> RateLimiter component documentation : https://symfony.com/doc/current/rate_limiter.html
+
+Limit is not a number of request but a number of token consumed using these rules :
+
+| action       | consume    |
+|--------------|------------|
+| any request  | 1 token    |
+| 404 response | 5 tokens   |
+| 400 response | 10 tokens  |
+| 403 response | 10 tokens  |
+| 405 response | 10 tokens  |
+| 401 response | 100 tokens |
+
+Implementation of token consumption is in `App\Infrastructure\Symfony\EventListener\RateLimiterEventListener`. This
+event listener listen on Symfony HttpKernel `RequestEvent` and `ResponseEvent`.
+
+The idea behind this strategy is to prevent random discovery bot. For exemple, bots can only crawl around 165 url in 1
+hour, if all crawled page are 404. Only 10, if all page need authentication.
+
+2 headers is available on response :
+
+- `X-RateLimit-Limit` number of available token.
+- `X-RateLimit-Remaining` : number of remaining tokens
+
+> rate limit is store using default Symfony cache (filesystem). It will be reset on every new app deployment.
+
+## Secure routes
+
+Accessing routes under `^/(admin|webhook)` is available with authentication. Security is configured under Symfony
+SecurityBundle in `config/security.php`.
+
+There is no user database, it used _in memory_ provider with a default admin user with ROLE_ADMIN. Authentication
+use `Symfony\Component\Security\Http\Authenticator\AccessTokenAuthenticator`
+and `App\Infrastructure\Symfony\Security\AccessTokenHandler`.
+
+**Usage (send a cache invalidation request):**
+
+```shell
+curl -H "Authorization: Bearer {{token}}" https://www.udfn.fr/admin/cache-invalidation?cacheKey=articles
+```
+
+> 3 bad login attempt will ban IP for 1 hour. (Configuration from SecurityBundle using RateLimiter component).
+> See documentation : https://symfony.com/doc/current/security.html#limiting-login-attempts
 
 # Testing 🧪
 
