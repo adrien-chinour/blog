@@ -3,7 +3,15 @@
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 return function (RoutingConfigurator $routes): void {
-    $routes->import('../src/UI/Controller/', 'attribute');
+    $routes->import('../src/Presentation/Public/', 'attribute');
+
+    $routes->import('../src/Presentation/Admin', 'attribute')
+        ->prefix('/admin')
+        ->namePrefix('admin_');
+
+    $routes->import('../src/Presentation/Api', 'attribute')
+        ->prefix('/api')
+        ->namePrefix('api_');
 
     if ($routes->env() === 'dev') {
         $routes->import('@WebProfilerBundle/Resources/config/routing/wdt.xml')->prefix('/_wdt');

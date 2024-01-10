@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Component\Tag;
+namespace App\Presentation\Component\Tag;
 
 use App\Domain\Blogging\BlogTag;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;

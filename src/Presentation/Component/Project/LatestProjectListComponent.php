@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Component\Project;
+namespace App\Presentation\Component\Project;
 
 use App\Application\Query\GetProjectList\GetProjectListQuery;
 use App\Domain\Coding\Project;
@@ -10,12 +10,14 @@ use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('ProjectList')]
-final class ProjectListComponent
+#[AsTwigComponent('LatestProjectList')]
+final class LatestProjectListComponent
 {
     use HandleTrait;
 
-    public int $size = 12;
+    public string $title = 'Les derniers projets.';
+
+    public int $limit = 3;
 
     public function __construct(MessageBusInterface $messageBus)
     {
@@ -27,6 +29,6 @@ final class ProjectListComponent
      */
     public function projects(): array
     {
-        return $this->handle(new GetProjectListQuery($this->size));
+        return $this->handle(new GetProjectListQuery($this->limit));
     }
 }

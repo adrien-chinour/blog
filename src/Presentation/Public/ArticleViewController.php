@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Controller;
+namespace App\Presentation\Public;
 
 use App\Application\Query\GetArticleByFilter\GetArticleByFilterQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

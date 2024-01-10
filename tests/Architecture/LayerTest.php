@@ -5,7 +5,7 @@ namespace App\Tests\Architecture;
 const INFRASTRUCTURE_LAYER = 'App\Infrastructure';
 const DOMAIN_LAYER = 'App\Domain';
 const APPLICATION_LAYER = 'App\Application';
-const UI_LAYER = 'App\UI';
+const UI_LAYER = 'App\Presentation';
 
 arch('Infrastructure Layer cannot be used in any other layer')
     ->expect(INFRASTRUCTURE_LAYER)

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Component\Article;
+namespace App\Presentation\Component\Article;
 
-use App\Application\Query\GetLatestArticles\GetLatestArticlesQuery;
+use App\Application\Query\GetArticles\GetArticlesQuery;
 use App\Domain\Blogging\BlogArticle;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('LatestArticleList')]
-final class LatestArticleListComponent
+#[AsTwigComponent('ArticleList')]
+final class ArticleListComponent
 {
     use HandleTrait;
 
@@ -20,15 +20,11 @@ final class LatestArticleListComponent
         $this->messageBus = $messageBus;
     }
 
-    public string $title = 'Les derniers articles.';
-
-    public int $size = 3;
-
     /**
      * @return BlogArticle[]
      */
     public function articles(): array
     {
-        return $this->handle(new GetLatestArticlesQuery($this->size));
+        return $this->handle(new GetArticlesQuery());
     }
 }
