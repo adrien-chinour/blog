@@ -194,32 +194,38 @@ https://github.com/adrien-chinour/blog/actions/workflows/loadsuite.yaml
 
 # Analytics 📊
 
-![images/ackee.png](images/ackee.png)
-
-Website traffic analytics is made using Ackee (self-hosted) :
-> Self-hosted, Node.js based analytics tool for those who care about privacy. Ackee runs on your own server, analyzes
-> the traffic of your websites and provides useful statistics in a minimal interface.
+Website traffic analytics is made using Countly (self-hosted) :
+> #1 privacy-centric product analytics solution providing insights into how your users interact with your digital
+> products, from acquisition to advocacy.
 
 Integration is made on `analytics.js` :
 
 ```javascript
-import * as ackeeTracker from 'ackee-tracker';
+import Countly from 'countly-sdk-web'
 
 window.addEventListener('turbo:load', () => {
-    const ackeeInstance = ackeeTracker.create('https://analytics.chinour.dev', {});
-    ackeeInstance.record('2a5cd48f-fc36-4f6e-8840-0db972af81c7');
+    Countly.init({
+        app_key: '8696ce4d4dfb160bb24351cb04ae16be868501f6',
+        url: 'https://countly.chinour.dev',
+        debug: process.env.NODE_ENV !== 'production',
+    });
+
+    // Enable tracking
+    Countly.track_sessions();
+    Countly.track_pageview();
+    Countly.track_errors();
+
 });
 ```
 
-Analytics is loaded on turbo:load event (see [Turbo](#turbo)). Tracking is disable on localhost. See Ackee Tracker
-documentation : https://github.com/electerious/ackee-tracker
+Analytics is loaded on turbo:load event (see [Turbo](#turbo)).
 
 > CORS is handled by `App\Infrastructure\Symfony\EventListener\CorsEventListener`.
 
 ## Analytics Events
 
-For custom tracking event Ackee has a prebuild
-system (https://docs.ackee.electerious.com/#/docs/Events#creating-events).
+For custom tracking event Countly has a prebuild
+system (https://support.count.ly/hc/en-us/articles/360037441932-Web-analytics-JavaScript-#h_01HABTQ4372MVVDDTW1FWVFJXF).
 
 For exemple on `analytics.js` :
 
@@ -228,17 +234,13 @@ For exemple on `analytics.js` :
 document.querySelectorAll('.analytics-suggestions').forEach((link) => {
     link.addEventListener('click', () => {
         console.debug('Suggestion click');
-
-        ackeeInstance.action('e45189f9-dc5b-411a-a50f-5811b67cf15c', {
-            key: 'Click',
-            value: 1
-        });
+        Countly.q.push(['add_event', {key: 'suggestion_click'}]);
     })
 });
 ```
 
 Convention is to use `.analytics-{event-name}` for query selector of target element. Then, send this event with data
-to `ackeeInstance`.
+to Countly.
 
 # Observability 🔭
 
