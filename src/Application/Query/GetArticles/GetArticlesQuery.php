@@ -14,7 +14,7 @@ final readonly class GetArticlesQuery implements CacheableQueryInterface
 
     public function getCacheKey(): string
     {
-        return 'articles';
+        return sprintf('articles_%s', $this->limit);
     }
 
     public function getCacheTtl(): int
