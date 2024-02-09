@@ -13,15 +13,6 @@
 
 See my blog : [www.udfn.fr](https://www.udfn.fr)
 
-> [!NOTE]
-> **~~Fun~~ fact**
-> - Time spend on create content -> **10%**
-> - Time spend on coding this project -> **90%**
-
-> [!WARNING]
-> This project need a lot of improvement, for stability and security. If for some reason you found a code to reused : 
-> **be careful**.
-
 ## Documentation
 
 **Documentation is available in docs folder or with [Docsify](https://docsify.js.org) in this
