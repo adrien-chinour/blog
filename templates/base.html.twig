@@ -9,17 +9,15 @@
     <title>{% block title %}{{ site.name }}{% endblock %}</title>
 
     <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>𓀌</text></svg>">
+
+    <link rel="dns-prefetch" href="https://images.ctfassets.net">
 
     {{ encore_entry_link_tags('app') }}
     {% block stylesheets %}{% endblock %}
 
     {{ encore_entry_script_tags('app') }}
     {% block javascripts %}{% endblock %}
-
-    <link rel="dns-prefetch" href="https://images.ctfassets.net">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
 
     <link rel="alternate" type="application/rss+xml" href="{{ url('rss_feed') }}" title="{{ site.name }} - RSS Feed">
 </head>

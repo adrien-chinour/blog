@@ -23,8 +23,6 @@ class CorsEventListener
         $policies = [
             'default-src' => [
                 "'self'",
-                'https://fonts.gstatic.com',
-                'https://fonts.googleapis.com',
                 'https://*.chinour.dev',
                 'https://*.grafana.net',
                 "'unsafe-inline'",
