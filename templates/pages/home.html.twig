@@ -1,9 +1,9 @@
 {% extends 'layout/default.html.twig' %}
 
 {% block main %}
-    {{ component('LatestArticleList', {size: 3}) }}
+    {{ component('LatestProjectList', {size: 3}) }}
 
     <div class="py-4"></div>
 
-    {{ component('LatestProjectList', {size: 3}) }}
+    {{ component('LatestArticleList', {size: 3}) }}
 {% endblock %}
