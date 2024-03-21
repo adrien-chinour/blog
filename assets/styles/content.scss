@@ -44,7 +44,7 @@
     }
 
     blockquote {
-        @apply bg-zinc-100 dark:bg-zinc-700 rounded p-2 border-l-4 dark:border-zinc-200 border-zinc-800;
+        @apply bg-zinc-100 dark:bg-zinc-700 rounded p-2 border-l-4 border-blue-400;
     }
 
     code:not([class*="language-"])  {

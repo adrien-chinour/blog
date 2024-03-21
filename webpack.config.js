@@ -16,6 +16,8 @@ Encore
 
     .splitEntryChunks()
 
+    .enableReactPreset()
+
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
