@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Api;
 
-use App\Application\Query\GetArticles\GetArticlesQuery;
+use App\Application\Query\GetArticleList\GetArticleListQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -28,6 +28,6 @@ final class ListArticleController extends AbstractController
 
     public function __invoke(#[MapQueryParameter(name: 'limit')] int $limit = 10): JsonResponse
     {
-        return $this->json($this->handle(new GetArticlesQuery($limit)));
+        return $this->json($this->handle(new GetArticleListQuery($limit)));
     }
 }

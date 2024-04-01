@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Query\GetArticles;
+namespace App\Application\Query\GetArticleList;
 
 use App\Application\Query\CacheableQueryInterface;
 
-final readonly class GetArticlesQuery implements CacheableQueryInterface
+final readonly class GetArticleListQuery implements CacheableQueryInterface
 {
     public function __construct(
         public ?int $limit = null,
