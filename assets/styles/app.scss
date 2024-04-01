@@ -4,6 +4,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'content.scss';
+@import 'highlight.scss';
+
 body {
     font-family: 'Inter', sans-serif;
 }

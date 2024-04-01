@@ -20,10 +20,10 @@
     }
 
     a {
-        @apply underline text-blue-600;
+        @apply underline text-sky-500;
 
         &:hover {
-            @apply text-blue-500;
+            @apply text-sky-400;
         }
     }
 
@@ -47,11 +47,11 @@
         @apply bg-zinc-100 dark:bg-zinc-700 rounded p-2 border-l-4 dark:border-zinc-200 border-zinc-800;
     }
 
-    code:not([class*="language-"])  {
+    code  {
         @apply text-zinc-900 bg-zinc-300 dark:bg-zinc-900 dark:text-zinc-200 rounded-sm px-1;
     }
 
     pre {
-        @apply border border-zinc-600 bg-zinc-900 text-zinc-200 rounded-sm my-4;
+        @apply border border-zinc-600 bg-zinc-900 text-zinc-200 rounded-sm my-4 p-1 overflow-scroll;
     }
 }

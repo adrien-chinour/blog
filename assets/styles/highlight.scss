@@ -1,0 +1,56 @@
+.hl-keyword {
+    @apply text-orange-500;
+}
+
+.hl-property {
+    @apply text-pink-500;
+}
+
+.hl-attribute {
+    @apply italic;
+}
+
+.hl-type {
+    @apply text-cyan-500;
+}
+
+.hl-generic {
+    @apply text-green-500;
+}
+
+.hl-value {
+    @apply text-green-500;
+}
+
+.hl-variable {
+    @apply text-neutral-50;
+}
+
+.hl-comment span,
+.hl-comment {
+    @apply text-neutral-300;
+}
+
+.hl-blur {
+    filter: blur(2px);
+}
+
+.hl-strong {
+    @apply font-bold;
+}
+
+.hl-em {
+    @apply italic;
+}
+
+.hl-addition {
+    display: inline-block;
+    min-width: 100%;
+    background-color: #00FF0033;
+}
+
+.hl-deletion {
+    display: inline-block;
+    min-width: 100%;
+    background-color: #FF000022;
+}

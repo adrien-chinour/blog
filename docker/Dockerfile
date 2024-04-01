@@ -1,4 +1,4 @@
-FROM php:8.2-fpm-alpine AS app
+FROM php:8.3-fpm-alpine AS app
 
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 

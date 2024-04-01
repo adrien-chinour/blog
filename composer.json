@@ -6,11 +6,11 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.2",
+        "php": ">=8.3",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
-        "erusev/parsedown": "^1.7",
+        "league/commonmark": "*",
         "symfony/console": "7.0.*",
         "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
@@ -30,6 +30,7 @@
         "symfony/web-link": "7.0.*",
         "symfony/webpack-encore-bundle": "^2.0",
         "symfony/yaml": "7.0.*",
+        "tempest/highlight": "^1.0",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/intl-extra": "^3.7",
         "twig/twig": "^2.12|^3.0"
