@@ -32,12 +32,31 @@ make watch
 
 # Project Architecture 🏗️
 
-![PHP 8.2](https://img.shields.io/badge/php_8.2-brightgreen?logo=php&logoColor=white)
+![PHP 8.3](https://img.shields.io/badge/php_8.3-brightgreen?logo=php&logoColor=white)
 ![Symfony 7.0](https://img.shields.io/badge/Symfony_7.0-brightgreen?logo=symfony)
 
 ## Overview
 
 > TODO make a schema about project architecture
+
+## Coding standards
+
+### Git
+
+Commit **MUST** respect [Conventional Commits specifications](https://www.conventionalcommits.org/en/v1.0.0/) 
+
+Allowed types are : 
+- **feat** – a new feature is introduced with the changes
+- **fix** – a bug fix has occurred
+- **chore** – changes that do not relate to a fix or feature and don't modify src or test files (for example updating dependencies)
+- **refactor** – refactored code that neither fixes a bug nor adds a feature
+- **docs** – updates to documentation such as a the README or other markdown files
+- **style** – changes that do not affect the meaning of the code, likely related to code formatting such as white-space, missing semi-colons, and so on.
+- **test** – including new or correcting previous tests
+- **perf** – performance improvements
+- **ci** – continuous integration related
+- **build** – changes that affect the build system or external dependencies
+- **revert** – reverts a previous commit 
 
 ## Layers
 
