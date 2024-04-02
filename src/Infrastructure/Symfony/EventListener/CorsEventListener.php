@@ -13,7 +13,7 @@ class CorsEventListener
     public function __invoke(ResponseEvent $event): void
     {
         $event->getResponse()->headers->add([
-            'Access-Control-Allow-Origin' => 'https://*.chinour.dev, https://*.grafana.net',
+            'Access-Control-Allow-Origin' => 'https://*.chinour.dev, https://*.grafana.net, https://*.udfn.fr',
             'Content-Security-Policy' => $this->getContentSecurityPolicy(),
         ]);
     }
@@ -23,6 +23,7 @@ class CorsEventListener
         $policies = [
             'default-src' => [
                 "'self'",
+                'https://*.udfn.fr',
                 'https://*.chinour.dev',
                 'https://*.grafana.net',
                 "'unsafe-inline'",
