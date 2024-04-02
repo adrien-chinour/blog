@@ -17,7 +17,7 @@ return static function (SecurityConfig $security): void {
         ->security(false);
 
     $adminFirewall = $security->firewall('admin')
-        ->pattern('^/admin/')
+        ->pattern('^/(admin|webhook)/')
         ->security(true)
         ->stateless(true)
         ->provider(ADMIN_USER_PROVIDER);
@@ -34,6 +34,6 @@ return static function (SecurityConfig $security): void {
         ->lazy(true);
 
     $security->accessControl()
-        ->path('^/admin')
+        ->path('^/(admin|webhook)')
         ->roles(['ROLE_ADMIN']);
 };

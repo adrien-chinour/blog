@@ -6,8 +6,6 @@ namespace App\Domain\Blogging;
 
 interface BlogArticleRepository
 {
-    public function getLatestArticles(int $length): array;
-
     public function getById(string $identifier, bool $preview = false): ?BlogArticle;
 
     public function getOneBy(array $filters): ?BlogArticle;

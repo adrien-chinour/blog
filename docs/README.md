@@ -23,13 +23,6 @@ make npm c="run dev"
 make watch
 ```
 
-# Roadmap 🗺️
-
-- Add Webhook support on Contentful
-- Add Comment system on Articles
-- Add tag pages
-- _(Add more tests)_
-
 # Project Architecture 🏗️
 
 ![PHP 8.3](https://img.shields.io/badge/php_8.3-brightgreen?logo=php&logoColor=white)
@@ -43,20 +36,23 @@ make watch
 
 ### Git
 
-Commit **MUST** respect [Conventional Commits specifications](https://www.conventionalcommits.org/en/v1.0.0/) 
+Commit **MUST** respect [Conventional Commits specifications](https://www.conventionalcommits.org/en/v1.0.0/)
 
-Allowed types are : 
+Allowed types are :
+
 - **feat** – a new feature is introduced with the changes
 - **fix** – a bug fix has occurred
-- **chore** – changes that do not relate to a fix or feature and don't modify src or test files (for example updating dependencies)
+- **chore** – changes that do not relate to a fix or feature and don't modify src or test files (for example updating
+  dependencies)
 - **refactor** – refactored code that neither fixes a bug nor adds a feature
 - **docs** – updates to documentation such as a the README or other markdown files
-- **style** – changes that do not affect the meaning of the code, likely related to code formatting such as white-space, missing semi-colons, and so on.
+- **style** – changes that do not affect the meaning of the code, likely related to code formatting such as white-space,
+  missing semi-colons, and so on.
 - **test** – including new or correcting previous tests
 - **perf** – performance improvements
 - **ci** – continuous integration related
 - **build** – changes that affect the build system or external dependencies
-- **revert** – reverts a previous commit 
+- **revert** – reverts a previous commit
 
 ## Layers
 
@@ -65,7 +61,7 @@ Project not use default Symfony structure but use a multi layer organisation. Th
 - **Domain** : contain business logic, in our case Models and Repositories Interface.
 - **Infrastructure** : make link with framework (Symfony) and External services (Contentful, GitHub, etc.).
 - **Application** : define actions on application, implement CQRS pattern.
-- **UI** : in charge of http request/response handling.
+- **Presentation** : in charge of http request/response handling.
 
 > See [Domain-driven design](https://en.wikipedia.org/wiki/Domain-driven_design).
 
@@ -81,39 +77,30 @@ default `sync` Transport for Query and Command.
 
 ## Query Caching
 
-Using `CacheableQueryInterface` on query allow to cache query result.
+Using `QueryCache` attribute on query allow to cache query result.
 
-For exemple, `GetArticleQuery` is cached for 1h _(60 * 60 = 3600)_.
+For exemple, `GetArticleQuery` is cached for 1h _(3600s)_.
 
 ```php
+#[QueryCache(
+    ttl: 3600,
+    tags: ['get_article', 'article'],
+)]
 final readonly class GetArticleQuery implements CacheableQueryInterface
 {
-    public function __construct(public string $identifier, public bool $preview = false) {}
-
-    public function getCacheKey(): string
-    {
-        return sprintf('article_%s', $this->identifier);
-    }
-
-    public function getCacheTtl(): int
-    {
-        return $this->preview ? 0 : 3600;
-    }
+    // ...
 }
 ```
 
-- `getCacheKey` : key used in cache system to store query result.
-- `getCacheTtl` : time-to-live for cache entry in seconds.
+- ttl : cache duration
+- tags : allow to invalidate multiple cache entries by tag
 
-> **✨ Improvement** : Use an attribute instead of interface for cache metadata.
+> To see more, cache implementation is made on `App\Infrastructure\Cache` and used by a Symfony Messenger
+> middleware : `App\Infrastructure\Symfony\Messenger\Middleware\CacheMiddleware`
 
 ## Cache invalidation
 
-```shell
-curl -H "Authorization: Bearer {{token}} https://www.udfn.fr/admin/cache-invalidation?cacheKey={{cacheKey}}
-```
-
-Cache can be purged from `/admin/cache-invalidation` with `cacheKey` defined in query.
+Cache can be purged from `/admin/cache-invalidation` with `tag[]` defined in query.
 
 > Routes from /admin/* need a security token to be accessed : see [admin section](#Secure-routes)
 
@@ -188,7 +175,7 @@ and `App\Infrastructure\Symfony\Security\AccessTokenHandler`.
 **Usage (send a cache invalidation request):**
 
 ```shell
-curl -H "Authorization: Bearer {{token}}" https://www.udfn.fr/admin/cache-invalidation?cacheKey=articles
+curl -H "Authorization: Bearer {{token}}" https://www.udfn.fr/admin/cache-invalidation?tag[]=article
 ```
 
 > 3 bad login attempt will ban IP for 1 hour. (Configuration from SecurityBundle using RateLimiter component).
@@ -233,7 +220,6 @@ window.addEventListener('turbo:load', () => {
     Countly.track_sessions();
     Countly.track_pageview();
     Countly.track_errors();
-
 });
 ```
 

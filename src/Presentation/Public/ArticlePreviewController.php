@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Public;
 
-use App\Application\Query\GetArticle\GetArticleQuery;
+use App\Application\Query\GetPreviewArticle\GetPreviewArticleQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -27,7 +27,7 @@ class ArticlePreviewController extends AbstractController
 
     public function __invoke(string $identifier): Response
     {
-        if (null === ($article = $this->handle(new GetArticleQuery($identifier, true)))) {
+        if (null === ($article = $this->handle(new GetPreviewArticleQuery($identifier)))) {
             throw $this->createNotFoundException();
         }
 

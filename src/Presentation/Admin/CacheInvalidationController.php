@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Admin;
 
-use App\Application\Command\CacheInvalidation\CacheInvalidationCommand;
+use App\Application\Command\TagCacheInvalidation\TagCacheInvalidationCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\Cache;
@@ -19,9 +19,9 @@ final readonly class CacheInvalidationController
 {
     public function __construct(private MessageBusInterface $bus) {}
 
-    public function __invoke(#[MapQueryParameter('cacheKey')] string $cacheKey): JsonResponse
+    public function __invoke(#[MapQueryParameter('tag')] array $tag): JsonResponse
     {
-        $this->bus->dispatch(new CacheInvalidationCommand($cacheKey));
+        $this->bus->dispatch(new TagCacheInvalidationCommand($tag));
 
         return new JsonResponse();
     }

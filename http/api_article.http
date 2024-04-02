@@ -1,0 +1,12 @@
+# @name Get Articles
+GET {{host}}/api/articles
+Content-Type: application/json
+
+###
+
+# @name Get Article By ID
+@id = 6J0hWoFCuiuWQtjp3K1mXn
+GET {{host}}/api/articles/{{id}}
+Content-Type: application/json
+
+###
