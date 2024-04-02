@@ -1,6 +1,8 @@
 {% extends 'layout/default.html.twig' %}
 
 {% block main %}
+    {{ component('Hero', {title: 'Undefined Tech Blog', description: 'Blog autour de PHP et quelques autres sujets comme Symfony, Google Cloud Platform, Docker...'}) }}
+
     {{ component('LatestArticleList', {size: 3}) }}
     <div class="py-4"></div>
     {{ component('LatestProjectList', {size: 3}) }}
