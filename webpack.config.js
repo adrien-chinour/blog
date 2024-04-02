@@ -23,7 +23,9 @@ Encore
     .enableVersioning(Encore.isProduction())
 
     .configureBabelPresetEnv((config) => {
-        config.targets = '> .5%, not dead, not op_mini all, last 2 versions';
+        config.targets = {
+          esmodules: true
+        };
     })
 
     .enablePostCssLoader()
