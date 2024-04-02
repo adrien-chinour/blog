@@ -30,6 +30,7 @@ class CorsEventListener
             ],
             'img-src' => [
                 'data:',
+                'https://*.udfn.fr',
                 'https://images.ctfassets.net',
             ],
             'child-src' => [
