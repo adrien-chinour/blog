@@ -5,6 +5,10 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 return function (ContainerConfigurator $container): void {
     $services = $container->services();
 
+    $container->parameters()
+        ->set('router.request_context.scheme', 'https')
+        ->set('asset.request_context.secure', true);
+
     /**
      * Sets default configuration for services
      */

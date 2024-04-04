@@ -15,6 +15,13 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
      */
     $framework
         ->secret('%env(APP_SECRET)%')
+        ->trustedHeaders([
+            'x-forwarded-for',
+            'x-forwarded-host',
+            'x-forwarded-proto',
+            'x-forwarded-port',
+            'x-forwarded-prefix',
+        ])
         ->httpMethodOverride(false)
         ->handleAllThrowables(true)
         ->test($container->env() === 'test')
@@ -137,8 +144,7 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ->limiter('public')
         ->policy('sliding_window')
         ->limit(1000)
-        ->interval('60 minutes')
-    ;
+        ->interval('60 minutes');
 
     /**
      * Lock Configuration
