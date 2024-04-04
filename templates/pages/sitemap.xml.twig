@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url><loc>{{ url('home') }}</loc></url>
-    <url><loc>{{ url('project_list') }}</loc></url>
-    <url><loc>{{ url('article_list') }}</loc></url>
+    {% for page in ['home', 'project_list', 'article_list'] %}
+        <url><loc>{{ absolute_url(path(page)) }}</loc></url>
+    {% endfor %}
+
     {% for article in articles %}
-        <url><loc>{{ url('article_view', {'slug': article.slug}) }}</loc></url>
+        <url><loc>{{ absolute_url(path('article_view', {'slug': article.slug})) }}</loc></url>
     {% endfor %}
 </urlset>
