@@ -52,6 +52,9 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ->app('cache.adapter.filesystem')
         ->system('cache.adapter.system');
 
+    $framework->cache()->pool('messenger.cache')
+        ->tags(true);
+
     /**
      * Router Configuration
      * @see \Symfony\Config\Framework\RouterConfig
@@ -132,7 +135,7 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
             'middleware' => array_filter([
                 $container->env() === 'dev' ? StopwatchMiddleware::class : null,
                 LoggerMiddleware::class,
-                $container->env() === 'dev' ? null : CacheMiddleware::class,
+                CacheMiddleware::class,
             ]),
         ]);
 

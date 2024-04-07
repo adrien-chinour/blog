@@ -11,7 +11,9 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 final readonly class GetArticleListQueryHandler
 {
-    public function __construct(private BlogArticleRepository $articleRepository) {}
+    public function __construct(
+        private BlogArticleRepository $articleRepository,
+    ) {}
 
     /**
      * @return BlogArticle[]

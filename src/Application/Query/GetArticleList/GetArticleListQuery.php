@@ -4,21 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Query\GetArticleList;
 
-use App\Application\Query\CacheableQueryInterface;
+use App\Application\Query\QueryCache;
 
-final readonly class GetArticleListQuery implements CacheableQueryInterface
+#[QueryCache(ttl: 3600, tags: ['list_article', 'article'])]
+final readonly class GetArticleListQuery
 {
     public function __construct(
         public ?int $limit = null,
     ) {}
-
-    public function getCacheKey(): string
-    {
-        return sprintf('articles_%s', $this->limit);
-    }
-
-    public function getCacheTtl(): int
-    {
-        return 3600;
-    }
 }

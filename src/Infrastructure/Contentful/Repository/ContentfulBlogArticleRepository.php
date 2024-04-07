@@ -24,14 +24,6 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
         parent::__construct($apiClient, $serializer, $queryBuilder);
     }
 
-    public function getLatestArticles(int $length): array
-    {
-        /** @var BlogPageCollection $data */
-        $data = $this->query(BlogPageCollection::class, ['limit' => $length]);
-
-        return $this->blogArticleFactory->fromBlogPageCollection($data);
-    }
-
     public function getById(string $identifier, bool $preview = false): ?BlogArticle
     {
         /** @var BlogPage $data */

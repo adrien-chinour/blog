@@ -4,19 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\Query\GetArticleByFilter;
 
-use App\Application\Query\CacheableQueryInterface;
+use App\Application\Query\QueryCache;
 
-final readonly class GetArticleByFilterQuery implements CacheableQueryInterface
+#[QueryCache(ttl: 3600, tags: ['get_article', 'article'])]
+final readonly class GetArticleByFilterQuery
 {
-    public function __construct(public array $filters) {}
-
-    public function getCacheKey(): string
-    {
-        return sprintf('article_filters_%s', md5((string)json_encode($this->filters)));
-    }
-
-    public function getCacheTtl(): int
-    {
-        return 3600;
-    }
+    public function __construct(
+        public array $filters,
+    ) {}
 }

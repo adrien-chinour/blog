@@ -13,6 +13,10 @@ return function (RoutingConfigurator $routes): void {
         ->prefix('/api')
         ->namePrefix('api_');
 
+    $routes->import('../src/Presentation/Webhook/', 'attribute')
+        ->prefix('/webhook')
+        ->namePrefix('webhook_');
+
     if ($routes->env() === 'dev') {
         $routes->import('@WebProfilerBundle/Resources/config/routing/wdt.xml')->prefix('/_wdt');
         $routes->import('@WebProfilerBundle/Resources/config/routing/profiler.xml')->prefix('/_profiler');

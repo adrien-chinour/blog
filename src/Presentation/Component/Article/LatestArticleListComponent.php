@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Component\Article;
 
-use App\Application\Query\GetLatestArticles\GetLatestArticlesQuery;
+use App\Application\Query\GetArticleList\GetArticleListQuery;
 use App\Domain\Blogging\BlogArticle;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -29,6 +29,6 @@ final class LatestArticleListComponent
      */
     public function articles(): array
     {
-        return $this->handle(new GetLatestArticlesQuery($this->size));
+        return $this->handle(new GetArticleListQuery($this->size));
     }
 }

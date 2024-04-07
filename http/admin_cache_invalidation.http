@@ -1,0 +1,6 @@
+# @name Cache Invalidation by tag
+GET {{host}}/admin/cache-invalidation?tag[]=article
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###

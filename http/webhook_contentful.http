@@ -1,0 +1,107 @@
+# @name Contentful Webhook : Publish BlogPage
+POST {{host}}/webhook/contentful/publish
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "metadata": {
+        "tags": []
+    },
+    "fields": {
+        "title": {
+            "fr": "Débuter avec Varnish"
+        },
+        "slug": {
+            "fr": "debuter-avec-varnish"
+        },
+        "description": {
+            "fr": "TODO"
+        },
+        "content": {
+            "fr": "TODO"
+        },
+        "categories": {
+            "fr": []
+        }
+    },
+    "sys": {
+        "type": "Entry",
+        "id": "1234",
+        "space": {
+            "sys": {
+                "type": "Link",
+                "linkType": "Space",
+                "id": "1234"
+            }
+        },
+        "environment": {
+            "sys": {
+                "id": "master",
+                "type": "Link",
+                "linkType": "Environment"
+            }
+        },
+        "contentType": {
+            "sys": {
+                "type": "Link",
+                "linkType": "ContentType",
+                "id": "blogPage"
+            }
+        },
+        "createdBy": {
+            "sys": {
+                "type": "Link",
+                "linkType": "User",
+                "id": "1234"
+            }
+        },
+        "updatedBy": {
+            "sys": {
+                "type": "Link",
+                "linkType": "User",
+                "id": "1234"
+            }
+        },
+        "revision": 3,
+        "createdAt": "2023-12-18T19:15:54.485Z",
+        "updatedAt": "2024-01-14T14:48:10.656Z"
+    }
+}
+
+###
+
+# @name Contentful Webhook : Unpublsih BlogPage
+POST {{host}}/webhook/contentful/publish
+Content-Type: application/json
+
+{
+    "sys": {
+        "type": "DeletedEntry",
+        "id": "1234",
+        "space": {
+            "sys": {
+                "type": "Link",
+                "linkType": "Space",
+                "id": "1234"
+            }
+        },
+        "environment": {
+            "sys": {
+                "id": "master",
+                "type": "Link",
+                "linkType": "Environment"
+            }
+        },
+        "contentType": {
+            "sys": {
+                "type": "Link",
+                "linkType": "ContentType",
+                "id": "blogPage"
+            }
+        },
+        "revision": 3,
+        "createdAt": "2024-01-14T14:48:15.803Z",
+        "updatedAt": "2024-01-14T14:48:15.803Z",
+        "deletedAt": "2024-01-14T14:48:15.803Z"
+    }
+}
