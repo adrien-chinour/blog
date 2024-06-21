@@ -7,13 +7,14 @@ namespace App\Infrastructure\Symfony\Messenger\Middleware;
 use App\Infrastructure\Cache\QueryCacheConfig;
 use App\Infrastructure\Cache\QueryCacheResolver;
 use Psr\Cache\CacheException;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 /**
  * Inspired by https://thomas.jarrand.fr/blog/cache-query-avec-symfony-messenger/
@@ -23,7 +24,7 @@ final class CacheMiddleware implements MiddlewareInterface, LoggerAwareInterface
     use LoggerAwareTrait;
 
     public function __construct(
-        private readonly TagAwareAdapterInterface $messengerCache,
+        private readonly TagAwareCacheInterface $messengerCache,
         private readonly QueryCacheResolver $resolver,
     ) {}
 
