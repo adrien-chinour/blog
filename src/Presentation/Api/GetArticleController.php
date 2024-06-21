@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[Route(path: '/articles/{id}', name: 'get_article', requirements: ['id' => '[a-zA−Z0-9]+'], methods: ['GET'])]
+#[Route(path: '/articles/{id}', name: 'get_article', requirements: ['id' => '\w+'], methods: ['GET'])]
 #[Cache(maxage: 60, smaxage: 3600, public: true)]
 final class GetArticleController extends AbstractController
 {
