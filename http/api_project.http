@@ -1,0 +1,3 @@
+# @name Get Projects
+GET {{host}}/api/projects?limit=2
+Content-Type: application/json

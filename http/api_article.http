@@ -1,5 +1,5 @@
 # @name Get Articles
-GET {{host}}/api/articles
+GET {{host}}/api/articles?limit=2
 Content-Type: application/json
 
 ###
@@ -10,3 +10,8 @@ GET {{host}}/api/articles/{{id}}
 Content-Type: application/json
 
 ###
+
+# @name Get Article By Slug
+@slug = les-structures-de-donnees-en-php
+GET {{host}}/api/articles/{{slug}}
+Content-Type: application/json
