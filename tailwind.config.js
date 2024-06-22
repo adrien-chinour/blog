@@ -6,8 +6,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-        'serif': ['DM Serif Display', 'sans-serif'],
-        'mono': ['DM Mono', 'monospace'],
+        'serif': ['serif'],
+        'mono': ['monospace'],
     },
     extend: {
       flex: {

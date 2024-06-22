@@ -1,15 +1,9 @@
-@import "fonts";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @import 'content.scss';
 @import 'highlight.scss';
-
-body {
-    font-family: 'Inter', sans-serif;
-}
 
 .bg-grid {
     background-size: 18px 18px;

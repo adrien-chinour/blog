@@ -12,7 +12,7 @@
                   class="uppercase text-muted text-xs font-bold">
                 {{ this.article.publicationDate | format_datetime(locale='fr') }}
             </time>
-            <p class="text-xl font-serif my-1 group-hover:underline">{{ this.article.title }}</p>
+            <p class="text-xl font-serif font-bold my-1 group-hover:underline">{{ this.article.title }}</p>
             <p class="line-clamp-3">{{ this.article.description }}</p>
         </div>
     </a>
