@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Admin;
+namespace App\Presentation\Webhook;
 
 use App\Application\Command\TagCacheInvalidation\TagCacheInvalidationCommand;
 use Symfony\Component\HttpFoundation\JsonResponse;
