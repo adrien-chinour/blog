@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Component\Article;
+namespace App\Presentation\Public\Component\Article;
 
 use App\Application\Query\BatchArticle\BatchArticleQuery;
 use App\Domain\Blogging\BlogArticle;

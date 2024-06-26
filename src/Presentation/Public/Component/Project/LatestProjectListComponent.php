@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Component\Project;
+namespace App\Presentation\Public\Component\Project;
 
 use App\Application\Query\GetProjectList\GetProjectListQuery;
 use App\Domain\Coding\Project;
