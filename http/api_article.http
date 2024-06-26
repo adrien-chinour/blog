@@ -1,17 +1,21 @@
+@id = 6J0hWoFCuiuWQtjp3K1mXn
+@slug = les-structures-de-donnees-en-php
+
 # @name Get Articles
 GET {{host}}/api/articles?limit=2
 Content-Type: application/json
 
 ###
-
 # @name Get Article By ID
-@id = 6J0hWoFCuiuWQtjp3K1mXn
 GET {{host}}/api/articles/{{id}}
 Content-Type: application/json
 
 ###
-
 # @name Get Article By Slug
-@slug = les-structures-de-donnees-en-php
 GET {{host}}/api/articles/{{slug}}
+Content-Type: application/json
+
+###
+# @name Get Article Recommendations
+GET {{host}}/api/articles/{{id}}/recommendations
 Content-Type: application/json
