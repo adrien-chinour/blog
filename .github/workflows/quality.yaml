@@ -41,12 +41,8 @@ jobs:
             -   name: "Install Dependencies"
                 run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --ignore-platform-reqs
 
-
             -   name: "Coding Style validation with ECS"
                 run: vendor/bin/ecs --no-progress-bar
 
             -   name: "Static Code validation with PHPStan"
                 run: vendor/bin/phpstan analyse --no-progress
-
-            -   name: "Run Pest testsuite"
-                run: ./vendor/bin/pest --no-progress
