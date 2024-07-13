@@ -1,7 +1,44 @@
+includes:
+
 parameters:
-    level: 6
+    level: 9
     paths:
         - src/
     ignoreErrors:
         - '#(has|with) no value type specified in iterable type array#'
+        - '#of class ReflectionClass constructor#'
+        - '#sprintf expects .+, mixed given#'
     checkGenericClassInNonGenericObjectType: false
+
+services:
+    -
+        class: Symplify\PHPStanRules\Rules\ForbiddenFuncCallRule
+        tags: [phpstan.rules.rule]
+        arguments:
+            forbiddenFunctions:
+                - 'd'
+                - 'dd'
+                - 'dump'
+                - 'var_dump'
+                - 'extract'
+                - 'curl_*'
+                - 'compact'
+                - 'method_exists'
+                - 'property_exists'
+                - 'spl_autoload_register'
+                - 'spl_autoload_unregister'
+                - array_walk
+    -
+        class: Symplify\PHPStanRules\Rules\ForbiddenNodeRule
+        tags: [phpstan.rules.rule]
+        arguments:
+            forbiddenNodes:
+                - PhpParser\Node\Stmt\Trait_
+                - PhpParser\Node\Expr\Empty_
+                - PhpParser\Node\Stmt\Switch_
+                - PhpParser\Node\Expr\ErrorSuppress
+                - PhpParser\Node\Scalar\Encapsed
+                - PhpParser\Node\Scalar\EncapsedStringPart
+                # use pre* nodes instead
+                - PhpParser\Node\Expr\PostInc
+                - PhpParser\Node\Expr\PostDec

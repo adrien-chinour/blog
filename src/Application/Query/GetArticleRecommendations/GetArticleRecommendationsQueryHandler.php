@@ -11,6 +11,7 @@ use App\Domain\Blogging\BlogArticle;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
 final class GetArticleRecommendationsQueryHandler
@@ -22,6 +23,9 @@ final class GetArticleRecommendationsQueryHandler
         $this->messageBus = $bus;
     }
 
+    /**
+     * @return BlogArticle[]
+     */
     public function __invoke(GetArticleRecommendationsQuery $query): array
     {
         $sourceArticle = $this->handle(new GetArticleQuery($query->articleIdentifier));
@@ -29,10 +33,13 @@ final class GetArticleRecommendationsQueryHandler
             return [];
         }
 
-        if (empty($sourceArticle->recommendations)) {
-            return $this->handle(new GetArticleListQuery(2));
-        }
+        $articles = $sourceArticle->recommendations === []
+            ? $this->handle(new GetArticleListQuery(2))
+            : $this->handle(new BatchArticleQuery($sourceArticle->recommendations));
 
-        return $this->handle(new BatchArticleQuery($sourceArticle->recommendations));
+        Assert::allIsInstanceOf($articles, BlogArticle::class);
+        Assert::isArray($articles);
+
+        return $articles;
     }
 }

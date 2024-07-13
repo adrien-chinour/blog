@@ -41,7 +41,7 @@
             "php-http/discovery": true,
             "symfony/flex": true,
             "symfony/runtime": true,
-            "pestphp/pest-plugin": true
+            "phpstan/extension-installer": true
         },
         "sort-packages": true
     },
@@ -78,8 +78,10 @@
         "quality": [
             "composer validate --strict",
             "vendor/bin/phpstan analyse",
-            "vendor/bin/ecs check",
-            "vendor/bin/pest"
+            "vendor/bin/ecs check"
+        ],
+        "test": [
+            "vendor/bin/phpunit"
         ]
     },
     "conflict": {
@@ -93,11 +95,15 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.6",
-        "pestphp/pest": "^2.28",
-        "pestphp/pest-plugin-type-coverage": "^2.5",
+        "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "7.0.*",
+        "symfony/css-selector": "7.0.*",
+        "symfony/phpunit-bridge": "^7.1",
         "symfony/stopwatch": "7.0.*",
         "symfony/web-profiler-bundle": "7.0.*",
-        "symplify/easy-coding-standard": "^12.0"
+        "symplify/easy-coding-standard": "^12.0",
+        "symplify/phpstan-rules": "^13.0"
     }
 }

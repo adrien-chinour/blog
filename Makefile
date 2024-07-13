@@ -56,6 +56,11 @@ quality: ## Run quality script with ECS and PHPStan
 quality: c=run-script quality
 quality: composer
 
+test: ## Run quality script with ECS and PHPStan
+test: c=run-script test
+test: composer
+
+
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
 console: ## List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
 	@$(eval c ?=)

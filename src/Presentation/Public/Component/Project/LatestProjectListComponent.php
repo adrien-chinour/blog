@@ -9,6 +9,7 @@ use App\Domain\Coding\Project;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+use Webmozart\Assert\Assert;
 
 #[AsTwigComponent('LatestProjectList')]
 final class LatestProjectListComponent
@@ -29,6 +30,11 @@ final class LatestProjectListComponent
      */
     public function projects(): array
     {
-        return $this->handle(new GetProjectListQuery($this->limit));
+        $projects = $this->handle(new GetProjectListQuery($this->limit));
+
+        Assert::isArray($projects);
+        Assert::allIsInstanceOf($projects, Project::class);
+
+        return $projects;
     }
 }

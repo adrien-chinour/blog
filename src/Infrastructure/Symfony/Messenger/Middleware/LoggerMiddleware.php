@@ -16,14 +16,14 @@ final class LoggerMiddleware implements MiddlewareInterface, LoggerAwareInterfac
 
     public function handle(Envelope $envelope, StackInterface $stack): Envelope
     {
-        $this->logger->info('Handling message {message}, started at {timestamp}', [
+        $this->logger?->info('Handling message {message}, started at {timestamp}', [
             'message' => $envelope->getMessage()::class,
             'timestamp' => $stared = $this->microtime(),
         ]);
 
         $envelope = $stack->next()->handle($envelope, $stack);
 
-        $this->logger->info('Message {message} handled in {time}ms', [
+        $this->logger?->info('Message {message} handled in {time}ms', [
             'message' => $envelope->getMessage()::class,
             'time' => $this->microtime() - $stared,
         ]);

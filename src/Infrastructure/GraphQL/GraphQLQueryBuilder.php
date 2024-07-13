@@ -29,7 +29,7 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
             $this->buildFields($class),
         );
 
-        $this->logger?->debug("GraphQL query: $query", [
+        $this->logger?->debug(sprintf("GraphQL query: %s", $query), [
             'resource' => $class->getName(),
             'filters' => $filters
         ]);
@@ -111,7 +111,7 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
             $fields[] = sprintf(
                 '%s {%s}',
                 $property->getName(),
-                $this->buildFields(new ReflectionClass((string)$property->getType()))
+                $this->buildFields(new ReflectionClass($property->getType()))
             );
         }
 

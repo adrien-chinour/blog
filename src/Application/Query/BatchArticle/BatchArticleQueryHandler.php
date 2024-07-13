@@ -9,6 +9,7 @@ use App\Domain\Blogging\BlogArticle;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
 final class BatchArticleQueryHandler
@@ -25,9 +26,13 @@ final class BatchArticleQueryHandler
      */
     public function __invoke(BatchArticleQuery $query): array
     {
-        return array_map(
+        $articles = array_map(
             fn (string $identifier) => $this->handle(new GetArticleQuery($identifier)),
             $query->identifiers
         );
+
+        Assert::allIsInstanceOf($articles, BlogArticle::class);
+
+        return $articles;
     }
 }

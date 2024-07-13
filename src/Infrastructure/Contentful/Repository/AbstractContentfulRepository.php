@@ -8,6 +8,7 @@ use App\Infrastructure\Contentful\Http\ContentfulApiClient;
 use App\Infrastructure\GraphQL\GraphQLQueryBuilder;
 use ReflectionClass;
 use Symfony\Component\Serializer\SerializerInterface;
+use Webmozart\Assert\Assert;
 
 abstract class AbstractContentfulRepository
 {
@@ -19,8 +20,11 @@ abstract class AbstractContentfulRepository
 
     protected function query(string $resource, array $filters = [], bool $hydrate = true): object|array|null
     {
-        $result = $this->apiClient
-            ->query($this->queryBuilder->buildQuery($reflectionClass = new ReflectionClass($resource), $filters));
+        $result = $this->apiClient->query(
+            $this->queryBuilder->buildQuery($reflectionClass = new ReflectionClass($resource), $filters)
+        );
+
+        Assert::nullOrIsArray($result);
 
         if ($hydrate) {
             $result = $this->serializer->deserialize(
@@ -28,6 +32,8 @@ abstract class AbstractContentfulRepository
                 $resource,
                 'json',
             );
+
+            Assert::nullOrObject($result);
         }
 
         return $result;

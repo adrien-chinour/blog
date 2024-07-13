@@ -9,6 +9,7 @@ use App\Domain\Blogging\BlogArticle;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+use Webmozart\Assert\Assert;
 
 #[AsTwigComponent('ArticleList')]
 final class ArticleListComponent
@@ -25,6 +26,11 @@ final class ArticleListComponent
      */
     public function articles(): array
     {
-        return $this->handle(new GetArticleListQuery());
+        $articles = $this->handle(new GetArticleListQuery());
+
+        Assert::isArray($articles);
+        Assert::allIsInstanceOf($articles, BlogArticle::class);
+
+        return $articles;
     }
 }

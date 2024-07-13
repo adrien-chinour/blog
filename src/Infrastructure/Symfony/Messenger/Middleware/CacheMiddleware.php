@@ -15,6 +15,7 @@ use Symfony\Component\Messenger\Middleware\MiddlewareInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use Webmozart\Assert\Assert;
 
 /**
  * Inspired by https://thomas.jarrand.fr/blog/cache-query-avec-symfony-messenger/
@@ -47,7 +48,7 @@ final class CacheMiddleware implements MiddlewareInterface, LoggerAwareInterface
             return $this->continue($envelope, $stack);
         }
 
-        return $this->messengerCache->get($config->key, function (ItemInterface $item) use ($envelope, $stack, $config) {
+        return $this->messengerCache->get($config->key, function (ItemInterface $item) use ($envelope, $stack, $config): Envelope {
             $this->logger?->info(
                 'Cache {key} result in hit={hit}',
                 ['key' => $item->getKey(), 'hit' => $item->isHit()]
@@ -60,7 +61,9 @@ final class CacheMiddleware implements MiddlewareInterface, LoggerAwareInterface
                     ->tag($config->tags);
             }
 
-            return $item->get();
+            Assert::isInstanceOf($value = $item->get(), Envelope::class);
+
+            return $value;
         });
     }
 

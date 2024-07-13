@@ -11,6 +11,7 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Throwable;
+use Webmozart\Assert\Assert;
 
 final class GithubApiClient implements LoggerAwareInterface
 {
@@ -42,15 +43,19 @@ final class GithubApiClient implements LoggerAwareInterface
                 ],
             );
 
-            return $this->serializer->deserialize(
+            $result = $this->serializer->deserialize(
                 $response->getContent(),
                 GithubRepository::class . '[]',
                 'json',
             );
         } catch (Throwable $e) {
-            $this->logger->error($e->getMessage(), ['exception' => $e]);
-
-            return [];
+            $this->logger?->error($e->getMessage(), ['exception' => $e]);
+            $result = [];
         }
+
+        Assert::isArray($result);
+        Assert::allIsInstanceOf($result, GithubRepository::class);
+
+        return $result;
     }
 }
