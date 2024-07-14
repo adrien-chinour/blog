@@ -16,6 +16,7 @@ return function (ContainerConfigurator $container): void {
         ->autowire()
         ->autoconfigure()
         ->bind('$githubUser', '%env(GITHUB_USER)%')
+        ->bind('$contentfulSpaceId', '%env(CONTENTFUL_SPACE_ID)%')
         ->bind('$adminToken', '%env(ADMIN_TOKEN)%');
 
     /**

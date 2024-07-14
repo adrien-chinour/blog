@@ -13,8 +13,10 @@ final class ContentfulApiClient implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function __construct(private readonly HttpClientInterface $contentfulClient)
-    {
+    public function __construct(
+        private readonly HttpClientInterface $contentfulClient,
+        private readonly string $contentfulSpaceId
+    ) {
         $this->logger = new NullLogger();
     }
 
@@ -26,12 +28,12 @@ final class ContentfulApiClient implements LoggerAwareInterface
             ];
 
             $response = $this->contentfulClient
-                ->request('POST', '/content/v1/spaces/0c7qlubj8id5', $options)
+                ->request('POST', sprintf('/content/v1/spaces/%s', $this->contentfulSpaceId), $options)
                 ->toArray();
         } catch (\Throwable $e) {
             $this->logger?->error($e->getMessage(), ['exception' => $e]);
 
-            return [];
+            throw $e;
         }
 
         return $response['data'] ?? [];

@@ -12,12 +12,11 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\CommonMark\Node\Inline\Code;
 use League\CommonMark\MarkdownConverter;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use Tempest\Highlight\CommonMark\CodeBlockRenderer;
 use Tempest\Highlight\CommonMark\InlineCodeBlockRenderer;
 
-/**
- * Convert markdown content to HTML
- */
+#[AsAlias(ContentParserInterface::class)]
 final readonly class MarkdownContentParser implements ContentParserInterface
 {
     /**
