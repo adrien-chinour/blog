@@ -8,7 +8,7 @@ parameters:
         - '#(has|with) no value type specified in iterable type array#'
         - '#of class ReflectionClass constructor#'
         - '#sprintf expects .+, mixed given#'
-    checkGenericClassInNonGenericObjectType: false
+        - '#generic class ReflectionClass but does not specify its types#'
 
 services:
     -
