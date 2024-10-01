@@ -11,6 +11,8 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "league/commonmark": "2.4.*",
+        "meilisearch/meilisearch-php": "^1.10",
+        "nyholm/psr7": "^1.0",
         "symfony/config": "7.1.*",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",

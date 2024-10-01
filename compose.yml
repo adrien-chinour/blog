@@ -23,3 +23,15 @@ services:
         working_dir: /src
         volumes: [ ".:/src" ]
         profiles: [ cli ]
+
+    search:
+        container_name: blog.search
+        image: getmeili/meilisearch:v1.10
+        ports: [ "7700:7700" ]
+        volumes:
+            - meilisearch_data:/meili_data
+        environment:
+            MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-!ChangeMe!}
+
+volumes:
+    meilisearch_data:

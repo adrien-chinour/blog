@@ -2,6 +2,9 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use App\Infrastructure\Meilisearch\MeilisearchClientFactory;
+use Meilisearch\Client;
+
 return function (ContainerConfigurator $container): void {
     $services = $container->services();
 
@@ -17,7 +20,10 @@ return function (ContainerConfigurator $container): void {
         ->autoconfigure()
         ->bind('$githubUser', '%env(GITHUB_USER)%')
         ->bind('$contentfulSpaceId', '%env(CONTENTFUL_SPACE_ID)%')
-        ->bind('$adminToken', '%env(ADMIN_TOKEN)%');
+        ->bind('$adminToken', '%env(ADMIN_TOKEN)%')
+        ->bind('$meilisearchHost', '%env(MEILISEARCH_HOST)%')
+        ->bind('$meilisearchToken', '%env(MEILISEARCH_TOKEN)%');
+
 
     /**
      * Automatically registers App namespace has services
@@ -25,4 +31,6 @@ return function (ContainerConfigurator $container): void {
     $services
         ->load('App\\', '../src/*')
         ->exclude('../src/{DependencyInjection,Entity,Kernel.php}');
+
+    $services->set(Client::class)->factory(service(MeilisearchClientFactory::class));
 };

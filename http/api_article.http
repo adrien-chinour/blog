@@ -19,3 +19,9 @@ Content-Type: application/json
 # @name Get Article Recommendations
 GET {{host}}/api/articles/{{id}}/recommendations
 Content-Type: application/json
+
+###
+# @name Search Article
+GET {{host}}/api/search/articles?query=PHP
+Content-Type: application/json
+
