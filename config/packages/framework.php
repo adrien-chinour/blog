@@ -108,6 +108,17 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
             ],
         ]);
 
+    $framework->httpClient()
+        ->scopedClient('baserow.client', [
+            'base_uri' => 'https://api.baserow.io',
+            'headers' => [
+                'Content-Type' => APPLICATION_JSON,
+                'Accept' => APPLICATION_JSON,
+                'Authorization' => 'Token %env(BASEROW_TOKEN)%',
+            ],
+        ]);
+
+
     /**
      * Profiler Configuration
      * @see \Symfony\Config\Framework\ProfilerConfig

@@ -1,0 +1,17 @@
+@id = 6J0hWoFCuiuWQtjp3K1mXn
+
+###
+# @name Get Article Comments
+GET {{host}}/api/articles/{{id}}/comments
+Content-Type: application/json
+
+###
+# @name Post comment
+POST {{host}}/api/comments
+Content-Type: application/json
+
+{
+    "articleId": "47oxuTsSSzRFR0KtU4mZS5",
+    "username": "adrien",
+    "message": "coucou"
+}

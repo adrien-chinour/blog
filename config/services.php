@@ -22,7 +22,8 @@ return function (ContainerConfigurator $container): void {
         ->bind('$contentfulSpaceId', '%env(CONTENTFUL_SPACE_ID)%')
         ->bind('$adminToken', '%env(ADMIN_TOKEN)%')
         ->bind('$meilisearchHost', '%env(MEILISEARCH_HOST)%')
-        ->bind('$meilisearchToken', '%env(MEILISEARCH_TOKEN)%');
+        ->bind('$meilisearchToken', '%env(MEILISEARCH_TOKEN)%')
+        ->bind('$baserowCommentTable', '%env(BASEROW_COMMENT_TABLE)%');
 
 
     /**
