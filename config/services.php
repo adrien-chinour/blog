@@ -23,7 +23,8 @@ return function (ContainerConfigurator $container): void {
         ->bind('$adminToken', '%env(ADMIN_TOKEN)%')
         ->bind('$meilisearchHost', '%env(MEILISEARCH_HOST)%')
         ->bind('$meilisearchToken', '%env(MEILISEARCH_TOKEN)%')
-        ->bind('$baserowCommentTable', '%env(BASEROW_COMMENT_TABLE)%');
+        ->bind('$baserowCommentTable', '%env(BASEROW_COMMENT_TABLE)%')
+        ->bind('$baserowFeatureTable', '%env(BASEROW_FEATURE_TABLE)%');
 
 
     /**

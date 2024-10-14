@@ -7,7 +7,10 @@ namespace App\Infrastructure\Baserow\Model;
 use App\Domain\Social\Comment as DomainComment;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 
-final readonly class Comment
+/**
+ * @implements BaserowModelInterface<DomainComment>
+ */
+final readonly class Comment implements BaserowModelInterface
 {
     public function __construct(
         #[SerializedName('article_id')]
