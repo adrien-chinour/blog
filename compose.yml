@@ -1,28 +1,24 @@
 services:
-    web:
-        container_name: blog.nginx
-        image: nginx:latest
-        ports: [ "8080:80" ]
-        volumes:
-            - ".:/var/www/html:ro"
-            - "./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf"
-        depends_on: [ app ]
-        links: [ app ]
-
-    app:
-        container_name: blog.app
+    php:
+        container_name: blog.php
         build:
             context: .
-            dockerfile: ./docker/Dockerfile
-            target: app
-        volumes: [ ".:/var/www/html" ]
-
-    node:
-        container_name: blog.node
-        image: node:20
-        working_dir: /src
-        volumes: [ ".:/src" ]
-        profiles: [ cli ]
+            target: frankenphp_dev
+        restart: unless-stopped
+        environment:
+            SERVER_NAME: ":8080"
+            XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+        volumes:
+            - ./:/app
+            - ./.docker/frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
+            - ./.docker/frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
+            - caddy_data:/data
+            - caddy_config:/config
+        ports: [ "8080:8080" ]
+        extra_hosts:
+            # Ensure that host.docker.internal is correctly defined on Linux
+            - host.docker.internal:host-gateway
+        tty: true
 
     search:
         container_name: blog.search
@@ -35,3 +31,5 @@ services:
 
 volumes:
     meilisearch_data:
+    caddy_data:
+    caddy_config:

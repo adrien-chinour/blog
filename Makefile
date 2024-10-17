@@ -3,14 +3,12 @@ DOCKER_COMP = docker compose
 
 # Docker containers
 PHP_CONT = $(DOCKER_COMP) exec app
-NODE_CONT = $(DOCKER_COMP) run --rm node
 DOC_CONT = $(DOCKER_COMP) run --rm docsify
 
 # Executables
 PHP      = $(PHP_CONT) php
 COMPOSER = $(PHP_CONT) composer
 SYMFONY  = $(PHP) bin/console
-NPM  = $(NODE_CONT) npm
 
 # Misc
 .DEFAULT_GOAL = help
@@ -38,9 +36,8 @@ logs: ## Show live logs
 sh: ## Connect to the PHP FPM container
 	@$(PHP_CONT) sh
 
-install: build up ## Start docker environnement and install php/node js dependencies
+install: build up ## Start docker environnement and install php dependencies
 	@$(COMPOSER) install
-	@$(NPM) install
 	echo "Project available at http://localhost:8080."
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
@@ -60,7 +57,6 @@ test: ## Run quality script with ECS and PHPStan
 test: c=run-script test
 test: composer
 
-
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
 console: ## List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
 	@$(eval c ?=)
@@ -68,14 +64,6 @@ console: ## List all Symfony commands or pass the parameter "c=" to run a given 
 
 cc: c=c:c ## Clear the cache
 cc: console
-
-## —— Node 🧊 ——————————————————————————————————————————————————————————————————
-npm: ## List all NPM commands or pass the parameter "c=" to run a given command, example: make npm c="run build"
-	@$(eval c ?=)
-	@$(NPM) $(c)
-
-watch: ## Build assets in development mode with hot-reloading
-	@$(NPM) run watch
 
 ## —— Docsify 📚 ———————————————————————————————————————————————————————————————
 doc: ## Start documentation in local environment (without docker)
