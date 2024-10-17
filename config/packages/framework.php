@@ -37,14 +37,6 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ->enableAttributes(true);
 
     /**
-     * Assets Configuration
-     * @see \Symfony\Config\Framework\AssetsConfig
-     */
-    $framework->assets([
-        'json_manifest_path' => '%kernel.project_dir%/public/build/manifest.json',
-    ]);
-
-    /**
      * Cache Configuration
      * @see \Symfony\Config\Framework\CacheConfig
      */
