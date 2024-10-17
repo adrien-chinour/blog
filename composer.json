@@ -28,7 +28,7 @@
         "symfony/serializer": "7.1.*",
         "symfony/web-link": "7.1.*",
         "symfony/yaml": "7.1.*",
-        "tempest/highlight": "^1.0",
+        "tempest/highlight": "^2.0",
         "webmozart/assert": "^1.11"
     },
     "config": {
