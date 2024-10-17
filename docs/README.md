@@ -20,7 +20,7 @@ make install
 # Project Architecture 🏗️
 
 ![PHP 8.3](https://img.shields.io/badge/php_8.3-brightgreen?logo=php&logoColor=white)
-![Symfony 7.1](https://img.shields.io/badge/Symfony_7.0-brightgreen?logo=symfony)
+![Symfony 7.1](https://img.shields.io/badge/Symfony_7.1-brightgreen?logo=symfony)
 
 ## Overview
 
