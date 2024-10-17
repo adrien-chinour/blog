@@ -2,7 +2,7 @@
 DOCKER_COMP = docker compose
 
 # Docker containers
-PHP_CONT = $(DOCKER_COMP) exec app
+PHP_CONT = $(DOCKER_COMP) exec php
 DOC_CONT = $(DOCKER_COMP) run --rm docsify
 
 # Executables
