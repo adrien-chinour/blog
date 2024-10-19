@@ -104,8 +104,5 @@
             "allow-contrib": false,
             "require": "7.1.*"
         }
-    },
-    "runtime": {
-        "class": "Runtime\\FrankenPhpSymfony\\Runtime"
     }
 }
