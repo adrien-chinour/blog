@@ -3,6 +3,8 @@
 # Versions
 FROM dunglas/frankenphp:1-php8.3 AS frankenphp_upstream
 
+FROM ghcr.io/adrien-chinour/blog:base-php8.3 AS frankenphp_base_upstream
+
 # The different stages of this Dockerfile are meant to be built into separate images
 # https://docs.docker.com/develop/develop-images/multistage-build/#stop-at-a-specific-build-stage
 # https://docs.docker.com/compose/compose-file/#target
@@ -51,7 +53,7 @@ HEALTHCHECK --start-period=60s CMD curl -f http://localhost:2019/metrics || exit
 CMD [ "frankenphp", "run", "--config", "/etc/caddy/Caddyfile" ]
 
 # Dev FrankenPHP image
-FROM frankenphp_base AS frankenphp_dev
+FROM frankenphp_base_upstream AS frankenphp_dev
 
 ENV APP_ENV=dev XDEBUG_MODE=off
 
@@ -67,7 +69,7 @@ COPY --link .docker/frankenphp/conf.d/20-app.dev.ini $PHP_INI_DIR/app.conf.d/
 CMD [ "frankenphp", "run", "--config", "/etc/caddy/Caddyfile", "--watch" ]
 
 # Prod FrankenPHP image
-FROM frankenphp_base AS frankenphp_prod
+FROM frankenphp_base_upstream AS frankenphp_prod
 
 ENV APP_ENV=prod
 
