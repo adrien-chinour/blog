@@ -13,6 +13,7 @@
         "league/commonmark": "2.4.*",
         "meilisearch/meilisearch-php": "^1.10",
         "nyholm/psr7": "^1.0",
+        "runtime/frankenphp-symfony": "^0.2.0",
         "symfony/config": "7.1.*",
         "symfony/console": "7.1.*",
         "symfony/dotenv": "7.1.*",
@@ -31,6 +32,20 @@
         "symfony/yaml": "7.1.*",
         "tempest/highlight": "^2.0",
         "webmozart/assert": "^1.11"
+    },
+    "require-dev": {
+        "cyclonedx/cyclonedx-php-composer": "^5.2",
+        "mockery/mockery": "^1.6",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "7.1.*",
+        "symfony/css-selector": "7.1.*",
+        "symfony/phpunit-bridge": "^7.1",
+        "symfony/stopwatch": "7.1.*",
+        "symfony/web-profiler-bundle": "7.1.*",
+        "symplify/easy-coding-standard": "^12.0",
+        "symplify/phpstan-rules": "^13.0"
     },
     "config": {
         "allow-plugins": {
@@ -90,18 +105,7 @@
             "require": "7.1.*"
         }
     },
-    "require-dev": {
-        "cyclonedx/cyclonedx-php-composer": "^5.2",
-        "mockery/mockery": "^1.6",
-        "phpstan/extension-installer": "^1.4",
-        "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^9.5",
-        "symfony/browser-kit": "7.1.*",
-        "symfony/css-selector": "7.1.*",
-        "symfony/phpunit-bridge": "^7.1",
-        "symfony/stopwatch": "7.1.*",
-        "symfony/web-profiler-bundle": "7.1.*",
-        "symplify/easy-coding-standard": "^12.0",
-        "symplify/phpstan-rules": "^13.0"
+    "runtime": {
+        "class": "Runtime\\FrankenPhpSymfony\\Runtime"
     }
 }
