@@ -21,11 +21,10 @@ final class ContentfulRequestParser extends AbstractRequestParser
         return new ChainRequestMatcher([
             new MethodRequestMatcher('POST'),
             new HeaderRequestMatcher([
-                'x-contentful-signature',
+                'x-contentful-secret',
                 'x-contentful-timestamp',
                 'x-contentful-crn',
                 'x-contentful-topic',
-                'x-contentful-signed-headers',
             ])
         ]);
     }
@@ -37,7 +36,7 @@ final class ContentfulRequestParser extends AbstractRequestParser
             throw new RejectWebhookException(406, 'The TTL duration has been exceeded.');
         }
 
-        if (!$this->validateRequestSignature($request, $secret)) {
+        if ($secret !== $request->headers->get('x-contentful-secret')) {
             throw new RejectWebhookException(406, 'Webhook signature mismatch.');
         }
 
@@ -45,28 +44,9 @@ final class ContentfulRequestParser extends AbstractRequestParser
             null === ($crn = $request->headers->get('x-contentful-crn'))
             || null === ($topic = $request->headers->get('x-contentful-topic'))
         ) {
-            return null;
+            throw new RejectWebhookException(406, 'Missing value on required headers.');
         }
 
         return new ContentfulRemoteEvent($crn, $topic, $request->toArray());
-    }
-
-    private function validateRequestSignature(Request $request, #[SensitiveParameter] string $secret): bool
-    {
-        $headers = array_map(
-            fn (string $name) => sprintf('%s:%s', strtolower($name), $request->headers->get($name)),
-            explode(',', $request->headers->get('x-contentful-signed-headers') ?? '')
-        );
-
-        $canonicalRequestRepresentation = [
-            $request->getMethod(),
-            mb_convert_encoding(trim(sprintf('%s?%s', rawurlencode($request->getPathInfo()), $request->getQueryString()), '?'), 'UTF-8'),
-            implode(';', $headers),
-            $request->getContent(),
-        ];
-
-        $signature = hash_hmac('sha256', implode("\n", $canonicalRequestRepresentation), $secret);
-
-        return $signature === $request->headers->get('x-contentful-signature');
     }
 }
