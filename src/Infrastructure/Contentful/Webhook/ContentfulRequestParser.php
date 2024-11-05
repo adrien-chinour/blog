@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Contentful\Webhook;
 
+use SensitiveParameter;
 use Symfony\Component\HttpFoundation\ChainRequestMatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestMatcher\HeaderRequestMatcher;
@@ -29,7 +30,7 @@ final class ContentfulRequestParser extends AbstractRequestParser
         ]);
     }
 
-    protected function doParse(Request $request, #[\SensitiveParameter] string $secret): ?RemoteEvent
+    protected function doParse(Request $request, #[SensitiveParameter] string $secret): ?RemoteEvent
     {
         $timestamp = (int)$request->headers->get('x-contentful-timestamp');
         if (($timestamp / 1000) + 60 < time()) {
@@ -40,14 +41,17 @@ final class ContentfulRequestParser extends AbstractRequestParser
             throw new RejectWebhookException(406, 'Webhook signature mismatch.');
         }
 
-        return new ContentfulRemoteEvent(
-            $request->headers->get('x-contentful-crn'),
-            $request->headers->get('x-contentful-topic'),
-            $request->toArray()
-        );
+        if (
+            null === ($crn = $request->headers->get('x-contentful-crn'))
+            || null === ($topic = $request->headers->get('x-contentful-topic'))
+        ) {
+            return null;
+        }
+
+        return new ContentfulRemoteEvent($crn, $topic, $request->toArray());
     }
 
-    private function validateRequestSignature(Request $request, #[\SensitiveParameter] string $secret): bool
+    private function validateRequestSignature(Request $request, #[SensitiveParameter] string $secret): bool
     {
         $headers = array_map(
             fn (string $name) => sprintf('%s:%s', strtolower($name), $request->headers->get($name)),

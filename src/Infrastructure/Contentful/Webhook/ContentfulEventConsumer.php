@@ -30,8 +30,9 @@ final class ContentfulEventConsumer implements ConsumerInterface, LoggerAwareInt
         }
 
         $payload = $event->getPayload();
-        match ($payload['sys']['contentType']['sys']['id'] ?? null) {
+        match ($type = $payload['sys']['contentType']['sys']['id'] ?? null) {
             'blogPage' => $this->handleBlogPageEvent($event),
+            default => $this->logger?->warning('No consumer on type {type}', ['type' => $type]),
         };
     }
 
@@ -57,6 +58,8 @@ final class ContentfulEventConsumer implements ConsumerInterface, LoggerAwareInt
             $this->logger?->warning('No event linked for topic {topicName}', [
                 'topicName' => $event->getTopic(),
             ]);
+
+            return;
         }
 
         $this->eventBus->dispatch($message);
