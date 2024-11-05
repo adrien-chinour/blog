@@ -60,7 +60,7 @@ final class ContentfulRequestParser extends AbstractRequestParser
 
         $canonicalRequestRepresentation = [
             $request->getMethod(),
-            trim(sprintf('%s?%s', urlencode($request->getPathInfo()), $request->getQueryString()), '?'),
+            mb_convert_encoding(trim(sprintf('%s?%s', rawurlencode($request->getPathInfo()), $request->getQueryString()), '?'), 'UTF-8'),
             implode(';', $headers),
             $request->getContent(),
         ];
