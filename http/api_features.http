@@ -1,4 +1,0 @@
-###
-# @name Get Features
-GET {{host}}/api/features
-Content-Type: application/json
