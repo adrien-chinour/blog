@@ -6,7 +6,7 @@ namespace App\Application\Query\GetProjectList;
 
 use App\Application\Query\QueryCache;
 
-#[QueryCache(ttl: 3600, tags: ['list_project', 'project'])]
+#[QueryCache(ttl: 3600, tags: ['project'])]
 final readonly class GetProjectListQuery
 {
     public function __construct(

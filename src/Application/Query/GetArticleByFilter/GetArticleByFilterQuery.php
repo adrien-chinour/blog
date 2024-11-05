@@ -6,7 +6,7 @@ namespace App\Application\Query\GetArticleByFilter;
 
 use App\Application\Query\QueryCache;
 
-#[QueryCache(ttl: 3600, tags: ['get_article', 'article'])]
+#[QueryCache(ttl: 3600, tags: ['article'])]
 final readonly class GetArticleByFilterQuery
 {
     public function __construct(

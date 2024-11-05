@@ -6,5 +6,5 @@ namespace App\Application\Query\GetFeatureList;
 
 use App\Application\Query\QueryCache;
 
-#[QueryCache(ttl: 60)]
+#[QueryCache(ttl: 60, tags: ['feature'])]
 final readonly class GetFeatureListQuery {}

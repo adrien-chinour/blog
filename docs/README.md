@@ -78,7 +78,7 @@ For exemple, `GetArticleQuery` is cached for 1h _(3600s)_.
 ```php
 #[QueryCache(
     ttl: 3600,
-    tags: ['get_article', 'article'],
+    tags: ['article'],
 )]
 final readonly class GetArticleQuery implements CacheableQueryInterface
 {
