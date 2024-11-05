@@ -60,12 +60,12 @@ final class ContentfulRequestParser extends AbstractRequestParser
 
         $canonicalRequestRepresentation = [
             $request->getMethod(),
-            $request->getRequestUri(),
+            trim(sprintf('%s?%s', urlencode($request->getPathInfo()), $request->getQueryString()), '?'),
             implode(';', $headers),
             $request->getContent(),
         ];
 
-        $signature = hash_hmac('sha256', implode('\n', $canonicalRequestRepresentation), $secret);
+        $signature = hash_hmac('sha256', implode("\n", $canonicalRequestRepresentation), $secret);
 
         return $signature === $request->headers->get('x-contentful-signature');
     }
