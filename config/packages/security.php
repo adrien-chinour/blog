@@ -6,34 +6,27 @@ use Symfony\Config\SecurityConfig;
 const ADMIN_USER_PROVIDER = 'admin_user_provider';
 
 return static function (SecurityConfig $security): void {
-    $security->provider(ADMIN_USER_PROVIDER)
-        ->memory()
-        ->user('admin')
-        ->password(null)
-        ->roles(['ROLE_ADMIN']);
-
     $security->firewall('dev')
         ->pattern('^/(_(profiler|wdt)|css|images|js)/')
         ->security(false);
 
-    $adminFirewall = $security->firewall('admin')
-        ->pattern('^/(webhook)/')
+    $firewall = $security->firewall('main')
+        ->lazy(true)
         ->security(true)
         ->stateless(true)
         ->provider(ADMIN_USER_PROVIDER);
 
-    $adminFirewall
+    $firewall
         ->accessToken()
         ->tokenHandler(AccessTokenHandler::class);
 
-    $adminFirewall->loginThrottling()
+    $firewall->loginThrottling()
         ->maxAttempts(3)
         ->interval('60 minutes');
 
-    $security->firewall('main')
-        ->lazy(true);
-
-    $security->accessControl()
-        ->path('^/(webhook)')
+    $security->provider(ADMIN_USER_PROVIDER)
+        ->memory()
+        ->user('admin')
+        ->password(null)
         ->roles(['ROLE_ADMIN']);
 };

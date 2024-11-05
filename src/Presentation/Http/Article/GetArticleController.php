@@ -2,22 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api;
+namespace App\Presentation\Http\Article;
 
-use App\Application\Query\GetProjectList\GetProjectListQuery;
+use App\Application\Query\GetArticle\GetArticleQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\Cache;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[Route(path: '/projects', name: 'list_projects', methods: ['GET'])]
+#[Route(path: '/articles/{id}', requirements: ['id' => '\w+'], methods: ['GET'])]
 #[Cache(maxage: 60, smaxage: 3600, public: true)]
-final class ListProjectController extends AbstractController
+final class GetArticleController extends AbstractController
 {
     use HandleTrait;
 
@@ -26,8 +25,12 @@ final class ListProjectController extends AbstractController
         $this->messageBus = $messageBus;
     }
 
-    public function __invoke(#[MapQueryParameter(name: 'limit')] int $limit = 10): JsonResponse
+    public function __invoke(string $id): JsonResponse
     {
-        return $this->json($this->handle(new GetProjectListQuery($limit)));
+        if (null === ($article = $this->handle(new GetArticleQuery($id)))) {
+            throw $this->createNotFoundException();
+        }
+
+        return $this->json($article);
     }
 }

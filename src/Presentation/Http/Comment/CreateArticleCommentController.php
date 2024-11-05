@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api;
+namespace App\Presentation\Http\Comment;
 
 use App\Application\Command\PostArticleComment\PostArticleCommentCommand;
-use App\Presentation\Api\Dto\PostCommentDto;
+use App\Presentation\Http\Comment\Dto\PostCommentDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +15,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[Route(path: '/comments', name: 'post_article_comment', methods: ['POST'])]
+#[Route(path: '/comments', methods: ['POST'])]
 final class CreateArticleCommentController extends AbstractController
 {
     public function __construct(

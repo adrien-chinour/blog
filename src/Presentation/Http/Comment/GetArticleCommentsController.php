@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api;
+namespace App\Presentation\Http\Comment;
 
 use App\Application\Query\GetArticleComments\GetArticleCommentsQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
-#[Route(path: '/articles/{id}/comments', name: 'get_article_comments', requirements: ['id' => '\w+'], methods: ['GET'])]
+#[Route(path: '/articles/{id}/comments', requirements: ['id' => '\w+'], methods: ['GET'])]
 #[Cache(maxage: 60, smaxage: 60, public: true)]
 final class GetArticleCommentsController extends AbstractController
 {

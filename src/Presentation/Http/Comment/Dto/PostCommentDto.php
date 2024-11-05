@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api\Dto;
+namespace App\Presentation\Http\Comment\Dto;
 
 final readonly class PostCommentDto
 {
