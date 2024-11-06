@@ -47,6 +47,10 @@ final readonly class BlogArticleFactory
      */
     public function fromBlogPageCollection(BlogPageCollection $collection): array
     {
-        return array_map(fn (BlogPage $blogPage) => $this->fromBlogPage($blogPage), $collection->items);
+        return array_values(
+            array_filter(
+                array_map(fn (BlogPage $blogPage) => $this->fromBlogPage($blogPage), $collection->items)
+            )
+        );
     }
 }

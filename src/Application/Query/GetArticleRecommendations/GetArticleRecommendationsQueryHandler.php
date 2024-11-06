@@ -24,13 +24,13 @@ final class GetArticleRecommendationsQueryHandler
     }
 
     /**
-     * @return BlogArticle[]
+     * @return BlogArticle[]|null
      */
-    public function __invoke(GetArticleRecommendationsQuery $query): array
+    public function __invoke(GetArticleRecommendationsQuery $query): array|null
     {
         $sourceArticle = $this->handle(new GetArticleQuery($query->articleIdentifier));
         if (!($sourceArticle instanceof BlogArticle)) {
-            return [];
+            return null;
         }
 
         $articles = $sourceArticle->recommendations === []

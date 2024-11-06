@@ -53,9 +53,17 @@ quality: ## Run quality script with ECS and PHPStan
 quality: c=run-script quality
 quality: composer
 
-test: ## Run quality script with ECS and PHPStan
+test: ## Run PHPUnit All testsuite
 test: c=run-script test
 test: composer
+
+test-unit: ## Run PHPUnit Unit testsuite
+test-unit: c=run-script test-unit
+test-unit: composer
+
+test-integration: ## Run PHPUnit Integration testsuite
+test-integration: c=run-script test-integration
+test-integration: composer
 
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
 console: ## List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about

@@ -36,6 +36,8 @@
     },
     "require-dev": {
         "cyclonedx/cyclonedx-php-composer": "^5.2",
+        "dg/bypass-finals": "^1.8",
+        "fakerphp/faker": "^1.23",
         "mockery/mockery": "^1.6",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.10",
@@ -94,7 +96,13 @@
             "vendor/bin/ecs check"
         ],
         "test": [
-            "vendor/bin/phpunit"
+            "bin/phpunit"
+        ],
+        "test-unit": [
+            "bin/phpunit --testsuite Unit"
+        ],
+        "test-integration": [
+            "bin/phpunit --testsuite Integration"
         ]
     },
     "conflict": {
