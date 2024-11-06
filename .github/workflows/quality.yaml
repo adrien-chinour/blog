@@ -48,4 +48,9 @@ jobs:
                 run: vendor/bin/phpstan analyse --no-progress
 
             -   name: "Run Unit testsuite"
-                run: bin/phpunit --testsuite Unit
+                run: bin/phpunit --testsuite=Unit --coverage-clover=coverage.xml
+
+            -   name: "SonarCloud Scan"
+                uses: SonarSource/sonarcloud-github-action@master
+                env:
+                    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
