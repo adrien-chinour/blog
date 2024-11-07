@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Github\Repository;
+namespace App\Infrastructure\Repository;
 
 use App\Domain\Coding\ProjectRepository;
 use App\Infrastructure\Github\Http\GithubApiClient;

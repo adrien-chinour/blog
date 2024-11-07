@@ -6,7 +6,6 @@ namespace App\Tests\Integration\Presentation\Http\Article;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use const App\Tests\Integration\TEST_ARTICLE_ID;
 
 final class GetArticleControllerTest extends WebTestCase
 {
@@ -14,8 +13,7 @@ final class GetArticleControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // FIXME use a better way to test with real data
-        $client->request('GET', sprintf('/articles/%s', '4aAkSjsn311n0jwAgNnIvH'));
+        $client->request('GET', '/articles/1');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseFormatSame('json');
@@ -28,7 +26,7 @@ final class GetArticleControllerTest extends WebTestCase
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
 
-        $client->request('GET', sprintf('/articles/%s', 'unknown'));
+        $client->request('GET', '/articles/5');
 
         $this->assertResponseStatusCodeSame(404);
 

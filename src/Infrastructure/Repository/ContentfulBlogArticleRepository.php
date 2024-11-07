@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Contentful\Repository;
+namespace App\Infrastructure\Repository;
 
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogArticleRepository;
@@ -10,6 +10,7 @@ use App\Infrastructure\Contentful\Http\ContentfulApiClient;
 use App\Infrastructure\Contentful\Model\ContentType\BlogPage;
 use App\Infrastructure\Contentful\Model\ContentType\BlogPageCollection;
 use App\Infrastructure\Contentful\Model\Factory\BlogArticleFactory;
+use App\Infrastructure\Contentful\Repository\AbstractContentfulRepository;
 use App\Infrastructure\GraphQL\GraphQLQueryBuilder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;

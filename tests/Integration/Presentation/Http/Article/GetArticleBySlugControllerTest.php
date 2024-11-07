@@ -13,8 +13,7 @@ final class GetArticleBySlugControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // FIXME use a better way to test with real data
-        $client->request('GET', sprintf('/articles/%s', 'construire-un-site-statique-avec-php'));
+        $client->request('GET', '/articles/construire-un-site-statique-avec-php');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseFormatSame('json');
@@ -27,7 +26,7 @@ final class GetArticleBySlugControllerTest extends WebTestCase
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
 
-        $client->request('GET', sprintf('/articles/%s', 'unknown-slug'));
+        $client->request('GET', '/articles/unknown-slug');
 
         $this->assertResponseStatusCodeSame(404);
     }

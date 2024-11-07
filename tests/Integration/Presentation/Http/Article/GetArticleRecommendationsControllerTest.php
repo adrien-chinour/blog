@@ -13,8 +13,7 @@ final class GetArticleRecommendationsControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        // FIXME use a better way to test with real data
-        $client->request('GET', sprintf('/articles/%s/recommendations', '4aAkSjsn311n0jwAgNnIvH'));
+        $client->request('GET', '/articles/1/recommendations');
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseFormatSame('json');
@@ -27,7 +26,7 @@ final class GetArticleRecommendationsControllerTest extends WebTestCase
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
 
-        $client->request('GET', sprintf('/articles/%s/recommendations', 'unknown'));
+        $client->request('GET', '/articles/5/recommendations');
 
         $this->assertResponseStatusCodeSame(404);
     }

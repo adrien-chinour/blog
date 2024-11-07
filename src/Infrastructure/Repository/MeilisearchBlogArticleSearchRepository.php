@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Meilisearch\Repository;
+namespace App\Infrastructure\Repository;
 
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogArticleSearchRepository;

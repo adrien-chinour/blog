@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Baserow\Repository;
+namespace App\Infrastructure\Repository;
 
 use App\Domain\Social\CommentRepository as CommentRepositoryInterface;
 use App\Domain\Social\Exception\FailToPublishCommentException;
 use App\Infrastructure\Baserow\Http\BaserowApiClient;
 use DateTimeImmutable;
 
-final readonly class CommentRepository implements CommentRepositoryInterface
+final readonly class BaserowCommentRepository implements CommentRepositoryInterface
 {
     public function __construct(
         private BaserowApiClient $apiClient,
