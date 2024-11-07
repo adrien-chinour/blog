@@ -3,14 +3,17 @@
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=adrien-chinour_blog&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=adrien-chinour_blog)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=adrien-chinour_blog&metric=bugs)](https://sonarcloud.io/summary/new_code?id=adrien-chinour_blog)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=adrien-chinour_blog&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=adrien-chinour_blog)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=adrien-chinour_blog&metric=coverage)](https://sonarcloud.io/summary/new_code?id=adrien-chinour_blog)
 
 # Installation 🔧
+
+> Installation requires `make` on your machine as well as `docker` (with a version that includes Compose).
 
 ```sh
 # Create .env.local file
 cp .env .env.local
 
-# Put values on missing environnements variables
+# Put values on missing environnements variables (or use InMemory repository)
 nano .env.local
 
 # Build application container and install dependencies (composer)
@@ -24,7 +27,15 @@ make install
 
 ## Overview
 
-> TODO make a schema about project architecture
+This project is an **API gateway** designed for a Tech Blog system, connecting external systems (such as a CMS) to the
+blog's front end. It enables seamless integration and management of core blog components like articles, projects, and
+comments, while also offering advanced features like a Feature Flag system to toggle specific functionalities.
+
+Unlike typical APIs, this gateway is built to function without a dedicated database. Instead, it leverages simple
+objects to represent domain models, creating a clear separation between the **Domain Layer**
+and **Infrastructure Layer**. This modular architecture enhances flexibility, enabling easy adaptation to various
+external data sources. For a deeper dive into the system’s layer architecture, see the chapter on **system layering and
+structure**.
 
 ## Coding standards
 
@@ -48,26 +59,40 @@ Allowed types are :
 - **build** – changes that affect the build system or external dependencies
 - **revert** – reverts a previous commit
 
-## Layers
+### PHP
 
-Project not use default Symfony structure but use a multi layer organisation. These layers are :
+See the [PER Coding Style](https://www.php-fig.org/per/) (an evolution of PSR-12) as well as
+the [Symfony coding standards](https://symfony.com/doc/current/contributing/code/standards.html).
 
-- **Domain** : contain business logic, in our case Models and Repositories Interface.
-- **Infrastructure** : make link with framework (Symfony) and External services (Contentful, GitHub, etc.).
-- **Application** : define actions on application, implement CQRS pattern.
-- **Presentation** : in charge of http request/response handling.
+> Easy Coding Standard is used to prevent coding standard deviation on PHP code. (See Quality CI)
 
-> See [Domain-driven design](https://en.wikipedia.org/wiki/Domain-driven_design).
+## System layering and structure
+
+This project deviates from the default Symfony structure, adopting a multi-layered architecture for better organization
+and separation of concerns. The layers are as follows:
+
+1. Domain Layer: Contains the core business logic, including Models and Repository Interfaces. This layer is
+   framework-agnostic, focusing solely on the business rules and data definitions that drive the application.
+2. Application Layer: Defines and manages application actions, implementing the CQRS (Command Query Responsibility
+   Segregation) pattern to separate read and write operations for improved clarity and maintainability.
+3. Presentation Layer: Responsible for handling HTTP requests and responses, acting as the main interface between the
+   API and its consumers.
+4. Infrastructure Layer: Manages integration with the Symfony framework and external services such as Contentful,
+   GitHub, and others. This layer serves as the bridge to third-party services, ensuring external dependencies are
+   decoupled from core business logic.
+
+>
 
 # Query/Command Bus 🚌
 
-Application Layer of project use the [CQRS](https://en.wikipedia.org/wiki/Command_Query_Responsibility_Segregation)
-architecture pattern.
+The Application Layer of this project follows
+the [CQRS](https://en.wikipedia.org/wiki/Command_Query_Responsibility_Segregation) (Command Query Responsibility
+Segregation) architecture pattern.
 
-Implementation is made with [Symfony Messenger](https://symfony.com/doc/current/components/messenger.html) using the
-default `sync` Transport for Query and Command.
+This pattern is implemented using [Symfony Messenger](https://symfony.com/doc/current/components/messenger.html), with
+the default `sync` transport currently handling both Queries and Commands.
 
-> **✨ Improvement** : Use an async Transport for Command.
+> **✨ Improvement**: Configure asynchronous transport for Commands.
 
 ## Query Caching
 
@@ -94,7 +119,7 @@ final readonly class GetArticleQuery implements CacheableQueryInterface
 
 ## Cache invalidation
 
-Cache can be purged from `/webhook/cache-invalidation` with `tag[]` defined in query.
+Cache can be purged from `/cache/invalidation` with `tag[]` defined in query.
 
 # Security 👮
 
@@ -139,23 +164,24 @@ hour, if all crawled page are 404. Only 10, if all page need authentication.
 
 > rate limit is store using default Symfony cache (filesystem). It will be reset on every new app deployment.
 
-## Secure routes
+## Secure Routes
 
-Accessing routes under `^/webhook` is available with authentication. Security is configured under Symfony
-SecurityBundle in `config/security.php`.
+Certain routes are restricted to users with the `ADMIN` role. Security is configured through Symfony’s SecurityBundle,
+located in `config/security.php`.
 
-There is no user database, it used _in memory_ provider with a default admin user with ROLE_ADMIN. Authentication
-use `Symfony\Component\Security\Http\Authenticator\AccessTokenAuthenticator`
-and `App\Infrastructure\Symfony\Security\AccessTokenHandler`.
+Since there is no user database, an _in-memory_ provider is used with a default admin user assigned the `ROLE_ADMIN`.
+Authentication is managed via `Symfony\Component\Security\Http\Authenticator\AccessTokenAuthenticator` and
+`App\Infrastructure\Symfony\Security\AccessTokenHandler`.
 
-**Usage (send a cache invalidation request):**
+**Usage Example: Sending a Cache Invalidation Request**
 
 ```shell
-curl -H "Authorization: Bearer {{token}}" https://www.udfn.fr/webhook/cache-invalidation?tag[]=article
+curl -H "Authorization: Bearer {{token}}" https://{host}/cache/invalidation?tag[]=article
 ```
 
-> 3 bad login attempt will ban IP for 1 hour. (Configuration from SecurityBundle using RateLimiter component).
-> See documentation : https://symfony.com/doc/current/security.html#limiting-login-attempts
+> Note: After 3 failed login attempts, the IP address will be banned for 1 hour. This behavior is configured via the
+> SecurityBundle’s RateLimiter component. For more details, refer to the Symfony documentation
+> on [rate limiting](https://symfony.com/doc/current/security.html#limiting-login-attempts).
 
 # CI/CD ‍🔄
 
@@ -164,5 +190,5 @@ folder.
 
 Defined workflows :
 
-- `quality.yaml` is the continuous integration workflow. It install and validate composer dependencies, then run quality
-  checks like PHPStan, ECS, Pest test suites and k6 load tests.
+- `quality.yaml` defines the continuous integration workflow. It installs and validates Composer dependencies, then runs
+  quality checks, including PHPStan, ECS, PHPUnit tests, and SonarCloud analysis.
