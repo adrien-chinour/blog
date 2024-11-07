@@ -47,8 +47,8 @@ jobs:
             -   name: "Static Code validation with PHPStan"
                 run: vendor/bin/phpstan analyse --no-progress
 
-            -   name: "Run Unit testsuite"
-                run: bin/phpunit --testsuite=Unit --coverage-clover=coverage.xml
+            -   name: "Run PHPUnit tests"
+                run: bin/phpunit --testsuite=All --coverage-clover=coverage.xml
 
             -   name: "SonarCloud Scan"
                 uses: SonarSource/sonarcloud-github-action@master
