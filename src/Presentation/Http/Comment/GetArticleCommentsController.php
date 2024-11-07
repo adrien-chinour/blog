@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[Route(path: '/articles/{id}/comments', requirements: ['id' => '\w+'], methods: ['GET'])]
-#[Cache(maxage: 60, smaxage: 60, public: true)]
+#[Cache(maxage: 30, smaxage: 60, public: true)]
 final class GetArticleCommentsController extends AbstractController
 {
     use HandleTrait;

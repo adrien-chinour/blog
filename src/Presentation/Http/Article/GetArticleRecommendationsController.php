@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[Route(path: '/articles/{id}/recommendations', requirements: ['id' => '\w+'], methods: ['GET'])]
-#[Cache(maxage: 60, smaxage: 86_400, public: true)]
+#[Cache(maxage: 60, smaxage: 120, public: true)]
 final class GetArticleRecommendationsController extends AbstractController
 {
     use HandleTrait;

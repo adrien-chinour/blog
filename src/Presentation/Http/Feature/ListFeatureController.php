@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[Route(path: '/features', methods: ['GET'])]
-#[Cache(maxage: 60, smaxage: 60, public: true)]
+#[Cache(maxage: 10, smaxage: 60, public: true)]
 final class ListFeatureController extends AbstractController
 {
     use HandleTrait;

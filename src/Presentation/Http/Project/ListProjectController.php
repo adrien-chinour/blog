@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[Route(path: '/projects', methods: ['GET'])]
-#[Cache(maxage: 60, smaxage: 3600, public: true)]
+#[Cache(maxage: 60, smaxage: 120, public: true)]
 final class ListProjectController extends AbstractController
 {
     use HandleTrait;

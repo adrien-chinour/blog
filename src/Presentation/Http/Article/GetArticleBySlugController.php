@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[AsController]
 #[Route(path: '/articles/{slug}', requirements: ['slug' => '[a-z0-9\-]+'], methods: ['GET'])]
-#[Cache(maxage: 60, smaxage: 3600, public: true)]
+#[Cache(maxage: 60, smaxage: 120, public: true)]
 final class GetArticleBySlugController extends AbstractController
 {
     use HandleTrait;
