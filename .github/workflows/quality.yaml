@@ -7,7 +7,7 @@ on:
         branches: [ "*" ]
 
 jobs:
-    php_quality:
+    quality_check:
         runs-on: ubuntu-latest
         permissions:
             contents: read
@@ -54,3 +54,24 @@ jobs:
                 uses: SonarSource/sonarcloud-github-action@master
                 env:
                     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    security_check:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            -   name: "Checkout"
+                uses: actions/checkout@v4
+
+            -   name: Create SBOM
+                uses: anchore/sbom-action@v0
+                with:
+                    format: spdx-json
+                    output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
+
+            -   name: Scan SBOM
+                uses: anchore/scan-action@v3
+                with:
+                    sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
+                    fail-build: true
+                    severity-cutoff: critical
