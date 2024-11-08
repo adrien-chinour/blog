@@ -2,6 +2,9 @@ name: Publish ghcr.io/adrien-chinour/blog:base-php8.3
 on:
     workflow_dispatch:
 
+env:
+    IMAGE_NAME: "ghcr.io/adrien-chinour/blog:base-php8.3"
+
 jobs:
     build-and-push-image:
         runs-on: ubuntu-latest
@@ -19,10 +22,21 @@ jobs:
                     username: ${{ github.actor }}
                     password: ${{ secrets.GITHUB_TOKEN }}
 
-            -   name: Build and push Docker image
-                uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
+            -   name: Build and export to Docker
+                uses: docker/build-push-action@v6
                 with:
                     context: .
                     target: frankenphp_base
-                    tags: ghcr.io/adrien-chinour/blog:base-php8.3
+                    tags: ${{ env.IMAGE_NAME }}
+                    load: true
+
+            -   name: Scan image
+                uses: anchore/scan-action@v3
+                with:
+                    image: ${{ env.IMAGE_NAME }}
+
+            -   name: Push to registry
+                uses: docker/build-push-action@v6
+                with:
                     push: true
+                    tags: ${{ env.IMAGE_NAME }}
