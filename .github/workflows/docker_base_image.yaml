@@ -31,6 +31,7 @@ jobs:
                     load: true
 
             -   name: Scan image
+                id: scan
                 uses: anchore/scan-action@v3
                 with:
                     image: ${{ env.IMAGE_NAME }}
