@@ -28,21 +28,4 @@ jobs:
                     context: .
                     target: frankenphp_base
                     tags: ${{ env.IMAGE_NAME }}
-                    load: true
 
-            -   name: Scan image
-                id: scan
-                uses: anchore/scan-action@v3
-                with:
-                    image: ${{ env.IMAGE_NAME }}
-                    fail-build: false
-                    severity-cutoff: critical
-
-            -   name: Inspect action SARIF report
-                run: cat ${{ steps.scan.outputs.sarif }}
-
-            -   name: Push to registry
-                uses: docker/build-push-action@v6
-                with:
-                    push: true
-                    tags: ${{ env.IMAGE_NAME }}
