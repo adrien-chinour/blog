@@ -7,7 +7,9 @@ namespace App\Application\Query\GetPreviewArticle;
 use App\Application\Query\GetArticle\GetArticleQuery;
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogArticleRepository;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 final readonly class GetPreviewArticleQueryHandler
 {
     public function __construct(
