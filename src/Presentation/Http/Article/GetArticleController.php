@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\Http\Article;
 
 use App\Application\Query\GetArticle\GetArticleQuery;
+use App\Application\Query\GetPreviewArticle\GetPreviewArticleQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -27,7 +28,7 @@ final class GetArticleController extends AbstractController
 
     public function __invoke(string $id, #[MapQueryParameter('published')] bool $published = true): JsonResponse
     {
-        if (null === ($article = $this->handle(new GetArticleQuery($id, $published)))) {
+        if (null === ($article = $this->handle($published ? new GetArticleQuery($id) : new GetPreviewArticleQuery($id)))) {
             throw $this->createNotFoundException();
         }
 

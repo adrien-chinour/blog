@@ -10,7 +10,6 @@ use App\Application\Query\QueryCache;
 final class GetArticleQuery
 {
     public function __construct(
-        public string $identifier,
-        public bool $published = true,
+        public string $identifier
     ) {}
 }

@@ -17,6 +17,6 @@ final readonly class GetArticleQueryHandler
 
     public function __invoke(GetArticleQuery $query): ?BlogArticle
     {
-        return $this->blogArticleRepository->getById($query->identifier, $query->published);
+        return $this->blogArticleRepository->getById($query->identifier);
     }
 }
