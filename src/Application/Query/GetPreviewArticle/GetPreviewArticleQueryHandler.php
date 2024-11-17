@@ -16,7 +16,7 @@ final readonly class GetPreviewArticleQueryHandler
         private BlogArticleRepository $blogArticleRepository,
     ) {}
 
-    public function __invoke(GetArticleQuery $query): ?BlogArticle
+    public function __invoke(GetPreviewArticleQuery $query): ?BlogArticle
     {
         return $this->blogArticleRepository->getById($query->identifier, false);
     }
