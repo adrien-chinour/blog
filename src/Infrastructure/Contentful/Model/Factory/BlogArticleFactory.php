@@ -33,7 +33,7 @@ final readonly class BlogArticleFactory
             content: $this->contentParser->parse($blogPage->content),
             imageUrl: $blogPage->image->url,
             slug: $blogPage->slug,
-            publicationDate: $blogPage->sys->publishedAt ?? new DateTimeImmutable(),
+            publicationDate: $blogPage->sys->firstPublishedAt ?? new DateTimeImmutable(),
             tags: $this->blogTagFactory->fromCategoryCollection($blogPage->categoriesCollection),
             recommendations: $blogPage->recommendationsCollection->getResourceIds(ContentTypes::BlogPage),
         );
