@@ -6,7 +6,7 @@ namespace App\Domain\Blogging;
 
 interface BlogArticleRepository
 {
-    public function getById(string $identifier, bool $preview = false): ?BlogArticle;
+    public function getById(string $identifier, bool $published = true): ?BlogArticle;
 
     public function getOneBy(array $filters): ?BlogArticle;
 

@@ -14,7 +14,7 @@ final readonly class InMemoryBlogArticleRepository implements BlogArticleReposit
         private array $articles = []
     ) {}
 
-    public function getById(string $identifier, bool $preview = false): ?BlogArticle
+    public function getById(string $identifier, bool $published = true): ?BlogArticle
     {
         return $this->articles[$identifier] ?? null;
     }

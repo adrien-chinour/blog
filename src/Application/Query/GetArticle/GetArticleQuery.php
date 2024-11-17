@@ -11,5 +11,6 @@ final class GetArticleQuery
 {
     public function __construct(
         public string $identifier,
+        public bool $published = true,
     ) {}
 }

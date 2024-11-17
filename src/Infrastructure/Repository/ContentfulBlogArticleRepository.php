@@ -26,10 +26,10 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
         parent::__construct($apiClient, $serializer, $queryBuilder);
     }
 
-    public function getById(string $identifier, bool $preview = false): ?BlogArticle
+    public function getById(string $identifier, bool $published = true): ?BlogArticle
     {
         /** @var BlogPage $data */
-        $data = $this->query(BlogPage::class, ['id' => $identifier, 'preview' => $preview]);
+        $data = $this->query(BlogPage::class, ['id' => $identifier, 'preview' => !$published]);
 
         try {
             return $this->blogArticleFactory->fromBlogPage($data);

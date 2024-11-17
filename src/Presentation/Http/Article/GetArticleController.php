@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\Cache;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,9 +26,9 @@ final class GetArticleController extends AbstractController
         $this->messageBus = $messageBus;
     }
 
-    public function __invoke(string $id): JsonResponse
+    public function __invoke(string $id, #[MapQueryParameter('published')] bool $published = true): JsonResponse
     {
-        if (null === ($article = $this->handle(new GetArticleQuery($id)))) {
+        if (null === ($article = $this->handle(new GetArticleQuery($id, $published)))) {
             throw $this->createNotFoundException();
         }
 
