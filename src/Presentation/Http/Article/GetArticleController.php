@@ -32,6 +32,11 @@ final class GetArticleController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        return $this->json($article);
+        $response = $this->json($article);
+        if ($published) {
+            $response->setCache(['maxage' => 60, 'smaxage' => 120, 'public' => true]);
+        }
+
+        return $response;
     }
 }
