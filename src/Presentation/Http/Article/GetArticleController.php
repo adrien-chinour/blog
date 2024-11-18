@@ -33,7 +33,7 @@ final class GetArticleController extends AbstractController
 
         $response = $this->json($article);
         if ($published) {
-            $response->setCache(['max-age' => 60, 's-maxage' => 120, 'public' => true]);
+            $response->setCache(['max_age' => 60, 's_maxage' => 120, 'public' => true]);
         }
 
         return $response;
