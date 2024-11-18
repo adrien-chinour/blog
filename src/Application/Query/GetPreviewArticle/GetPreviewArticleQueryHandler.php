@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Query\GetPreviewArticle;
 
-use App\Application\Query\GetArticle\GetArticleQuery;
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogArticleRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
