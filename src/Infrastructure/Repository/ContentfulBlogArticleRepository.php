@@ -55,6 +55,12 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
         /** @var BlogPageCollection $data */
         $data = $this->query(BlogPageCollection::class, ['limit' => $limit ?? 100]);
 
-        return $this->blogArticleFactory->fromBlogPageCollection($data);
+        $articles = $this->blogArticleFactory->fromBlogPageCollection($data);
+        usort(
+            $articles,
+            fn (BlogArticle $a, BlogArticle $b) => $a->publicationDate->getTimestamp() > $b->publicationDate->getTimestamp() ? -1 : 1
+        );
+
+        return $articles;
     }
 }
