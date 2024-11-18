@@ -36,6 +36,7 @@ final readonly class BlogArticleFactory
             publicationDate: $blogPage->sys->firstPublishedAt ?? new DateTimeImmutable(),
             tags: $this->blogTagFactory->fromCategoryCollection($blogPage->categoriesCollection),
             recommendations: $blogPage->recommendationsCollection->getResourceIds(ContentTypes::BlogPage),
+            imageDescription: is_string($blogPage->image->description) ? str_replace('<a ', '<a target="_blank" ', $blogPage->image->description) : null,
         );
     }
 

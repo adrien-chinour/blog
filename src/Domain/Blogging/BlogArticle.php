@@ -16,5 +16,6 @@ final readonly class BlogArticle
         public \DateTimeInterface $publicationDate,
         public array              $tags = [],
         public array              $recommendations = [],
+        public ?string             $imageDescription = null,
     ) {}
 }

@@ -34,6 +34,7 @@ final class ArticleFactory
             publicationDate: $publicationDate ?? DateTimeImmutable::createFromMutable($faker->dateTime()),
             tags: $tags,
             recommendations: $recommendations,
+            imageDescription: $faker->paragraph(),
         );
     }
 

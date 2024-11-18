@@ -7,4 +7,6 @@ namespace App\Infrastructure\Contentful\Model;
 final class Image
 {
     public string $url;
+
+    public ?string $description = null;
 }
