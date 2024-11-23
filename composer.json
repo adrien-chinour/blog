@@ -39,6 +39,7 @@
         "dg/bypass-finals": "^1.8",
         "fakerphp/faker": "^1.23",
         "mockery/mockery": "^1.6",
+        "phparkitect/phparkitect": "^0.3.33",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^9.5",
@@ -93,7 +94,8 @@
         "quality": [
             "composer validate --strict",
             "vendor/bin/phpstan analyse",
-            "vendor/bin/ecs check"
+            "vendor/bin/ecs check",
+            "vendor/bin/arkitect check --config=tests/Architecture/arkitect.php"
         ],
         "test": [
             "bin/phpunit"
