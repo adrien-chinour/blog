@@ -17,12 +17,14 @@ use App\Infrastructure\Repository\InMemoryBlogArticleRepository;
 use App\Infrastructure\Repository\InMemoryBlogArticleSearchRepository;
 use App\Infrastructure\Repository\InMemoryCommentRepository;
 use App\Infrastructure\Repository\InMemoryFeatureRepository;
+use App\Infrastructure\Repository\InMemoryPageRepository;
 use App\Infrastructure\Repository\InMemoryProjectRepository;
 use App\Infrastructure\Repository\MeilisearchBlogArticleSearchRepository;
 use App\Infrastructure\Repository\StrapiPageRepository;
 use App\Tests\Factory\Repository\InMemoryBlogArticleRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryCommentRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryFeatureRepositoryFactory;
+use App\Tests\Factory\Repository\InMemoryPageRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryProjectRepositoryFactory;
 use Meilisearch\Client;
 
@@ -82,5 +84,8 @@ return function (ContainerConfigurator $container): void {
 
         $services->alias(CommentRepository::class, InMemoryCommentRepository::class);
         $services->set(InMemoryCommentRepository::class)->factory([InMemoryCommentRepositoryFactory::class, 'create']);
+
+        $services->alias(PageRepository::class, InMemoryPageRepository::class);
+        $services->set(InMemoryPageRepository::class)->factory([InMemoryPageRepositoryFactory::class, 'create']);
     }
 };

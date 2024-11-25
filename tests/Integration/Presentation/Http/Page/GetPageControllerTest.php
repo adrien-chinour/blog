@@ -2,31 +2,35 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Integration\Presentation\Http\Article;
+namespace App\Tests\Integration\Presentation\Http\Page;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-final class GetArticleControllerTest extends WebTestCase
+final class GetPageControllerTest extends WebTestCase
 {
-    public function testGetArticleWillReturnJsonArticle(): void
+    public function testGetPageWillReturnJsonPage(): void
     {
         $client = static::createClient();
 
-        $client->request('GET', '/articles/1');
+        $client->request('GET', '/pages', [
+            'path' => '/about/',
+        ]);
 
         $this->assertResponseIsSuccessful();
         $this->assertResponseFormatSame('json');
     }
 
-    public function testGetArticleWillReturnNotFoundOnUnknownId(): void
+    public function testGetPageWillReturnNotFoundOnUnknownUrl(): void
     {
         $client = static::createClient();
 
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
 
-        $client->request('GET', '/articles/5');
+        $client->request('GET', '/pages', [
+            'path' => '/unknown/',
+        ]);
 
         $this->assertResponseStatusCodeSame(404);
     }
