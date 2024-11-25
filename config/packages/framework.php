@@ -102,6 +102,16 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ]);
 
     $framework->httpClient()
+        ->scopedClient('strapi.client', [
+            'base_uri' => '%env(STRAPI_HOST)%',
+            'headers' => array(
+                'Content-Type' => APPLICATION_JSON,
+                'Accept' => APPLICATION_JSON,
+                'Authorization' => 'Bearer %env(STRAPI_TOKEN)%',
+            ),
+        ]);
+
+    $framework->httpClient()
         ->scopedClient('baserow.client', [
             'base_uri' => 'https://api.baserow.io',
             'headers' => [

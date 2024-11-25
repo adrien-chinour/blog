@@ -6,6 +6,7 @@ use App\Domain\Blogging\BlogArticleRepository;
 use App\Domain\Blogging\BlogArticleSearchRepository;
 use App\Domain\Coding\ProjectRepository;
 use App\Domain\Config\FeatureRepository;
+use App\Domain\Layout\PageRepository;
 use App\Domain\Social\CommentRepository;
 use App\Infrastructure\Meilisearch\MeilisearchClientFactory;
 use App\Infrastructure\Repository\BaserowCommentRepository;
@@ -18,6 +19,7 @@ use App\Infrastructure\Repository\InMemoryCommentRepository;
 use App\Infrastructure\Repository\InMemoryFeatureRepository;
 use App\Infrastructure\Repository\InMemoryProjectRepository;
 use App\Infrastructure\Repository\MeilisearchBlogArticleSearchRepository;
+use App\Infrastructure\Repository\StrapiPageRepository;
 use App\Tests\Factory\Repository\InMemoryBlogArticleRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryCommentRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryFeatureRepositoryFactory;
@@ -60,6 +62,7 @@ return function (ContainerConfigurator $container): void {
     $services->alias(ProjectRepository::class, GithubProjectRepository::class);
     $services->alias(FeatureRepository::class, BaserowFeatureRepository::class);
     $services->alias(CommentRepository::class, BaserowCommentRepository::class);
+    $services->alias(PageRepository::class, StrapiPageRepository::class);
 
     /**
      * Override repositories on test environnement with InMemory implementation

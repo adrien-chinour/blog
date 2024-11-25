@@ -53,6 +53,11 @@ GET {{host}}/features
 Content-Type: application/json
 
 ###
+# @name Get Page
+GET {{host}}/pages?path=/a-propos/
+Content-Type: application/json
+
+###
 # @name Cache Invalidation by tag
 GET {{host}}/cache/invalidation?tag[]=project
 Content-Type: application/json

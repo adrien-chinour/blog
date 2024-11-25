@@ -1,0 +1,2 @@
+GET {{strapiHost}}/api/pages?filters[url][$eq]=/a-propos/
+Authorization: Bearer {{strapiKey}}

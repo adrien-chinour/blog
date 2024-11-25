@@ -95,7 +95,7 @@
             "composer validate --strict",
             "vendor/bin/phpstan analyse",
             "vendor/bin/ecs check",
-            "vendor/bin/arkitect check --config=tests/Architecture/arkitect.php"
+            "vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php"
         ],
         "test": [
             "bin/phpunit"
