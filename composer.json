@@ -10,7 +10,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
-        "league/commonmark": "2.4.*",
+        "league/commonmark": "2.6.*",
         "meilisearch/meilisearch-php": "^1.10",
         "nyholm/psr7": "^1.0",
         "runtime/frankenphp-symfony": "^0.2.0",
