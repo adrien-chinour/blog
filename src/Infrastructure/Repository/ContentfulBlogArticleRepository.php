@@ -6,12 +6,12 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogArticleRepository;
-use App\Infrastructure\Contentful\Http\ContentfulApiClient;
-use App\Infrastructure\Contentful\Model\ContentType\BlogPage;
-use App\Infrastructure\Contentful\Model\ContentType\BlogPageCollection;
-use App\Infrastructure\Contentful\Model\Factory\BlogArticleFactory;
-use App\Infrastructure\Contentful\Repository\AbstractContentfulRepository;
-use App\Infrastructure\GraphQL\GraphQLQueryBuilder;
+use App\Infrastructure\Component\GraphQL\GraphQLQueryBuilder;
+use App\Infrastructure\External\Contentful\Http\ContentfulApiClient;
+use App\Infrastructure\External\Contentful\Model\ContentType\BlogPage;
+use App\Infrastructure\External\Contentful\Model\ContentType\BlogPageCollection;
+use App\Infrastructure\External\Contentful\Model\Factory\BlogArticleFactory;
+use App\Infrastructure\External\Contentful\Repository\AbstractContentfulRepository;
 use Symfony\Component\Serializer\SerializerInterface;
 use Throwable;
 

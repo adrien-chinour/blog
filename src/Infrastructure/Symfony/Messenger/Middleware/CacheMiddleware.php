@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Symfony\Messenger\Middleware;
 
-use App\Infrastructure\Cache\QueryCacheConfig;
-use App\Infrastructure\Cache\QueryCacheResolver;
+use App\Infrastructure\Component\Cache\QueryCacheConfig;
+use App\Infrastructure\Component\Cache\QueryCacheResolver;
 use Psr\Cache\CacheException;
 use Psr\Cache\InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;

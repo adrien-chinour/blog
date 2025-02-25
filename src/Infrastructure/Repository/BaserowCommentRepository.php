@@ -6,7 +6,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Social\CommentRepository as CommentRepositoryInterface;
 use App\Domain\Social\Exception\FailToPublishCommentException;
-use App\Infrastructure\Baserow\Http\BaserowApiClient;
+use App\Infrastructure\External\Baserow\Http\BaserowApiClient;
 use DateTimeImmutable;
 
 final readonly class BaserowCommentRepository implements CommentRepositoryInterface

@@ -6,8 +6,8 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Layout\Page;
 use App\Domain\Layout\PageRepository;
-use App\Infrastructure\Strapi\Http\StrapiApiClient;
-use App\Infrastructure\Strapi\Model\Factory\StrapiPageFactory;
+use App\Infrastructure\External\Strapi\Http\StrapiApiClient;
+use App\Infrastructure\External\Strapi\Model\Factory\StrapiPageFactory;
 
 final readonly class StrapiPageRepository implements PageRepository
 {

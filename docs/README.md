@@ -114,7 +114,7 @@ final readonly class GetArticleQuery implements CacheableQueryInterface
 - ttl : cache duration
 - tags : allow to invalidate multiple cache entries by tag
 
-> To see more, cache implementation is made on `App\Infrastructure\Cache` and used by a Symfony Messenger
+> To see more, cache implementation is made on `App\Infrastructure\Component\Cache` and used by a Symfony Messenger
 > middleware : `App\Infrastructure\Symfony\Messenger\Middleware\CacheMiddleware`
 
 ## Cache invalidation

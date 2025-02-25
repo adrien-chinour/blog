@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repository;
 
 use App\Domain\Coding\ProjectRepository;
-use App\Infrastructure\Github\Http\GithubApiClient;
-use App\Infrastructure\Github\Model\Factory\ProjectFactory;
+use App\Infrastructure\External\Github\Http\GithubApiClient;
+use App\Infrastructure\External\Github\Model\Factory\ProjectFactory;
 
 final readonly class GithubProjectRepository implements ProjectRepository
 {

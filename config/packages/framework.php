@@ -1,6 +1,6 @@
 <?php
 
-use App\Infrastructure\Contentful\Webhook\ContentfulRequestParser;
+use App\Infrastructure\External\Contentful\Webhook\ContentfulRequestParser;
 use App\Infrastructure\Symfony\Messenger\Middleware\CacheMiddleware;
 use App\Infrastructure\Symfony\Messenger\Middleware\LoggerMiddleware;
 use App\Infrastructure\Symfony\Messenger\Middleware\StopwatchMiddleware;

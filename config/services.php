@@ -8,7 +8,8 @@ use App\Domain\Coding\ProjectRepository;
 use App\Domain\Config\FeatureRepository;
 use App\Domain\Layout\PageRepository;
 use App\Domain\Social\CommentRepository;
-use App\Infrastructure\Meilisearch\MeilisearchClientFactory;
+use App\Infrastructure\External\Meilisearch\MeilisearchClientFactory;
+use App\Infrastructure\External\MongoDb\MongoDbClientFactory;
 use App\Infrastructure\Repository\BaserowCommentRepository;
 use App\Infrastructure\Repository\BaserowFeatureRepository;
 use App\Infrastructure\Repository\ContentfulBlogArticleRepository;
@@ -26,7 +27,7 @@ use App\Tests\Factory\Repository\InMemoryCommentRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryFeatureRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryPageRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryProjectRepositoryFactory;
-use Meilisearch\Client;
+use Meilisearch\Client as MeilisearchClient;
 
 return function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -53,7 +54,7 @@ return function (ContainerConfigurator $container): void {
     /**
      * Service factories
      */
-    $services->set(Client::class)->factory(service(MeilisearchClientFactory::class));
+    $services->set(MeilisearchClient::class)->factory(service(MeilisearchClientFactory::class));
 
     /**
      * Repository implementations used on dev/prod environnements
