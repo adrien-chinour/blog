@@ -10,7 +10,8 @@ final readonly class MeilisearchClientFactory
 {
     public function __construct(
         private string $meilisearchHost,
-        #[\SensitiveParameter] private string $meilisearchToken,
+        #[\SensitiveParameter]
+        private string $meilisearchToken,
     ) {}
 
     public function __invoke(): Client
