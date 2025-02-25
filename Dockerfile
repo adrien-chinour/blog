@@ -33,6 +33,7 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
+		mongodb \
 	;
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
