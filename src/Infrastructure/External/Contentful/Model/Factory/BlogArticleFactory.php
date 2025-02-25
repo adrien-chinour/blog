@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\External\Contentful\Model\Factory;
 
 use App\Domain\Blogging\BlogArticle;
-use App\Infrastructure\ContentParser\ContentParserInterface;
+use App\Infrastructure\Component\ContentParser\ContentParserInterface;
 use App\Infrastructure\External\Contentful\Model\ContentType\BlogPage;
 use App\Infrastructure\External\Contentful\Model\ContentType\BlogPageCollection;
 use App\Infrastructure\External\Contentful\Model\ContentTypes;

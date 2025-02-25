@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\ContentParser;
+namespace App\Infrastructure\Component\ContentParser;
 
 use App\Domain\Blogging\Exception\ContentRendererException;
 
