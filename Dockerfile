@@ -33,7 +33,7 @@ RUN set -eux; \
 		intl \
 		opcache \
 		zip \
-		mongodb \
+		opentelemetry \
 	;
 
 # https://getcomposer.org/doc/03-cli.md#composer-allow-superuser
