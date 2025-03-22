@@ -9,7 +9,6 @@ use App\Domain\Config\FeatureRepository;
 use App\Domain\Layout\PageRepository;
 use App\Domain\Social\CommentRepository;
 use App\Infrastructure\External\Meilisearch\MeilisearchClientFactory;
-use App\Infrastructure\External\MongoDb\MongoDbClientFactory;
 use App\Infrastructure\Repository\BaserowCommentRepository;
 use App\Infrastructure\Repository\BaserowFeatureRepository;
 use App\Infrastructure\Repository\ContentfulBlogArticleRepository;
