@@ -10,9 +10,13 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-intl": "*",
+        "ext-opentelemetry": "*",
         "league/commonmark": "2.6.*",
         "meilisearch/meilisearch-php": "^1.10",
         "nyholm/psr7": "^1.0",
+        "open-telemetry/exporter-otlp": "^1.2",
+        "open-telemetry/opentelemetry-auto-symfony": "^1.0",
+        "open-telemetry/sdk": "^1.2",
         "runtime/frankenphp-symfony": "^0.2.0",
         "symfony/config": "7.1.*",
         "symfony/console": "7.1.*",
@@ -53,18 +57,22 @@
     },
     "config": {
         "allow-plugins": {
+            "cyclonedx/cyclonedx-php-composer": true,
             "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
             "symfony/runtime": true,
-            "phpstan/extension-installer": true,
-            "cyclonedx/cyclonedx-php-composer": true
+            "tbachert/spi": true
         },
         "sort-packages": true
     },
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        }
+        },
+        "files": [
+            "src/Infrastructure/Component/OpenTelemetry/register.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

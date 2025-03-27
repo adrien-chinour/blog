@@ -8,6 +8,12 @@ services:
         environment:
             SERVER_NAME: ":8080"
             XDEBUG_MODE: "${XDEBUG_MODE:-off}"
+            OTEL_PHP_AUTOLOAD_ENABLED: "true"
+            OTEL_SERVICE_NAME: "blog"
+            OTEL_TRACES_EXPORTER: "otlp"
+            OTEL_EXPORTER_OTLP_PROTOCOL: "http/protobuf"
+            OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector:4318"
+            OTEL_PROPAGATORS: "baggage,tracecontext"
         volumes:
             - ./:/app
             - ./.docker/frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
@@ -28,6 +34,23 @@ services:
             - meilisearch_data:/meili_data
         environment:
             MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-!ChangeMe!}
+
+    otel-collector:
+        container_name: blog.otlp-collector
+        image: otel/opentelemetry-collector-contrib:latest
+        command: [ "--config", "/etc/otel/config.yaml" ]
+        volumes:
+            - ./otel-config.yaml:/etc/otel/config.yaml
+        ports:
+            - "4317:4317"
+            - "4318:4318"
+        depends_on: [ zipkin ]
+
+    zipkin:
+        container_name: blog.zipkin
+        image: openzipkin/zipkin:latest
+        ports:
+            - "9411:9411"
 
 volumes:
     meilisearch_data:
