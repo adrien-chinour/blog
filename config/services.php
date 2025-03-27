@@ -48,7 +48,9 @@ return function (ContainerConfigurator $container): void {
     /**
      * Automatically registers App namespace has services
      */
-    $services->load('App\\', '../src/*')->exclude('../src/{DependencyInjection,Entity,Kernel.php}');
+    $services->load('App\\', '../src/*')
+        ->exclude('../src/{DependencyInjection,Entity,Kernel.php}')
+        ->exclude('../src/Infrastructure/Component/OpenTelemetry/*');
 
     /**
      * Service factories
