@@ -22,7 +22,7 @@ final class CreateArticleCommentController extends AbstractController
         private readonly MessageBusInterface $messageBus
     ) {}
 
-    public function __invoke(#[MapRequestPayload] PostCommentDto $commentDto): JsonResponse
+    public function __invoke(#[MapRequestPayload('json')] PostCommentDto $commentDto): JsonResponse
     {
         $this->messageBus->dispatch(new PostArticleCommentCommand(
             $commentDto->articleId,

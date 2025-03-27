@@ -13,7 +13,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request('POST', '/comments');
+        $client->jsonRequest('POST', '/comments');
         $this->assertResponseIsUnprocessable();
     }
 
@@ -21,7 +21,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
     {
         $client = static::createClient();
 
-        $client->request(
+        $client->jsonRequest(
             'POST',
             '/comments',
             parameters: [

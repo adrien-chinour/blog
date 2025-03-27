@@ -37,7 +37,7 @@ POST {{host}}/comments
 Content-Type: application/json
 
 {
-    "articleId": {{id}},
+    "articleId": "{{id}}",
     "username": "adrien",
     "message": "coucou"
 }
