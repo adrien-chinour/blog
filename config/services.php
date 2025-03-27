@@ -10,7 +10,6 @@ use App\Domain\Layout\PageRepository;
 use App\Domain\Social\CommentRepository;
 use App\Infrastructure\External\Meilisearch\MeilisearchClientFactory;
 use App\Infrastructure\Repository\BaserowCommentRepository;
-use App\Infrastructure\Repository\BaserowFeatureRepository;
 use App\Infrastructure\Repository\ContentfulBlogArticleRepository;
 use App\Infrastructure\Repository\GithubProjectRepository;
 use App\Infrastructure\Repository\InMemoryBlogArticleRepository;
@@ -20,6 +19,7 @@ use App\Infrastructure\Repository\InMemoryFeatureRepository;
 use App\Infrastructure\Repository\InMemoryPageRepository;
 use App\Infrastructure\Repository\InMemoryProjectRepository;
 use App\Infrastructure\Repository\MeilisearchBlogArticleSearchRepository;
+use App\Infrastructure\Repository\StrapiFeatureRepository;
 use App\Infrastructure\Repository\StrapiPageRepository;
 use App\Tests\Factory\Repository\InMemoryBlogArticleRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryCommentRepositoryFactory;
@@ -64,7 +64,7 @@ return function (ContainerConfigurator $container): void {
     $services->alias(BlogArticleRepository::class, ContentfulBlogArticleRepository::class);
     $services->alias(BlogArticleSearchRepository::class, MeilisearchBlogArticleSearchRepository::class);
     $services->alias(ProjectRepository::class, GithubProjectRepository::class);
-    $services->alias(FeatureRepository::class, BaserowFeatureRepository::class);
+    $services->alias(FeatureRepository::class, StrapiFeatureRepository::class);
     $services->alias(CommentRepository::class, BaserowCommentRepository::class);
     $services->alias(PageRepository::class, StrapiPageRepository::class);
 

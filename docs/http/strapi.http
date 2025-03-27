@@ -1,2 +1,9 @@
+###
+# @name Get Strapi Page
 GET {{strapiHost}}/api/pages?filters[url][$eq]=/a-propos/
+Authorization: Bearer {{strapiKey}}
+
+###
+# @name Get Strapi Features
+GET {{strapiHost}}/api/features
 Authorization: Bearer {{strapiKey}}
