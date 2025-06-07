@@ -9,7 +9,6 @@ use App\Domain\Config\FeatureRepository;
 use App\Domain\Layout\PageRepository;
 use App\Domain\Social\CommentRepository;
 use App\Infrastructure\External\Meilisearch\MeilisearchClientFactory;
-use App\Infrastructure\Repository\BaserowCommentRepository;
 use App\Infrastructure\Repository\ContentfulBlogArticleRepository;
 use App\Infrastructure\Repository\GithubProjectRepository;
 use App\Infrastructure\Repository\InMemoryBlogArticleRepository;
