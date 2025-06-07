@@ -3,8 +3,6 @@
 use App\Infrastructure\Symfony\Security\AccessTokenHandler;
 use Symfony\Config\SecurityConfig;
 
-const ADMIN_USER_PROVIDER = 'admin_user_provider';
-
 return static function (SecurityConfig $security): void {
     $security->firewall('dev')
         ->pattern('^/(_(profiler|wdt)|css|images|js)/')
@@ -14,7 +12,7 @@ return static function (SecurityConfig $security): void {
         ->lazy(true)
         ->security(true)
         ->stateless(true)
-        ->provider(ADMIN_USER_PROVIDER);
+        ->provider('admin_user_provider');
 
     $firewall
         ->accessToken()
@@ -24,7 +22,7 @@ return static function (SecurityConfig $security): void {
         ->maxAttempts(3)
         ->interval('60 minutes');
 
-    $security->provider(ADMIN_USER_PROVIDER)
+    $security->provider('admin_user_provider')
         ->memory()
         ->user('admin')
         ->password(null)

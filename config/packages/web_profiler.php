@@ -9,14 +9,12 @@ if (!class_exists('\Symfony\Bundle\WebProfilerBundle\WebProfilerBundle')) {
 
 return static function (WebProfilerConfig $profiler, ContainerConfigurator $container) {
     if ($container->env() === 'dev') {
-        $profiler
-            ->toolbar(true)
-            ->interceptRedirects(false);
+        $profiler->interceptRedirects(false);
+        $profiler->toolbar()->enabled(true);
     }
 
     if ($container->env() === 'test') {
-        $profiler
-            ->toolbar(false)
-            ->interceptRedirects(false);
+        $profiler->interceptRedirects(false);
+        $profiler->toolbar()->enabled(false);
     }
 };

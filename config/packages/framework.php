@@ -29,6 +29,7 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ]);
 
     $framework->propertyInfo()
+        ->withConstructorExtractor(true)
         ->enabled(true);
 
     $framework->serializer()
