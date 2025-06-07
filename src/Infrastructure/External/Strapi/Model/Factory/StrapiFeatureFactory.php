@@ -7,7 +7,7 @@ namespace App\Infrastructure\External\Strapi\Model\Factory;
 use App\Domain\Config\Feature;
 use App\Infrastructure\External\Strapi\Model\ContentType\FeatureContentType;
 
-class StrapiFeatureFactory
+final readonly class StrapiFeatureFactory
 {
     public function createFromModel(FeatureContentType $feature): Feature
     {

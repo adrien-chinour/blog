@@ -7,3 +7,22 @@ Authorization: Bearer {{strapiKey}}
 # @name Get Strapi Features
 GET {{strapiHost}}/api/features
 Authorization: Bearer {{strapiKey}}
+
+###
+# @name Get Strapi Comments
+GET {{strapiHost}}/api/comments?filters[article_id][$eq]=47oxuTsSSzRFR0KtU4mZS5
+Authorization: Bearer {{strapiKey}}
+
+###
+# @name Post Strapi Comment
+POST {{strapiHost}}/api/comments
+Authorization: Bearer {{strapiKey}}
+Content-Type: application/json
+
+{
+    "data": {
+        "username": "adrien",
+        "message": "coucou",
+        "article_id": "47oxuTsSSzRFR0KtU4mZS5"
+    }
+}

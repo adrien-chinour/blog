@@ -19,6 +19,7 @@ use App\Infrastructure\Repository\InMemoryFeatureRepository;
 use App\Infrastructure\Repository\InMemoryPageRepository;
 use App\Infrastructure\Repository\InMemoryProjectRepository;
 use App\Infrastructure\Repository\MeilisearchBlogArticleSearchRepository;
+use App\Infrastructure\Repository\StrapiCommentRepository;
 use App\Infrastructure\Repository\StrapiFeatureRepository;
 use App\Infrastructure\Repository\StrapiPageRepository;
 use App\Tests\Factory\Repository\InMemoryBlogArticleRepositoryFactory;
@@ -41,9 +42,7 @@ return function (ContainerConfigurator $container): void {
         ->bind('$contentfulSpaceId', '%env(CONTENTFUL_SPACE_ID)%')
         ->bind('$adminToken', '%env(ADMIN_TOKEN)%')
         ->bind('$meilisearchHost', '%env(MEILISEARCH_HOST)%')
-        ->bind('$meilisearchToken', '%env(MEILISEARCH_TOKEN)%')
-        ->bind('$baserowCommentTable', '%env(BASEROW_COMMENT_TABLE)%')
-        ->bind('$baserowFeatureTable', '%env(BASEROW_FEATURE_TABLE)%');
+        ->bind('$meilisearchToken', '%env(MEILISEARCH_TOKEN)%');
 
     /**
      * Automatically registers App namespace has services
@@ -65,7 +64,7 @@ return function (ContainerConfigurator $container): void {
     $services->alias(BlogArticleSearchRepository::class, MeilisearchBlogArticleSearchRepository::class);
     $services->alias(ProjectRepository::class, GithubProjectRepository::class);
     $services->alias(FeatureRepository::class, StrapiFeatureRepository::class);
-    $services->alias(CommentRepository::class, BaserowCommentRepository::class);
+    $services->alias(CommentRepository::class, StrapiCommentRepository::class);
     $services->alias(PageRepository::class, StrapiPageRepository::class);
 
     /**

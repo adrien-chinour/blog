@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\External\Strapi\Http;
 
+use App\Infrastructure\External\Strapi\Model\ContentType\CommentContentType;
 use App\Infrastructure\External\Strapi\Model\ContentType\FeatureContentType;
 use App\Infrastructure\External\Strapi\Model\ContentType\PageContentType;
 use App\Infrastructure\External\Strapi\Model\Core\DocumentCollection;
+use DateTimeImmutable;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -79,6 +81,57 @@ final class StrapiApiClient implements LoggerAwareInterface
         }
 
         return $features;
+    }
+
+    /**
+     * @return CommentContentType[]
+     */
+    public function getArticleComments(string $articleIdentifier): array
+    {
+        try {
+            $response = $this->strapiClient->request('GET', '/api/comments', [
+                'query' => [
+                    'filters' => [
+                        'article_id' => [
+                            '$eq' => $articleIdentifier,
+                        ]
+                    ]
+                ]
+            ]);
+
+            $comments = array_map(
+                fn ($item) => $this->serializer->deserialize(json_encode($item), CommentContentType::class, JsonEncoder::FORMAT),
+                $this->toCollection($response)->data ?? []
+            );
+            Assert::allIsInstanceOf($comments, CommentContentType::class);
+        } catch (Throwable $throwable) {
+            $this->logger?->critical($throwable->getMessage());
+
+            return [];
+        }
+
+        return $comments;
+    }
+
+    public function postComment(string $articleIdentifier, string $username, string $message, DateTimeImmutable $publishedAt): void
+    {
+        try {
+            $response = $this->strapiClient->request('POST', '/api/comments', [
+                'body' => [
+                    'data' => [
+                        'article_id' => $articleIdentifier,
+                        'username' => $username,
+                        'message' => $message
+                    ]
+                ]
+            ]);
+
+            if (201 !== $response->getStatusCode()) {
+                throw new \HttpException(sprintf('Unexpected status code %d', $response->getStatusCode()));
+            }
+        } catch (Throwable $throwable) {
+            $this->logger?->critical($throwable->getMessage());
+        }
     }
 
     /**
