@@ -1,4 +1,4 @@
-@id = 6J0hWoFCuiuWQtjp3K1mXn
+@id = 47oxuTsSSzRFR0KtU4mZS5
 @slug = les-structures-de-donnees-en-php
 
 ###
@@ -54,7 +54,7 @@ Content-Type: application/json
 
 ###
 # @name Get Page
-GET {{host}}/pages?path=/a-propos/
+GET {{host}}/pages?path=/a-propos
 Content-Type: application/json
 
 ###
