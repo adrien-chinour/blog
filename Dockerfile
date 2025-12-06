@@ -3,7 +3,7 @@
 # Versions
 FROM dunglas/frankenphp:1-php8.4 AS frankenphp_upstream
 
-FROM ghcr.io/adrien-chinour/blog:base-php8.3 AS frankenphp_base_upstream
+FROM ghcr.io/adrien-chinour/blog:base-php8.4 AS frankenphp_base_upstream
 
 # The different stages of this Dockerfile are meant to be built into separate images
 # https://docs.docker.com/develop/develop-images/multistage-build/#stop-at-a-specific-build-stage
