@@ -1,9 +1,9 @@
-name: Publish ghcr.io/adrien-chinour/blog:base-php8.5
+name: Publish Docker Base Image
 on:
     workflow_dispatch:
 
 env:
-    IMAGE_NAME: "ghcr.io/adrien-chinour/blog:base-php8.5"
+    IMAGE_NAME: "ghcr.io/adrien-chinour/blog:base-php8.4"
 
 jobs:
     build-and-push-image:

@@ -1,7 +1,7 @@
 #syntax=docker/dockerfile:1
 
 # Versions
-FROM dunglas/frankenphp:1-php8.5 AS frankenphp_upstream
+FROM dunglas/frankenphp:1-php8.4 AS frankenphp_upstream
 
 FROM ghcr.io/adrien-chinour/blog:base-php8.3 AS frankenphp_base_upstream
 
