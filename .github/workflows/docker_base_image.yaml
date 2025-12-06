@@ -1,9 +1,9 @@
-name: Publish ghcr.io/adrien-chinour/blog:base-php8.3
+name: Publish ghcr.io/adrien-chinour/blog:base-php8.5
 on:
     workflow_dispatch:
 
 env:
-    IMAGE_NAME: "ghcr.io/adrien-chinour/blog:base-php8.3"
+    IMAGE_NAME: "ghcr.io/adrien-chinour/blog:base-php8.5"
 
 jobs:
     build-and-push-image:
