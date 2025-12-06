@@ -27,7 +27,7 @@
         "symfony/http-client": "7.4.*",
         "symfony/lock": "7.4.*",
         "symfony/messenger": "7.4.*",
-        "symfony/monolog-bundle": "^3.10",
+        "symfony/monolog-bundle": "^4.0",
         "symfony/property-access": "7.4.*",
         "symfony/rate-limiter": "7.4.*",
         "symfony/runtime": "7.4.*",
