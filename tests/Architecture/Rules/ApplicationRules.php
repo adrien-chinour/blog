@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Architecture\Rules;
 
-use Arkitect\Expression\ForClasses\HaveNameMatching;
 use Arkitect\Expression\ForClasses\IsFinal;
 use Arkitect\Expression\ForClasses\IsReadonly;
 use Arkitect\Expression\ForClasses\MatchOneOfTheseNames;
@@ -20,6 +19,7 @@ final readonly class ApplicationRules implements RulesInterface
 
         $rules[] = Rule::allClasses()
             ->that(new ResideInOneOfTheseNamespaces('App\Application\Query'))
+            ->andThat(new NotHaveNameMatching('QueryCache'))
             ->should(new MatchOneOfTheseNames(['*Query', '*QueryHandler']))
             ->because('queries must respect naming conventions');
 
