@@ -9,6 +9,7 @@ parameters:
         - '#of class ReflectionClass constructor#'
         - '#sprintf expects .+, mixed given#'
         - '#generic class ReflectionClass but does not specify its types#'
+    treatPhpDocTypesAsCertain: false
 
 services:
     -

@@ -24,8 +24,6 @@ abstract class AbstractContentfulRepository
             $this->queryBuilder->buildQuery($reflectionClass = new ReflectionClass($resource), $filters)
         );
 
-        Assert::nullOrIsArray($result);
-
         if ($hydrate) {
             $result = $this->serializer->deserialize(
                 json_encode($result[$this->queryBuilder->getName($reflectionClass)]),

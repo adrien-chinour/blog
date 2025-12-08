@@ -29,7 +29,7 @@ final class ContentfulRequestParser extends AbstractRequestParser
         ]);
     }
 
-    protected function doParse(Request $request, #[SensitiveParameter] string $secret): ?RemoteEvent
+    protected function doParse(Request $request, #[SensitiveParameter] string $secret): RemoteEvent
     {
         $timestamp = (int)$request->headers->get('x-contentful-timestamp');
         if (($timestamp / 1000) + 60 < time()) {

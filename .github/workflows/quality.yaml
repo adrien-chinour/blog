@@ -45,7 +45,7 @@ jobs:
                 run: vendor/bin/ecs --no-progress-bar
 
             -   name: "Static Code validation with PHPStan"
-                run: vendor/bin/phpstan analyse --no-progress
+                run: vendor/bin/phpstan analyse --no-progress --memory-limit=-1
 
             -   name: "Run PHPUnit tests"
                 run: bin/phpunit --testsuite=All --coverage-clover=coverage.xml
