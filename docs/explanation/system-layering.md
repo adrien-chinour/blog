@@ -73,8 +73,10 @@ The project uses [PHPArkitect](https://github.com/phparkitect/phparkitect) to en
 
 Run architecture checks:
 ```bash
-composer quality
+make quality
 # or
-vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php
+docker compose run --rm php composer run-script quality
+# or
+docker compose run --rm php vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php
 ```
 

@@ -50,9 +50,16 @@ The CI pipeline enforces:
 Run quality checks locally before pushing:
 
 ```bash
-composer quality  # All quality checks
-composer test     # Run tests only
-composer test-unit
-composer test-integration
+# Using Makefile (recommended)
+make quality      # All quality checks
+make test         # Run tests only
+make test-unit
+make test-integration
+
+# Or using docker compose directly
+docker compose run --rm php composer run-script quality
+docker compose run --rm php vendor/bin/phpunit
+docker compose run --rm php vendor/bin/phpunit --testsuite Unit
+docker compose run --rm php vendor/bin/phpunit --testsuite Integration
 ```
 

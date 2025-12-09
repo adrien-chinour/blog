@@ -7,7 +7,11 @@ This guide explains how to run code quality checks locally.
 Run all quality checks (validation, static analysis, coding standards, architecture):
 
 ```bash
-composer quality
+# Using Makefile (recommended)
+make quality
+
+# Or using docker compose directly
+docker compose run --rm php composer run-script quality
 ```
 
 This command runs:
@@ -16,32 +20,24 @@ This command runs:
 - `ecs check`: Coding standards with Easy Coding Standard
 - `phparkitect check`: Architecture rules validation
 
-## Using Docker
-
-If you're using Docker:
-
-```bash
-make quality
-```
-
 ## Individual Checks
 
 ### Code Style (ECS)
 
 ```bash
-vendor/bin/ecs check
+docker compose run --rm php vendor/bin/ecs check
 ```
 
 ### Static Analysis (PHPStan)
 
 ```bash
-vendor/bin/phpstan analyse --memory-limit=-1
+docker compose run --rm php vendor/bin/phpstan analyse --memory-limit=-1
 ```
 
 ### Architecture Rules (PHPArkitect)
 
 ```bash
-vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php
+docker compose run --rm php vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php
 ```
 
 ## Fixing Code Style Issues
@@ -49,6 +45,6 @@ vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php
 ECS can automatically fix many code style issues:
 
 ```bash
-vendor/bin/ecs check --fix
+docker compose run --rm php vendor/bin/ecs check --fix
 ```
 

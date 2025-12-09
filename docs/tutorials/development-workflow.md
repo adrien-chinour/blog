@@ -28,6 +28,8 @@ Before committing, run quality checks:
 
 ```bash
 make quality
+# or
+docker compose run --rm php composer run-script quality
 ```
 
 This ensures:
@@ -41,6 +43,8 @@ Ensure all tests pass:
 
 ```bash
 make test
+# or
+docker compose run --rm php vendor/bin/phpunit
 ```
 
 Or run specific test suites:
@@ -48,6 +52,9 @@ Or run specific test suites:
 ```bash
 make test-unit
 make test-integration
+# or
+docker compose run --rm php vendor/bin/phpunit --testsuite Unit
+docker compose run --rm php vendor/bin/phpunit --testsuite Integration
 ```
 
 ## Step 5: Commit Your Changes
@@ -88,18 +95,25 @@ make bash  # Opens shell in PHP container
 ```bash
 make console c='about'  # Run any Symfony command
 make cc                 # Clear cache
+# or
+docker compose run --rm php bin/console about
+docker compose run --rm php bin/console cache:clear
 ```
 
 ### Viewing Logs
 
 ```bash
 make logs  # View live container logs
+# or
+docker compose logs --tail=0 --follow
 ```
 
 ### Installing New Dependencies
 
 ```bash
 make composer c='require vendor/package'
+# or
+docker compose run --rm php composer require vendor/package
 ```
 
 ## See Also

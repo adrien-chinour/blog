@@ -60,9 +60,7 @@ Returns an array of article IDs matching the search query.
 
 ### Automatic Indexing
 
-Articles are automatically indexed when:
-- Published via Contentful webhook
-- `ArticlePublishedEvent` is dispatched
+Articles can be indexed manually using the console command. Automatic indexing via events is not currently configured.
 
 ### Manual Indexing
 
@@ -98,7 +96,9 @@ Advanced filtering can be added by extending the search implementation.
 ### Index Articles
 
 ```bash
-php bin/console app:index-articles
+make console c='app:index-articles'
+# or
+docker compose run --rm php bin/console app:index-articles
 ```
 
 Indexes all articles from Contentful into Meilisearch.

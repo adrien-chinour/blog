@@ -12,7 +12,6 @@
   * [Using Bruno API Collection](how-to-guides/using-bruno-api-collection.md)
   * [Configuring External Services](how-to-guides/configuring-external-services.md)
   * [Using Docker](how-to-guides/using-docker.md)
-  * [Setting Up Webhooks](how-to-guides/setting-up-webhooks.md)
   * [Indexing Articles](how-to-guides/indexing-articles.md)
 
 * **Reference**
@@ -25,7 +24,6 @@
   * [CI/CD Workflows](reference/cicd-workflows.md)
   * [Query/Command Bus](reference/query-command-bus.md)
   * [Docker Services](reference/docker-services.md)
-  * [Webhooks](reference/webhooks.md)
   * [Search](reference/search.md)
   * [Observability](reference/observability.md)
 

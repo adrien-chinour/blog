@@ -126,16 +126,6 @@ Invalidates cache entries by tag. Requires authentication.
 
 **Authentication:** Bearer token required
 
-## Webhooks
-
-### Contentful Webhook
-
-```
-POST /webhook/contentful
-```
-
-Handles Contentful webhook events for content updates.
-
 ## Response Format
 
 All endpoints return JSON responses. Error responses follow this format:

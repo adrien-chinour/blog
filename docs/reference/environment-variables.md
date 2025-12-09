@@ -8,7 +8,6 @@ Complete reference of all environment variables used in the project.
 
 - `CONTENTFUL_SPACE_ID`: Contentful space identifier
 - `CONTENTFUL_ACCESS_TOKEN`: Contentful API access token
-- `CONTENTFUL_WEBHOOK_SECRET`: Secret for validating Contentful webhooks
 
 ### GitHub Integration
 

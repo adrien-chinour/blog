@@ -4,13 +4,7 @@ This guide explains how to index articles in Meilisearch for search functionalit
 
 ## Overview
 
-Articles need to be indexed in Meilisearch before they can be searched. This happens automatically when:
-- An article is published via Contentful webhook
-- Manual indexing via console command
-
-## Automatic Indexing
-
-When a Contentful webhook triggers `ArticlePublishedEvent`, the article is automatically indexed in Meilisearch.
+Articles need to be indexed in Meilisearch before they can be searched. This is done via manual indexing using a console command.
 
 ## Manual Indexing
 
@@ -20,6 +14,8 @@ Index all articles manually:
 
 ```bash
 make console c='app:index-articles'
+# or
+docker compose run --rm php bin/console app:index-articles
 ```
 
 This command:
@@ -29,7 +25,7 @@ This command:
 
 ### Indexing Specific Article
 
-To index a specific article, you can trigger the webhook manually or use the application's event system.
+To index a specific article, you can use the application's event system or manually trigger indexing through the console command.
 
 ## Meilisearch Index Structure
 
@@ -77,6 +73,8 @@ docker compose up -d search
 
 # Re-index articles
 make console c='app:index-articles'
+# or
+docker compose run --rm php bin/console app:index-articles
 ```
 
 ## Troubleshooting
@@ -86,6 +84,8 @@ make console c='app:index-articles'
 1. Verify articles are indexed:
    ```bash
    make console c='app:index-articles'
+   # or
+   docker compose run --rm php bin/console app:index-articles
    ```
 
 2. Check Meilisearch is running:
@@ -105,6 +105,8 @@ Check application logs for indexing errors:
 
 ```bash
 make logs | grep -i meilisearch
+# or
+docker compose logs | grep -i meilisearch
 ```
 
 ## See Also

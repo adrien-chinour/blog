@@ -37,7 +37,6 @@ The Bruno collection includes:
 - **Pages**: Get static pages
 - **Features**: Feature flags management
 - **Cache**: Cache invalidation endpoints
-- **Webhooks**: Contentful webhook handlers
 
 ## Using the Collection
 

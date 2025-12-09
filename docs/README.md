@@ -25,7 +25,6 @@ Task-oriented instructions for common tasks:
 - [How to Use Bruno API Collection](how-to-guides/using-bruno-api-collection.md)
 - [How to Configure External Services](how-to-guides/configuring-external-services.md)
 - [How to Use Docker](how-to-guides/using-docker.md)
-- [How to Set Up Webhooks](how-to-guides/setting-up-webhooks.md)
 - [How to Index Articles](how-to-guides/indexing-articles.md)
 
 ### Reference
@@ -39,7 +38,6 @@ Technical reference documentation:
 - [CI/CD Workflows](reference/cicd-workflows.md)
 - [Query/Command Bus](reference/query-command-bus.md)
 - [Docker Services](reference/docker-services.md)
-- [Webhooks](reference/webhooks.md)
 - [Search](reference/search.md)
 - [Observability](reference/observability.md)
 

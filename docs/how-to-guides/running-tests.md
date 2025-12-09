@@ -4,12 +4,14 @@ This guide explains how to run tests in the project.
 
 ## Running All Tests
 
-To run the complete test suite:
+To run the complete test suite using Docker:
 
 ```bash
-composer test
-# or
-bin/phpunit
+# Using Makefile (recommended)
+make test
+
+# Or using docker compose directly
+docker compose run --rm php vendor/bin/phpunit
 ```
 
 ## Running Specific Test Suites
@@ -17,17 +19,31 @@ bin/phpunit
 ### Unit Tests Only
 
 ```bash
-composer test-unit
-# or
-bin/phpunit --testsuite Unit
+# Using Makefile (recommended)
+make test-unit
+
+# Or using docker compose directly
+docker compose run --rm php vendor/bin/phpunit --testsuite Unit
 ```
 
 ### Integration Tests Only
 
 ```bash
-composer test-integration
-# or
-bin/phpunit --testsuite Integration
+# Using Makefile (recommended)
+make test-integration
+
+# Or using docker compose directly
+docker compose run --rm php vendor/bin/phpunit --testsuite Integration
+```
+
+### Running Specific Test Files
+
+```bash
+# Run a specific test file
+docker compose run --rm php vendor/bin/phpunit tests/Unit/Domain/Social/CommentValidatorTest.php
+
+# Run tests in a specific directory
+docker compose run --rm php vendor/bin/phpunit tests/Unit/Domain
 ```
 
 ## Test Structure
@@ -38,11 +54,23 @@ The project organizes tests into:
 - **Integration Tests** (`tests/Integration/`): Test component interactions and HTTP endpoints
 - **Architecture Tests** (`tests/Architecture/`): Enforce architectural rules using PHPArkitect
 
-## Using Docker
+## Debugging Tests
 
-If you're using Docker, run tests inside the container:
+To debug tests or run PHP commands in the container:
 
 ```bash
-make test
+# Open a shell in the container
+make bash
+# or
+docker compose run --rm php bash
+
+# Then run commands directly inside the container
+vendor/bin/phpunit tests/Unit/Domain
+```
+
+Or run commands directly with docker compose:
+
+```bash
+docker compose run --rm php vendor/bin/phpunit tests/Unit/Domain
 ```
 

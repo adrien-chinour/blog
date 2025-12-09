@@ -13,7 +13,6 @@ Add to your `.env.local`:
 ```env
 CONTENTFUL_SPACE_ID=your-space-id
 CONTENTFUL_ACCESS_TOKEN=your-access-token
-CONTENTFUL_WEBHOOK_SECRET=your-webhook-secret
 ```
 
 ### Getting Credentials
@@ -22,8 +21,6 @@ CONTENTFUL_WEBHOOK_SECRET=your-webhook-secret
 2. Navigate to your space
 3. Go to Settings → API keys
 4. Copy the Space ID and Content Delivery API access token
-5. For webhooks, go to Settings → Webhooks and create a webhook
-6. Copy the webhook secret
 
 ### Content Model
 
