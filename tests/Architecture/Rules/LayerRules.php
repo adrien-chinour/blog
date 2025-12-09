@@ -4,32 +4,38 @@ declare(strict_types=1);
 
 namespace App\Tests\Architecture\Rules;
 
-use Arkitect\Expression\ForClasses\NotHaveDependencyOutsideNamespace;
 use Arkitect\Expression\ForClasses\NotResideInTheseNamespaces;
 use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
+use Arkitect\RuleBuilders\Architecture\Architecture;
 use Arkitect\Rules\Rule;
 
 final readonly class LayerRules implements RulesInterface
 {
-    private const APPLICATION_LAYER = 'App\Application';
-    private const DOMAIN_LAYER = 'App\Domain';
-    private const PRESENTATION_LAYER = 'App\Presentation';
-    private const INFRASTRUCTURE_LAYER = 'App\Infrastructure';
-
     public static function rules(): array
     {
         $rules = [];
 
-        $rules[] = Rule::allClasses()
-            ->that(new ResideInOneOfTheseNamespaces(self::INFRASTRUCTURE_LAYER))
-            ->should(new NotResideInTheseNamespaces(self::PRESENTATION_LAYER, self::DOMAIN_LAYER, self::APPLICATION_LAYER))
-            ->because('infrastructure cannot be injected in other layers');
+        // Component Architecture Rules
+        $layeredArchitectureRules = Architecture::withComponents()
 
-        $rules[] = Rule::allClasses()
-            ->that(new ResideInOneOfTheseNamespaces(self::DOMAIN_LAYER))
-            ->should(new NotHaveDependencyOutsideNamespace(self::DOMAIN_LAYER, excludeCoreNamespace: true))
-            ->because('domain must not depend on any other layer');
+            // Layers
+            ->component('Domain')->definedBy('App\Domain\*')
+            ->component('Application')->definedBy('App\Application\*')
+            ->component('Presentation')->definedBy('App\Presentation\*')
+            ->component('Infrastructure')->definedBy('App\Infrastructure\*')
 
-        return $rules;
+            // Symfony Components
+            ->component('ComponentString')->definedBy('Symfony\Component\String')
+            ->component('ComponentValidator')->definedBy('Symfony\Component\Validator')
+            
+            // Rules
+            ->where('Domain')->shouldOnlyDependOnComponents('Domain', 'ComponentValidator', 'ComponentString')
+            ->where('Application')->mayDependOnComponents(componentNames: 'Domain')
+            ->where('Presentation')->mayDependOnComponents('Application')
+            ->where('Infrastructure')->mayDependOnComponents('Domain', 'Application')
+
+            ->rules();
+
+        return iterator_to_array($layeredArchitectureRules);
     }
 }

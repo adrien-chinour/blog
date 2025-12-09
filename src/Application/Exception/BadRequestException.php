@@ -15,4 +15,3 @@ final class BadRequestException extends \RuntimeException
         return new self($message);
     }
 }
-

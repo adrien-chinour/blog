@@ -135,7 +135,7 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
         $escaped = '';
         $length = strlen($value);
 
-        for ($i = 0; $i < $length; $i++) {
+        for ($i = 0; $i < $length; ++$i) {
             $char = $value[$i];
             $code = ord($char);
 

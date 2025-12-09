@@ -49,4 +49,3 @@ final class InvalidCommentException extends \DomainException
         return new self(sprintf('Content contains prohibited material: %s', $reason));
     }
 }
-

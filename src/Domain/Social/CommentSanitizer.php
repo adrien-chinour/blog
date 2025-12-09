@@ -50,22 +50,21 @@ final readonly class CommentSanitizer
         // Remove control characters except newlines (\n = 0x0A) and tabs (\t = 0x09)
         // Control characters: 0x00-0x08, 0x0B-0x0C, 0x0E-0x1F, 0x7F
         $content = $sanitized->toString();
-        $content = preg_replace('/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/', '', $content);
+        $content = preg_replace('/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/', '', $content) ?? '';
         $sanitized = new UnicodeString($content);
 
         // Limit consecutive newlines (max 2 consecutive)
         $content = $sanitized->toString();
-        $content = preg_replace('/\n{3,}/', "\n\n", $content);
+        $content = preg_replace('/\n{3,}/', "\n\n", $content) ?? '';
         $sanitized = new UnicodeString($content);
 
         // Normalize spaces and tabs (multiple -> single space)
         // But preserve newlines for formatting
         $content = $sanitized->toString();
         // Replace multiple spaces/tabs with single space, but keep newlines
-        $content = preg_replace('/[ \t]+/', ' ', $content);
+        $content = preg_replace('/[ \t]+/', ' ', $content) ?? '';
         $sanitized = new UnicodeString($content);
 
         return $sanitized->toString();
     }
 }
-

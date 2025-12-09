@@ -221,4 +221,3 @@ final readonly class CommentValidator
         };
     }
 }
-

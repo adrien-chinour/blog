@@ -22,14 +22,14 @@ use App\Infrastructure\Repository\StrapiCommentRepository;
 use App\Infrastructure\Repository\StrapiFeatureRepository;
 use App\Infrastructure\Repository\StrapiPageRepository;
 use App\Infrastructure\Symfony\EventListener\RateLimiterEventListener;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use App\Tests\Factory\Repository\InMemoryBlogArticleRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryCommentRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryFeatureRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryPageRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryProjectRepositoryFactory;
 use Meilisearch\Client as MeilisearchClient;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 return function (ContainerConfigurator $container): void {
     $services = $container->services();

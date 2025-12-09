@@ -7,7 +7,6 @@ parameters:
     ignoreErrors:
         - '#(has|with) no value type specified in iterable type array#'
         - '#of class ReflectionClass constructor#'
-        - '#sprintf expects .+, mixed given#'
         - '#generic class ReflectionClass but does not specify its types#'
     treatPhpDocTypesAsCertain: false
 

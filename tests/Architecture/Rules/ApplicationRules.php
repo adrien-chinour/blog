@@ -24,7 +24,7 @@ final readonly class ApplicationRules implements RulesInterface
             ->because('queries must respect naming conventions');
 
         $rules[] = Rule::allClasses()
-            ->that(new ResideInOneOfTheseNamespaces('App\Application\Commmand'))
+            ->that(new ResideInOneOfTheseNamespaces('App\Application\Command'))
             ->should(new MatchOneOfTheseNames(['*Command', '*CommandHandler']))
             ->because('commands must respect naming conventions');
 
