@@ -1,0 +1,20 @@
+meta {
+  name: Cache Invalidation by tag
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{host}}/cache/invalidation?tag[]=project
+  body: none
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{token}}
+}
+

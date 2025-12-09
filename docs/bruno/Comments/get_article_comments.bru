@@ -1,0 +1,19 @@
+meta {
+  name: Get Article Comments
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{host}}/articles/{{id}}/comments
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  id: 47oxuTsSSzRFR0KtU4mZS5
+}

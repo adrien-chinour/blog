@@ -1,0 +1,19 @@
+meta {
+  name: Get Article Recommendations
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{host}}/articles/{{id}}/recommendations
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  id: 47oxuTsSSzRFR0KtU4mZS5
+}

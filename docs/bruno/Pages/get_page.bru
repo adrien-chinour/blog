@@ -1,0 +1,23 @@
+meta {
+  name: Get Page
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{host}}/pages?path={{path}}
+  body: none
+  auth: none
+}
+
+params:query {
+  path: {{path}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  path: /a-propos
+}

@@ -1,0 +1,16 @@
+meta {
+  name: Get Strapi Features
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{strapiHost}}/api/features
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{strapiKey}}
+}
+

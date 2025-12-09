@@ -1,0 +1,23 @@
+meta {
+  name: Get Strapi Comments
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{strapiHost}}/api/comments?filters[article_id][$eq]={{id}}
+  body: none
+  auth: bearer
+}
+
+params:query {
+  filters[article_id][$eq]: {{id}}
+}
+
+auth:bearer {
+  token: {{strapiKey}}
+}
+
+vars:pre-request {
+  id: 47oxuTsSSzRFR0KtU4mZS5
+}

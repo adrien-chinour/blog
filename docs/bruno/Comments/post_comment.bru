@@ -1,0 +1,27 @@
+meta {
+  name: Post Comment
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{host}}/comments
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "articleId": "{{id}}",
+    "username": "adrien",
+    "message": "coucou"
+  }
+}
+
+vars:pre-request {
+  id: 47oxuTsSSzRFR0KtU4mZS5
+}

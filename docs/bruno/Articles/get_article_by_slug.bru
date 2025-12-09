@@ -1,0 +1,19 @@
+meta {
+  name: Get Article By Slug
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{host}}/articles/{{slug}}
+  body: none
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  slug: les-structures-de-donnees-en-php
+}

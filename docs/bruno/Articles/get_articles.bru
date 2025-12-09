@@ -1,0 +1,23 @@
+meta {
+  name: Get Articles
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{host}}/articles?limit={{limit}}
+  body: none
+  auth: none
+}
+
+params:query {
+  limit: {{limit}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  limit: 10
+}

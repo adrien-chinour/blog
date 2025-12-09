@@ -1,0 +1,33 @@
+meta {
+  name: Post Strapi Comment
+  type: http
+  seq: 15
+}
+
+post {
+  url: {{strapiHost}}/api/comments
+  body: json
+  auth: bearer
+}
+
+headers {
+  Content-Type: application/json
+}
+
+auth:bearer {
+  token: {{strapiKey}}
+}
+
+body:json {
+  {
+    "data": {
+      "username": "adrien",
+      "message": "coucou",
+      "article_id": "{{id}}"
+    }
+  }
+}
+
+vars:pre-request {
+  id: 47oxuTsSSzRFR0KtU4mZS5
+}

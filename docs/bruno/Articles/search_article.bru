@@ -1,0 +1,23 @@
+meta {
+  name: Search Article
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{host}}/search/articles?query={{query}}
+  body: none
+  auth: none
+}
+
+params:query {
+  query: {{query}}
+}
+
+headers {
+  Content-Type: application/json
+}
+
+vars:pre-request {
+  query: PHP
+}
