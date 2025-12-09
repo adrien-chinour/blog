@@ -13,7 +13,55 @@
 <script>
   window.$docsify = {
     name: 'Project Documentation',
-    repo: 'https://github.com/adrien-chinour/blog'
+    repo: 'https://github.com/adrien-chinour/blog',
+    loadSidebar: true,
+    subMaxLevel: 2,
+    sidebar: [
+      {
+        title: 'Documentation',
+        children: [
+          'README.md',
+          {
+            title: 'Tutorials',
+            children: [
+              'tutorials/getting-started.md'
+            ]
+          },
+          {
+            title: 'How-to Guides',
+            children: [
+              'how-to-guides/running-tests.md',
+              'how-to-guides/running-quality-checks.md',
+              'how-to-guides/invalidating-cache.md',
+              'how-to-guides/using-makefile.md',
+              'how-to-guides/using-bruno-api-collection.md'
+            ]
+          },
+          {
+            title: 'Reference',
+            children: [
+              'reference/api-endpoints.md',
+              'reference/environment-variables.md',
+              'reference/makefile-commands.md',
+              'reference/coding-standards.md',
+              'reference/cache.md',
+              'reference/security.md',
+              'reference/cicd-workflows.md',
+              'reference/query-command-bus.md'
+            ]
+          },
+          {
+            title: 'Explanation',
+            children: [
+              'explanation/architecture.md',
+              'explanation/system-layering.md',
+              'explanation/cqrs-pattern.md',
+              'explanation/rate-limiter-strategy.md'
+            ]
+          }
+        ]
+      }
+    ]
   }
 </script>
 <!-- Docsify v4 -->
