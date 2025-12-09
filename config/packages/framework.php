@@ -1,6 +1,5 @@
 <?php
 
-use App\Infrastructure\External\Contentful\Webhook\ContentfulRequestParser;
 use App\Infrastructure\Symfony\Messenger\Middleware\CacheMiddleware;
 use App\Infrastructure\Symfony\Messenger\Middleware\LoggerMiddleware;
 use App\Infrastructure\Symfony\Messenger\Middleware\StopwatchMiddleware;
@@ -172,14 +171,4 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
      * @see \Symfony\Config\Framework\LockConfig
      */
     $framework->lock('flock');
-
-    /**
-     * Webhook Configuration
-     * @see \Symfony\Config\Framework\WebhookConfig
-     */
-    $framework->webhook()
-        ->routing('contentful', [
-            'service' => ContentfulRequestParser::class,
-            'secret' => '%env(CONTENTFUL_WEBHOOK_SECRET)%',
-        ]);
 };
