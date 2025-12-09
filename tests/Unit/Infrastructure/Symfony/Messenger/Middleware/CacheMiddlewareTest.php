@@ -70,6 +70,7 @@ final class CacheMiddlewareTest extends TestCase
             ->willReturn($config);
 
         $cacheItem = $this->createMock(ItemInterface::class);
+        // isHit() is called in the if condition (line 57) - logger is null so array isn't evaluated
         $cacheItem->expects($this->once())
             ->method('isHit')
             ->willReturn(false);
@@ -85,9 +86,6 @@ final class CacheMiddlewareTest extends TestCase
             ->method('tag')
             ->with(['article'])
             ->willReturnSelf();
-        $cacheItem->expects($this->once())
-            ->method('getKey')
-            ->willReturn('cache-key');
         $cacheItem->expects($this->once())
             ->method('get')
             ->willReturn($envelope);
