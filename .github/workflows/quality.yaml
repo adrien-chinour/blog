@@ -50,11 +50,6 @@ jobs:
             -   name: "Run PHPUnit tests"
                 run: bin/phpunit --testsuite=All --coverage-clover=coverage.xml
 
-            -   name: "SonarCloud Scan"
-                uses: SonarSource/sonarqube-scan-action@v6
-                env:
-                    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
     security_check:
         runs-on: ubuntu-latest
         permissions:
