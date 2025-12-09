@@ -1,0 +1,14 @@
+version = 1
+
+test_patterns = ["tests/**"]
+
+exclude_patterns = ["docs/**"]
+
+[[analyzers]]
+name = "test-coverage"
+
+[[analyzers]]
+name = "docker"
+
+[[analyzers]]
+name = "php"
