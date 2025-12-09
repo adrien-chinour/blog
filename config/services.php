@@ -21,6 +21,9 @@ use App\Infrastructure\Repository\MeilisearchBlogArticleSearchRepository;
 use App\Infrastructure\Repository\StrapiCommentRepository;
 use App\Infrastructure\Repository\StrapiFeatureRepository;
 use App\Infrastructure\Repository\StrapiPageRepository;
+use App\Infrastructure\Symfony\EventListener\RateLimiterEventListener;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use App\Tests\Factory\Repository\InMemoryBlogArticleRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryCommentRepositoryFactory;
 use App\Tests\Factory\Repository\InMemoryFeatureRepositoryFactory;
@@ -87,5 +90,14 @@ return function (ContainerConfigurator $container): void {
 
         $services->alias(PageRepository::class, InMemoryPageRepository::class);
         $services->set(InMemoryPageRepository::class)->factory([InMemoryPageRepositoryFactory::class, 'create']);
+    }
+
+    /**
+     * Register rate limiter event listener only in non-test environments
+     */
+    if ($container->env() !== 'test') {
+        $services->set(RateLimiterEventListener::class)
+            ->tag('kernel.event_listener', ['event' => RequestEvent::class, 'method' => 'onRequest'])
+            ->tag('kernel.event_listener', ['event' => ResponseEvent::class, 'method' => 'onResponse']);
     }
 };

@@ -37,6 +37,14 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ->enableAttributes(true);
 
     /**
+     * Validator Configuration
+     * @see \Symfony\Config\Framework\ValidationConfig
+     */
+    $framework->validation()
+        ->enabled(true)
+        ->enableAttributes(true);
+
+    /**
      * Cache Configuration
      * @see \Symfony\Config\Framework\CacheConfig
      */

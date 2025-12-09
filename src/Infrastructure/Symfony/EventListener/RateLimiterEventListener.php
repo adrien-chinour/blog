@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Symfony\EventListener;
 
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -13,8 +12,6 @@ use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-#[AsEventListener(RequestEvent::class, 'onRequest')]
-#[AsEventListener(ResponseEvent::class, 'onResponse')]
 final readonly class RateLimiterEventListener
 {
     public function __construct(
