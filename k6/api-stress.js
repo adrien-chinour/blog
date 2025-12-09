@@ -28,14 +28,7 @@ export const options = {
 
 export default function () {
   const path = randomItem(paths).replace('@id', randomItem(articles));
-  const res = http.get(
-    `https://api.udfn.fr${path}`,
-    {
-      headers: {
-        Authorization: `Bearer ${__ENV.AUTH_TOKEN}`
-      }
-    }
-  );
+  const res = http.get(`https://api.udfn.fr${path}`);
   check(res, {
     'is status 200': (r) => r.status === 200,
   });
