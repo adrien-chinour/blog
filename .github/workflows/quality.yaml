@@ -50,10 +50,8 @@ jobs:
             -   name: "Run PHPUnit tests"
                 run: bin/phpunit --testsuite=All --coverage-clover=coverage.xml
 
-            -   name: "SonarCloud Scan"
-                uses: SonarSource/sonarqube-scan-action@v6
-                env:
-                    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+            -   name: "Architecture rules validation with PHPArkitect"
+                run: vendor/bin/phparkitect check --no-progress --memory-limit=-1 --config=tests/Architecture/arkitect.php  
 
     security_check:
         runs-on: ubuntu-latest
