@@ -1,6 +1,6 @@
 {
     "name": "adrien-chinour/blog",
-    "description": "Blog system for udfn.fr",
+    "description": "Blog udfn.fr",
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
