@@ -10,6 +10,7 @@
 
 **Sandbox project used to try some stuffs and made good code (_I believe_) on my free time.**
 
+
 ## Documentation
 
 **Documentation is available in docs folder or with [Docsify](https://docsify.js.org) in this
