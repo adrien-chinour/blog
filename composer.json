@@ -11,7 +11,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-opentelemetry": "*",
-        "league/commonmark": "2.7.*",
+        "league/commonmark": "^2.8",
         "meilisearch/meilisearch-php": "^1.10",
         "monolog/monolog": "^3.5",
         "nyholm/psr7": "^1.0",
@@ -58,7 +58,7 @@
         "symfony/stopwatch": "7.4.*",
         "symfony/web-profiler-bundle": "7.4.*",
         "symplify/easy-coding-standard": "^13.0",
-        "symplify/phpstan-rules": "^14.0"
+        "symplify/phpstan-rules": "~14.9.5"
     },
     "config": {
         "allow-plugins": {
