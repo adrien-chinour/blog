@@ -12,7 +12,7 @@ SYMFONY  = $(PHP) bin/console
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help build up start down logs sh install composer vendor console cc npm watch
+.PHONY        : help build up start down logs sh install composer vendor console cc npm watch quality test test-coverage test-unit test-integration
 
 ## —— 🎵 🐳 The Symfony Docker Makefile 🐳 🎵 ——————————————————————————————————
 help: ## Outputs this help screen
@@ -52,6 +52,10 @@ vendor: composer
 quality: ## Run quality script with ECS and PHPStan
 quality: c=run-script quality
 quality: composer
+
+test-coverage: ## Run PHPUnit with coverage reports (var/coverage/)
+test-coverage: c=run-script test-coverage
+test-coverage: composer
 
 test: ## Run PHPUnit All testsuite
 test: c=run-script test

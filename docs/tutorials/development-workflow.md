@@ -76,7 +76,7 @@ Then create a pull request on GitHub. The CI pipeline will automatically:
 - Run quality checks
 - Run tests
 - Perform security scanning
-- Analyze code with SonarCloud
+- Report test coverage on the pull request
 
 ## Step 7: Address Review Feedback
 

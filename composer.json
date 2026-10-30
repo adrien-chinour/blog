@@ -107,14 +107,18 @@
             "@auto-scripts"
         ],
         "quality": [
-            "composer validate --strict",
-            "vendor/bin/phpstan analyse --memory-limit=-1",
-            "vendor/bin/ecs check",
-            "vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php"
+            "@composer validate --strict",
+            "@quality:phpstan",
+            "@quality:ecs",
+            "@quality:arkitect"
         ],
+        "quality:phpstan": "vendor/bin/phpstan analyse --memory-limit=-1",
+        "quality:ecs": "vendor/bin/ecs check",
+        "quality:arkitect": "vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php",
         "test": [
             "bin/phpunit"
         ],
+        "test-coverage": "bin/phpunit --testsuite=All --coverage-clover=var/coverage/clover.xml --coverage-cobertura=var/coverage/cobertura.xml --coverage-html=var/coverage/html",
         "test-unit": [
             "bin/phpunit --testsuite Unit"
         ],

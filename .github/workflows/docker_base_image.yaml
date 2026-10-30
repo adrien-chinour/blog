@@ -1,6 +1,15 @@
 name: Publish Docker Base Image
 on:
     workflow_dispatch:
+    schedule:
+        # Weekly rebuild to pick up upstream PHP / FrankenPHP security patches
+        -   cron: "0 4 * * 1"
+    push:
+        branches: [ "main" ]
+        paths:
+            - "Dockerfile"
+            - ".docker/**"
+            - ".github/workflows/docker_base_image.yaml"
 
 env:
     IMAGE_NAME: "ghcr.io/adrien-chinour/blog:base-php8.4"
@@ -13,19 +22,24 @@ jobs:
             packages: write
         steps:
             -   name: Checkout repository
-                uses: actions/checkout@v3
+                uses: actions/checkout@v5
 
             -   name: Log in to the Container registry
-                uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
+                uses: docker/login-action@v4
                 with:
                     registry: ghcr.io
                     username: ${{ github.actor }}
                     password: ${{ secrets.GITHUB_TOKEN }}
 
-            -   name: Build and export to Docker
-                uses: docker/build-push-action@v6
+            -   name: Build and push
+                uses: docker/build-push-action@v7
                 with:
                     push: true
+                    pull: true # always fetch the latest upstream frankenphp image
                     context: .
                     target: frankenphp_base
                     tags: ${{ env.IMAGE_NAME }}
+
+            -   name: Report PHP version
+                run: |
+                    docker run --rm --entrypoint php "$IMAGE_NAME" -v | head -1 >> "$GITHUB_STEP_SUMMARY"
