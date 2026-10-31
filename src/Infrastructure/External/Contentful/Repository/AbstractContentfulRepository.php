@@ -18,22 +18,25 @@ abstract class AbstractContentfulRepository
         private readonly GraphQLQueryBuilder $queryBuilder
     ) {}
 
+    /**
+     * @return object|array|null null when Contentful has no result for the resource (ex: unknown identifier)
+     */
     protected function query(string $resource, array $filters = [], bool $hydrate = true): object|array|null
     {
-        $result = $this->apiClient->query(
-            $this->queryBuilder->buildQuery($reflectionClass = new ReflectionClass($resource), $filters)
-        );
+        $reflectionClass = new ReflectionClass($resource);
 
-        if ($hydrate) {
-            $result = $this->serializer->deserialize(
-                json_encode($result[$this->queryBuilder->getName($reflectionClass)]),
-                $resource,
-                'json',
-            );
+        $result = $this->apiClient->query($this->queryBuilder->buildQuery($reflectionClass, $filters));
 
-            Assert::nullOrObject($result);
+        $data = $result[$this->queryBuilder->getName($reflectionClass)] ?? null;
+
+        if (!$hydrate || null === $data) {
+            return $data;
         }
 
-        return $result;
+        $hydrated = $this->serializer->deserialize(json_encode($data), $resource, 'json');
+
+        Assert::nullOrObject($hydrated);
+
+        return $hydrated;
     }
 }
