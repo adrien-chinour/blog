@@ -34,6 +34,7 @@ final class ResourceCollection
             );
         }
 
-        return array_map(fn (Resource $resource): string => $resource->sys->id, $items);
+        // array_values: array_filter keeps keys, which would serialize the list as a JSON object
+        return array_values(array_map(fn (Resource $resource): string => $resource->sys->id, $items));
     }
 }

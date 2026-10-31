@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Component\ContentParser;
 
-use App\Domain\Blogging\Exception\ContentRendererException;
 use App\Infrastructure\Component\ContentParser\MarkdownContentParser;
 use PHPUnit\Framework\TestCase;
 
@@ -26,13 +25,34 @@ final class MarkdownContentParserTest extends TestCase
         $this->assertStringContainsString('<p>', $result);
     }
 
-    public function testParseAddsTargetBlankToLinks(): void
+    public function testParseAddsTargetBlankAndNofollowToExternalLinks(): void
     {
         $markdown = 'Check [this link](https://example.com)';
         $result = $this->parser->parse($markdown);
 
         $this->assertStringContainsString('target="_blank"', $result);
-        $this->assertStringContainsString('rel="nofollow"', $result);
+        $this->assertMatchesRegularExpression('/rel="[^"]*nofollow[^"]*"/', $result);
+        $this->assertMatchesRegularExpression('/rel="[^"]*noopener[^"]*"/', $result);
+    }
+
+    public function testParseDoesNotAlterInternalLinks(): void
+    {
+        $parser = new MarkdownContentParser(internalHosts: ['udfn.fr', ' www.udfn.fr ']);
+
+        $result = $parser->parse('Read [this article](https://www.udfn.fr/articles/docker) and [that one](https://external.com)');
+
+        $this->assertStringContainsString('<a href="https://www.udfn.fr/articles/docker">this article</a>', $result);
+        $this->assertMatchesRegularExpression('/<a [^>]*target="_blank"[^>]*href="https:\/\/external\.com"/', $result);
+    }
+
+    public function testParseDoesNotBreakHtmlTagsStartingWithA(): void
+    {
+        // Raw HTML is allowed by CommonMark: tags starting with "a" are not links
+        $result = $this->parser->parse("<aside>Note</aside>\n\n<abbr title=\"HyperText\">HTML</abbr>");
+
+        $this->assertStringContainsString('<aside>Note</aside>', $result);
+        $this->assertStringContainsString('<abbr title="HyperText">HTML</abbr>', $result);
+        $this->assertStringNotContainsString('target="_blank"', $result);
     }
 
     public function testParseHandlesCodeBlocks(): void
@@ -82,21 +102,16 @@ final class MarkdownContentParserTest extends TestCase
         $markdown = '[Link 1](https://example.com) and [Link 2](https://test.com)';
         $result = $this->parser->parse($markdown);
 
-        $count = substr_count($result, 'target="_blank"');
-        $this->assertGreaterThanOrEqual(2, $count);
+        $this->assertSame(2, substr_count($result, 'target="_blank"'));
     }
 
-    public function testParseThrowsExceptionOnInvalidMarkdown(): void
+    public function testParserCanBeReusedForSeveralDocuments(): void
     {
-        // This test might not always throw an exception depending on CommonMark's error handling
-        // But we test that the parser handles errors gracefully
-        $this->expectNotToPerformAssertions();
-        
-        try {
-            $this->parser->parse('Valid markdown');
-        } catch (ContentRendererException $e) {
-            $this->assertInstanceOf(ContentRendererException::class, $e);
-        }
+        $first = $this->parser->parse('# First');
+        $second = $this->parser->parse('# Second');
+
+        $this->assertStringContainsString('First', $first);
+        $this->assertStringContainsString('Second', $second);
+        $this->assertStringNotContainsString('First', $second);
     }
 }
-

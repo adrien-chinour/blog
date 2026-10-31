@@ -6,22 +6,30 @@ namespace App\Infrastructure\Symfony\EventListener;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\RateLimiter\LimiterInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final readonly class RateLimiterEventListener
 {
+    /**
+     * Header set by Cloudflare with the real client IP. It is only trustworthy when the request
+     * actually comes from a trusted proxy (see framework.trusted_proxies), otherwise anyone could
+     * spoof it and get a fresh limiter on every request.
+     */
+    private const string CLOUDFLARE_IP_HEADER = 'Cf-Connecting-Ip';
+
     public function __construct(
-        private RateLimiterFactory $publicLimiter,
+        private RateLimiterFactoryInterface $publicLimiter,
         private AuthorizationCheckerInterface $checker
     ) {}
 
     public function onRequest(RequestEvent $event): void
     {
-        if ($this->checker->isGranted('ROLE_ADMIN') || false === $event->isMainRequest()) {
+        if ($this->isExempted($event)) {
             return;
         }
 
@@ -33,6 +41,10 @@ final readonly class RateLimiterEventListener
 
     public function onResponse(ResponseEvent $event): void
     {
+        if ($this->isExempted($event)) {
+            return;
+        }
+
         $limiter = $this->getLimiter($event->getRequest());
 
         $limit = $limiter->consume(match ($event->getResponse()->getStatusCode()) {
@@ -48,10 +60,19 @@ final readonly class RateLimiterEventListener
         ]);
     }
 
+    private function isExempted(KernelEvent $event): bool
+    {
+        return false === $event->isMainRequest() || $this->checker->isGranted('ROLE_ADMIN');
+    }
+
     private function getLimiter(Request $request): LimiterInterface
     {
-        $ip = $request->headers->get('Cf-Connecting-Ip') ?? $request->getClientIp();
+        $ip = $request->getClientIp();
 
-        return $this->publicLimiter->create($ip);
+        if ($request->isFromTrustedProxy()) {
+            $ip = $request->headers->get(self::CLOUDFLARE_IP_HEADER) ?? $ip;
+        }
+
+        return $this->publicLimiter->create($ip ?? 'unknown');
     }
 }

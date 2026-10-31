@@ -13,21 +13,33 @@ use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\RateLimiter\LimiterInterface;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 use Symfony\Component\RateLimiter\RateLimit;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class RateLimiterEventListenerTest extends TestCase
 {
-    private RateLimiterFactory&MockObject $limiterFactory;
+    private RateLimiterFactoryInterface&MockObject $limiterFactory;
     private AuthorizationCheckerInterface&MockObject $checker;
     private RateLimiterEventListener $listener;
 
+    /** @var string[] */
+    private array $previousTrustedProxies;
+    private int $previousTrustedHeaderSet;
+
     protected function setUp(): void
     {
-        $this->limiterFactory = $this->createMock(RateLimiterFactory::class);
+        $this->limiterFactory = $this->createMock(RateLimiterFactoryInterface::class);
         $this->checker = $this->createMock(AuthorizationCheckerInterface::class);
         $this->listener = new RateLimiterEventListener($this->limiterFactory, $this->checker);
+
+        $this->previousTrustedProxies = Request::getTrustedProxies();
+        $this->previousTrustedHeaderSet = Request::getTrustedHeaderSet();
+    }
+
+    protected function tearDown(): void
+    {
+        Request::setTrustedProxies($this->previousTrustedProxies, $this->previousTrustedHeaderSet);
     }
 
     public function testOnRequestSkipsWhenAdmin(): void
@@ -60,10 +72,6 @@ final class RateLimiterEventListenerTest extends TestCase
             $request,
             HttpKernelInterface::SUB_REQUEST
         );
-
-        $this->checker->expects($this->once())
-            ->method('isGranted')
-            ->willReturn(false);
 
         $this->limiterFactory->expects($this->never())
             ->method('create');
@@ -104,9 +112,46 @@ final class RateLimiterEventListenerTest extends TestCase
         $this->assertSame(Response::HTTP_TOO_MANY_REQUESTS, $event->getResponse()->getStatusCode());
     }
 
+    public function testOnResponseSkipsWhenAdmin(): void
+    {
+        $response = new Response('', Response::HTTP_NOT_FOUND);
+        $event = new ResponseEvent(
+            $this->createStub(HttpKernelInterface::class),
+            Request::create('/'),
+            HttpKernelInterface::MAIN_REQUEST,
+            $response
+        );
+
+        $this->checker->expects($this->once())
+            ->method('isGranted')
+            ->with('ROLE_ADMIN')
+            ->willReturn(true);
+
+        $this->limiterFactory->expects($this->never())
+            ->method('create');
+
+        $this->listener->onResponse($event);
+
+        $this->assertFalse($response->headers->has('X-RateLimit-Remaining'));
+    }
+
+    public function testOnResponseSkipsWhenNotMainRequest(): void
+    {
+        $event = new ResponseEvent(
+            $this->createStub(HttpKernelInterface::class),
+            Request::create('/'),
+            HttpKernelInterface::SUB_REQUEST,
+            new Response('', Response::HTTP_NOT_FOUND)
+        );
+
+        $this->limiterFactory->expects($this->never())
+            ->method('create');
+
+        $this->listener->onResponse($event);
+    }
+
     public function testOnResponseAddsRateLimitHeaders(): void
     {
-        $this->checker->expects($this->never())->method('isGranted');
         $request = Request::create('/');
         $response = new Response();
         $event = new ResponseEvent(
@@ -142,7 +187,6 @@ final class RateLimiterEventListenerTest extends TestCase
 
     public function testOnResponseConsumesTokensBasedOnStatusCode(): void
     {
-        $this->checker->expects($this->never())->method('isGranted');
         $request = Request::create('/');
         $response = new Response('', Response::HTTP_NOT_FOUND);
         $event = new ResponseEvent(
@@ -153,7 +197,7 @@ final class RateLimiterEventListenerTest extends TestCase
         );
 
         $limiter = $this->createMock(LimiterInterface::class);
-        $rateLimit = $this->createStub(RateLimit::class);
+        $rateLimit = $this->createMock(RateLimit::class);
         $rateLimit->method('getRemainingTokens')->willReturn(995);
         $rateLimit->method('getLimit')->willReturn(1000);
 
@@ -169,31 +213,55 @@ final class RateLimiterEventListenerTest extends TestCase
         $this->listener->onResponse($event);
     }
 
-    public function testOnResponseUsesCloudflareIpWhenAvailable(): void
+    public function testCloudflareIpHeaderIsIgnoredWhenRequestDoesNotComeFromTrustedProxy(): void
     {
-        $this->checker->expects($this->never())->method('isGranted');
-        $request = Request::create('/');
-        $request->headers->set('Cf-Connecting-Ip', '1.2.3.4');
-        $response = new Response();
-        $event = new ResponseEvent(
-            $this->createStub(HttpKernelInterface::class),
-            $request,
-            HttpKernelInterface::MAIN_REQUEST,
-            $response
-        );
+        Request::setTrustedProxies([], Request::HEADER_X_FORWARDED_FOR);
 
-        $limiter = $this->createStub(LimiterInterface::class);
-        $rateLimit = $this->createStub(RateLimit::class);
-        $rateLimit->method('getRemainingTokens')->willReturn(1000);
-        $rateLimit->method('getLimit')->willReturn(1000);
-        $limiter->method('consume')->willReturn($rateLimit);
+        $request = Request::create('/', server: ['REMOTE_ADDR' => '10.0.0.1']);
+        $request->headers->set('Cf-Connecting-Ip', '1.2.3.4');
+
+        $this->limiterFactory->expects($this->once())
+            ->method('create')
+            ->with('10.0.0.1')
+            ->willReturn($this->acceptingLimiter());
+
+        $this->listener->onResponse($this->responseEvent($request));
+    }
+
+    public function testCloudflareIpHeaderIsUsedWhenRequestComesFromTrustedProxy(): void
+    {
+        Request::setTrustedProxies(['10.0.0.1'], Request::HEADER_X_FORWARDED_FOR);
+
+        $request = Request::create('/', server: ['REMOTE_ADDR' => '10.0.0.1']);
+        $request->headers->set('Cf-Connecting-Ip', '1.2.3.4');
 
         $this->limiterFactory->expects($this->once())
             ->method('create')
             ->with('1.2.3.4')
-            ->willReturn($limiter);
+            ->willReturn($this->acceptingLimiter());
 
-        $this->listener->onResponse($event);
+        $this->listener->onResponse($this->responseEvent($request));
+    }
+
+    private function responseEvent(Request $request): ResponseEvent
+    {
+        return new ResponseEvent(
+            $this->createStub(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST,
+            new Response()
+        );
+    }
+
+    private function acceptingLimiter(): LimiterInterface&MockObject
+    {
+        $rateLimit = $this->createMock(RateLimit::class);
+        $rateLimit->method('getRemainingTokens')->willReturn(1000);
+        $rateLimit->method('getLimit')->willReturn(1000);
+
+        $limiter = $this->createMock(LimiterInterface::class);
+        $limiter->method('consume')->willReturn($rateLimit);
+
+        return $limiter;
     }
 }
-

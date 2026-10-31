@@ -13,6 +13,9 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
      */
     $framework
         ->secret('%env(APP_SECRET)%')
+        // Comma separated list of proxies allowed to set forwarded headers (ex: PRIVATE_SUBNETS, REMOTE_ADDR, 1.2.3.0/24).
+        // Required so that Request::getClientIp() and the rate limiter see the real client IP behind a proxy.
+        ->trustedProxies('%env(TRUSTED_PROXIES)%')
         ->trustedHeaders([
             'x-forwarded-for',
             'x-forwarded-host',

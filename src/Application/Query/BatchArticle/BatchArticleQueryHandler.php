@@ -9,7 +9,6 @@ use App\Domain\Blogging\BlogArticle;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Webmozart\Assert\Assert;
 
 #[AsMessageHandler]
 final class BatchArticleQueryHandler
@@ -22,6 +21,9 @@ final class BatchArticleQueryHandler
     }
 
     /**
+     * Identifiers that cannot be resolved (unpublished or deleted articles still referenced by the
+     * search index or by another article's recommendations) are silently skipped.
+     *
      * @return BlogArticle[]
      */
     public function __invoke(BatchArticleQuery $query): array
@@ -31,8 +33,8 @@ final class BatchArticleQueryHandler
             $query->identifiers
         );
 
-        Assert::allIsInstanceOf($articles, BlogArticle::class);
-
-        return $articles;
+        return array_values(
+            array_filter($articles, static fn (mixed $article): bool => $article instanceof BlogArticle)
+        );
     }
 }

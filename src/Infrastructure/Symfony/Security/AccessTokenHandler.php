@@ -15,7 +15,8 @@ final readonly class AccessTokenHandler implements AccessTokenHandlerInterface
 
     public function getUserBadgeFrom(#[SensitiveParameter] string $accessToken): UserBadge
     {
-        if ($accessToken !== $this->adminToken) {
+        // hash_equals: constant time comparison, not vulnerable to timing attacks
+        if ('' === $this->adminToken || !hash_equals($this->adminToken, $accessToken)) {
             throw new BadCredentialsException('access token is invalid');
         }
 

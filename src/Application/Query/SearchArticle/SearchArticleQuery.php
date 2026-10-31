@@ -6,7 +6,7 @@ namespace App\Application\Query\SearchArticle;
 
 use App\Application\Query\QueryCache;
 
-#[QueryCache(ttl: 3600, tags: ['articles'])]
+#[QueryCache(ttl: 3600, tags: ['article'])]
 final readonly class SearchArticleQuery
 {
     public function __construct(

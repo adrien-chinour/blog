@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[AsController]
-#[Route('/cache/invalidation', methods: ['GET'])]
+#[Route('/cache/invalidation', methods: ['POST'])]
 #[Cache(public: false)]
 #[IsGranted('ROLE_ADMIN')]
 final readonly class CacheInvalidationController

@@ -160,7 +160,8 @@ final readonly class CommentValidator
         $suspiciousPatterns = [
             '/<script/i' => 'Script tags are not allowed',
             '/javascript:/i' => 'JavaScript protocol is not allowed',
-            '/on\w+\s*=/i' => 'Event handlers are not allowed',
+            // word boundary: "onclick=" is suspicious, "python_version = 3" is not
+            '/\bon[a-z]+\s*=/i' => 'Event handlers are not allowed',
             '/data:text\/html/i' => 'Data URLs with HTML are not allowed',
             '/vbscript:/i' => 'VBScript protocol is not allowed',
             '/<iframe/i' => 'Iframe tags are not allowed',

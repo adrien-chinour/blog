@@ -28,6 +28,6 @@ final class InMemoryBlogArticleSearchRepository implements BlogArticleSearchRepo
             fn (BlogArticle $article): bool => str_contains(strtolower($article->title), $term) || str_contains(strtolower($article->content), $term) || str_contains(strtolower($article->description), $term),
         );
 
-        return array_map(fn (BlogArticle $article): string => $article->id, $results);
+        return array_values(array_map(fn (BlogArticle $article): string => $article->id, $results));
     }
 }

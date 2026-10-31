@@ -6,7 +6,7 @@ namespace App\Application\Query\GetArticleRecommendations;
 
 use App\Application\Query\QueryCache;
 
-#[QueryCache(ttl: 86_400, tags: ['recommendations'])]
+#[QueryCache(ttl: 86_400, tags: ['article'])]
 final readonly class GetArticleRecommendationsQuery
 {
     public function __construct(public string $articleIdentifier) {}

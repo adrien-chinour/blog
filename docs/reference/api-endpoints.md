@@ -17,21 +17,16 @@ GET /articles
 
 Returns a list of all articles.
 
-### Get Article by ID
+### Get Article by ID or Slug
 
 ```
-GET /articles/{id}
+GET /articles/{identifier}
 ```
 
-Returns a specific article by its ID.
+Returns a specific article by its ID or by its slug (the lookup by ID is skipped when the identifier contains a dash).
 
-### Get Article by Slug
-
-```
-GET /articles/slug/{slug}
-```
-
-Returns a specific article by its slug.
+**Query Parameters:**
+- `published` (optional, default `true`): `false` fetches the unpublished (preview) version of the article from the CMS. Requires authentication (admin bearer token), only available by ID.
 
 ### Get Article Recommendations
 
@@ -139,9 +134,11 @@ All endpoints return JSON responses. Error responses follow this format:
 
 ## Rate Limiting
 
-All endpoints are subject to rate limiting. See response headers:
+All endpoints are subject to rate limiting (administrators are exempted). See response headers:
 - `X-RateLimit-Limit`: Total available tokens
 - `X-RateLimit-Remaining`: Remaining tokens
+
+Limits are applied per client IP. When the application runs behind a proxy (Cloudflare, load balancer...), the proxy must be listed in the `TRUSTED_PROXIES` environment variable, otherwise forwarded headers (`X-Forwarded-For`, `Cf-Connecting-Ip`) are ignored and the proxy IP is used.
 
 ## See Also
 

@@ -28,8 +28,10 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
 
     public function getById(string $identifier, bool $published = true): ?BlogArticle
     {
-        /** @var BlogPage $data */
         $data = $this->query(BlogPage::class, ['id' => $identifier, 'preview' => !$published]);
+        if (!$data instanceof BlogPage) {
+            return null;
+        }
 
         try {
             return $this->blogArticleFactory->fromBlogPage($data);
@@ -40,11 +42,13 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
 
     public function getOneBy(array $filters): ?BlogArticle
     {
-        /** @var BlogPageCollection $data */
         $data = $this->query(BlogPageCollection::class, ['where' => $filters, 'limit' => 1]);
+        if (!$data instanceof BlogPageCollection || !isset($data->items[0])) {
+            return null;
+        }
 
         try {
-            return isset($data->items[0]) ? $this->blogArticleFactory->fromBlogPage($data->items[0]) : null;
+            return $this->blogArticleFactory->fromBlogPage($data->items[0]);
         } catch (Throwable) {
             return null;
         }
@@ -52,13 +56,15 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
 
     public function getList(?int $limit = null): array
     {
-        /** @var BlogPageCollection $data */
         $data = $this->query(BlogPageCollection::class, ['limit' => $limit ?? 100]);
+        if (!$data instanceof BlogPageCollection) {
+            return [];
+        }
 
         $articles = $this->blogArticleFactory->fromBlogPageCollection($data);
         usort(
             $articles,
-            fn (BlogArticle $a, BlogArticle $b): int => $a->publicationDate->getTimestamp() > $b->publicationDate->getTimestamp() ? -1 : 1
+            fn (BlogArticle $a, BlogArticle $b): int => $b->publicationDate->getTimestamp() <=> $a->publicationDate->getTimestamp()
         );
 
         return $articles;
