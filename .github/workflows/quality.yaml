@@ -83,7 +83,7 @@ jobs:
                     fail_below_min: true
 
             -   name: "Publish coverage to job summary"
-                if: always()
+                if: always() && hashFiles('code-coverage-results.md') != ''
                 run: cat code-coverage-results.md >> "$GITHUB_STEP_SUMMARY"
 
             -   name: "Comment coverage on PR"

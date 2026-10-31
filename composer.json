@@ -141,7 +141,7 @@
         "quality:phpstan": "vendor/bin/phpstan analyse --memory-limit=-1",
         "quality:ecs": "vendor/bin/ecs check",
         "quality:arkitect": "vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php",
-        "quality:rector": "vendor/bin/rector process --dry-run",
+        "quality:rector": "vendor/bin/rector process --dry-run --clear-cache",
         "quality:deps": [
             "vendor/bin/composer-require-checker check",
             "vendor/bin/composer-unused"

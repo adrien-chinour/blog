@@ -6,6 +6,7 @@ namespace App\Infrastructure\Repository;
 
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogArticleSearchRepository;
+use App\Domain\Blogging\BlogTag;
 use Meilisearch\Client;
 
 final readonly class MeilisearchBlogArticleSearchRepository implements BlogArticleSearchRepository
@@ -26,7 +27,7 @@ final readonly class MeilisearchBlogArticleSearchRepository implements BlogArtic
                         'title' => $article->title,
                         'description' => $article->description,
                         'content' => $article->content,
-                        'tags' => array_map(fn ($tag) => $tag->name, $article->tags),
+                        'tags' => array_map(fn (BlogTag $tag): string => $tag->name, $article->tags),
                     ]
                 ],
             );

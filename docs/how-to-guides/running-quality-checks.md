@@ -21,7 +21,7 @@ This command runs, in order:
 | `composer quality:phpstan` | PHPStan (level 9) | Static analysis |
 | `composer quality:ecs` | Easy Coding Standard | Coding standards |
 | `composer quality:arkitect` | PHPArkitect | Architecture rules (`tests/Architecture/arkitect.php`) |
-| `composer quality:rector` | Rector (dry-run) | Fails if automated refactorings are pending (`rector.php`) |
+| `composer quality:rector` | Rector (dry-run, cache cleared) | Fails if automated refactorings are pending (`rector.php`). The cache is cleared because a type change in one class can unlock refactorings in files that did not change |
 | `composer quality:deps` | composer-require-checker, composer-unused | Dependencies must be declared explicitly and actually used |
 
 ## Individual Checks
