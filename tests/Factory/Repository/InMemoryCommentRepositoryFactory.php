@@ -9,12 +9,12 @@ use App\Tests\Factory\CommentFactory;
 
 final readonly class InMemoryCommentRepositoryFactory
 {
+    public const COMMENTS_ON_FIRST_ARTICLE = 5;
+
     public static function create(): InMemoryCommentRepository
     {
         return new InMemoryCommentRepository([
-            '1' => [
-                CommentFactory::createMany(5)
-            ]
+            '1' => CommentFactory::createMany(self::COMMENTS_ON_FIRST_ARTICLE),
         ]);
     }
 }
