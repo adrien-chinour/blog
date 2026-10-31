@@ -37,6 +37,12 @@ Different actions consume different amounts of tokens:
 - **`X-RateLimit-Limit`**: Total available tokens (1000)
 - **`X-RateLimit-Remaining`**: Remaining tokens
 
+### Client identification
+
+Limits are applied per client IP (`Request::getClientIp()`). Authenticated administrators are exempted.
+
+Behind a proxy (Cloudflare, load balancer...) the proxy must be declared in the `TRUSTED_PROXIES` environment variable (comma separated IPs/CIDR, or `PRIVATE_SUBNETS` / `REMOTE_ADDR`). Only then are the forwarded headers (`X-Forwarded-For`, `Cf-Connecting-Ip`) trusted; otherwise a client could spoof them to escape the limiter.
+
 ### Storage
 
 Rate limit data is stored using Symfony's default cache (filesystem). Resets on application deployment.
