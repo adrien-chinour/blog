@@ -23,7 +23,7 @@ jobs:
             security-events: write # SARIF upload to the Security tab
         steps:
             -   name: Checkout repository
-                uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+                uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
             -   name: Log in to the Container registry
                 uses: docker/login-action@81c6f93d4bc991e510b342a00b419b3bb4efc5c6 # v4.7.0
@@ -47,7 +47,7 @@ jobs:
 
             -   name: Scan published image for vulnerabilities
                 id: scan
-                uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
+                uses: anchore/scan-action@27805bf3b4e84b4a5c980df22ed233c00390a439 # v7.4.2
                 with:
                     image: ${{ env.IMAGE_NAME }}
                     fail-build: true
