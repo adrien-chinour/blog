@@ -21,7 +21,7 @@ final class GetArticleRecommendationsControllerTest extends WebTestCase
 
     public function testGetArticleRecommendationsSkipsUnknownRecommendedArticles(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         // Article 1 recommends article 2 and an article that does not exist anymore
         $client->request('GET', '/articles/1/recommendations');
@@ -34,7 +34,7 @@ final class GetArticleRecommendationsControllerTest extends WebTestCase
 
     public function testGetArticleRecommendationsFallbacksOnLatestArticles(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         // Article 2 has no explicit recommendation
         $client->request('GET', '/articles/2/recommendations');

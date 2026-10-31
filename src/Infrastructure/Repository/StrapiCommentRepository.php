@@ -31,10 +31,7 @@ final readonly class StrapiCommentRepository implements CommentRepository
         try {
             $this->client->postComment($articleIdentifier, $username, $message, $publishedAt);
         } catch (Throwable $throwable) {
-            throw new FailToPublishCommentException(
-                sprintf('Fail to publish comment on article %s', $articleIdentifier),
-                previous: $throwable
-            );
+            throw new FailToPublishCommentException(sprintf('Fail to publish comment on article %s', $articleIdentifier), $throwable->getCode(), previous: $throwable);
         }
     }
 }

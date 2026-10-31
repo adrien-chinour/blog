@@ -18,7 +18,7 @@ final class GetArticleRecommendationsQueryHandler
 {
     use HandleTrait;
 
-    private const FALLBACK_RECOMMENDATIONS_COUNT = 2;
+    private const int FALLBACK_RECOMMENDATIONS_COUNT = 2;
 
     public function __construct(MessageBusInterface $bus)
     {

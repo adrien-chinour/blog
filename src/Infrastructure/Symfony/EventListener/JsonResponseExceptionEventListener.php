@@ -16,6 +16,7 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Contracts\HttpClient\Exception\ExceptionInterface as HttpClientExceptionInterface;
+use Throwable;
 
 /**
  * Renders every error of this JSON API as a JSON payload, whatever the request looks like
@@ -72,7 +73,7 @@ final class JsonResponseExceptionEventListener implements LoggerAwareInterface
         $event->setResponse(new JsonResponse($data, $status, $headers));
     }
 
-    private function unwrapException(\Throwable $exception): \Throwable
+    private function unwrapException(Throwable $exception): Throwable
     {
         if (!$exception instanceof HandlerFailedException) {
             return $exception;

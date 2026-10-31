@@ -20,7 +20,7 @@ final readonly class RateLimiterEventListener
      * actually comes from a trusted proxy (see framework.trusted_proxies), otherwise anyone could
      * spoof it and get a fresh limiter on every request.
      */
-    private const CLOUDFLARE_IP_HEADER = 'Cf-Connecting-Ip';
+    private const string CLOUDFLARE_IP_HEADER = 'Cf-Connecting-Ip';
 
     public function __construct(
         private RateLimiterFactoryInterface $publicLimiter,

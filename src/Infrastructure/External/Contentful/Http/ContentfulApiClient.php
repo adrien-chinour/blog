@@ -24,7 +24,7 @@ final class ContentfulApiClient implements LoggerAwareInterface
 
     /**
      * @return array the "data" part of the GraphQL response
-     * @throws \Throwable on transport failure or when Contentful returns no data at all
+     * @throws Throwable on transport failure or when Contentful returns no data at all
      */
     public function query(string $query): array
     {

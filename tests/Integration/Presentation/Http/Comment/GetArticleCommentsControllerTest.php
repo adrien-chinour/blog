@@ -29,7 +29,7 @@ final class GetArticleCommentsControllerTest extends WebTestCase
 
     public function testGetArticleCommentsWillReturnEmptyListOnArticleWithoutComment(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/2/comments');
 

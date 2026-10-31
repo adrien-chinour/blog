@@ -46,7 +46,7 @@ final class RateLimiterEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $event = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -68,7 +68,7 @@ final class RateLimiterEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $event = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::SUB_REQUEST
         );
@@ -83,7 +83,7 @@ final class RateLimiterEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $event = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -116,7 +116,7 @@ final class RateLimiterEventListenerTest extends TestCase
     {
         $response = new Response('', Response::HTTP_NOT_FOUND);
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             Request::create('/'),
             HttpKernelInterface::MAIN_REQUEST,
             $response
@@ -138,7 +138,7 @@ final class RateLimiterEventListenerTest extends TestCase
     public function testOnResponseSkipsWhenNotMainRequest(): void
     {
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             Request::create('/'),
             HttpKernelInterface::SUB_REQUEST,
             new Response('', Response::HTTP_NOT_FOUND)
@@ -155,7 +155,7 @@ final class RateLimiterEventListenerTest extends TestCase
         $request = Request::create('/');
         $response = new Response();
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $response
@@ -190,7 +190,7 @@ final class RateLimiterEventListenerTest extends TestCase
         $request = Request::create('/');
         $response = new Response('', Response::HTTP_NOT_FOUND);
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $response
@@ -246,7 +246,7 @@ final class RateLimiterEventListenerTest extends TestCase
     private function responseEvent(Request $request): ResponseEvent
     {
         return new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             new Response()

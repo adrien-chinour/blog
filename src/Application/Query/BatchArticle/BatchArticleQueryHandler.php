@@ -34,7 +34,7 @@ final class BatchArticleQueryHandler
         );
 
         return array_values(
-            array_filter($articles, static fn (mixed $article) => $article instanceof BlogArticle)
+            array_filter($articles, static fn (mixed $article): bool => $article instanceof BlogArticle)
         );
     }
 }

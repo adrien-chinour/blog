@@ -30,11 +30,11 @@ final class ResourceCollection
         if (null !== $resourceTypeFilter) {
             $items = array_filter(
                 $items,
-                fn (Resource $resource) => $resource->typename === $resourceTypeFilter->value
+                fn (Resource $resource): bool => $resource->typename === $resourceTypeFilter->value
             );
         }
 
         // array_values: array_filter keeps keys, which would serialize the list as a JSON object
-        return array_values(array_map(fn (Resource $resource) => $resource->sys->id, $items));
+        return array_values(array_map(fn (Resource $resource): string => $resource->sys->id, $items));
     }
 }

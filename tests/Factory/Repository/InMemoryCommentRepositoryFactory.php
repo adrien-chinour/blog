@@ -9,7 +9,7 @@ use App\Tests\Factory\CommentFactory;
 
 final readonly class InMemoryCommentRepositoryFactory
 {
-    public const COMMENTS_ON_FIRST_ARTICLE = 5;
+    public const int COMMENTS_ON_FIRST_ARTICLE = 5;
 
     public static function create(): InMemoryCommentRepository
     {

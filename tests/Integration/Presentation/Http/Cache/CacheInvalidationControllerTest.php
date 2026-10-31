@@ -9,11 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class CacheInvalidationControllerTest extends WebTestCase
 {
-    private const URI = '/cache/invalidation?tag[]=article';
+    private const string URI = '/cache/invalidation?tag[]=article';
 
     public function testCacheInvalidationRequiresAuthentication(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('POST', self::URI);
 
@@ -23,7 +23,7 @@ final class CacheInvalidationControllerTest extends WebTestCase
 
     public function testCacheInvalidationRejectsInvalidToken(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('POST', self::URI, server: ['HTTP_AUTHORIZATION' => 'Bearer WrongToken']);
 
@@ -32,7 +32,7 @@ final class CacheInvalidationControllerTest extends WebTestCase
 
     public function testCacheInvalidationWithAdminTokenSucceeds(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('POST', self::URI, server: ['HTTP_AUTHORIZATION' => 'Bearer TestToken']);
 
@@ -41,7 +41,7 @@ final class CacheInvalidationControllerTest extends WebTestCase
 
     public function testCacheInvalidationIsNotExposedOnGet(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', self::URI, server: ['HTTP_AUTHORIZATION' => 'Bearer TestToken']);
 

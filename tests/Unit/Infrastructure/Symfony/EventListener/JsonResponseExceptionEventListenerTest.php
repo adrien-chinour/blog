@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Symfony\EventListener;
 
+use Exception;
+use RuntimeException;
+use stdClass;
+use Throwable;
 use App\Application\Exception\BadRequestException;
 use App\Domain\Social\Exception\FailToPublishCommentException;
 use App\Infrastructure\Symfony\EventListener\JsonResponseExceptionEventListener;
@@ -36,7 +40,7 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $request->headers->set('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
-        $event = $this->event($request, new \Exception('Test error'));
+        $event = $this->event($request, new Exception('Test error'));
 
         $this->listener->__invoke($event);
 
@@ -62,7 +66,7 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $request->headers->set('Accept', 'application/json');
-        $event = $this->event($request, new \Exception('Test error'));
+        $event = $this->event($request, new Exception('Test error'));
 
         $this->listener->__invoke($event);
 
@@ -110,7 +114,7 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeConverts5xxTo502(): void
     {
-        $exception = new class extends \RuntimeException implements HttpExceptionInterface {
+        $exception = new class extends RuntimeException implements HttpExceptionInterface {
             public function getStatusCode(): int { return 500; }
             public function getHeaders(): array { return []; }
         };
@@ -143,7 +147,7 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeIncludesDebugInfoWhenDebugEnabled(): void
     {
-        $event = $this->event($this->jsonRequest(), new \Exception('Test error', 123));
+        $event = $this->event($this->jsonRequest(), new Exception('Test error', 123));
 
         $this->listener->__invoke($event);
 
@@ -161,7 +165,7 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
     public function testInvokeHidesDetailsWhenDebugDisabled(): void
     {
         $listener = new JsonResponseExceptionEventListener(debug: false);
-        $event = $this->event($this->jsonRequest(), new \Exception('Sensitive internal error'));
+        $event = $this->event($this->jsonRequest(), new Exception('Sensitive internal error'));
 
         $listener->__invoke($event);
 
@@ -172,8 +176,8 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeUnwrapsHandlerFailedException(): void
     {
-        $originalException = new \Exception('Original error');
-        $envelope = new Envelope(new \stdClass());
+        $originalException = new Exception('Original error');
+        $envelope = new Envelope(new stdClass());
         $handlerException = new HandlerFailedException($envelope, [$originalException]);
         $event = $this->event($this->jsonRequest(), $handlerException);
 
@@ -202,10 +206,10 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
         return $request;
     }
 
-    private function event(Request $request, \Throwable $throwable): ExceptionEvent
+    private function event(Request $request, Throwable $throwable): ExceptionEvent
     {
         return new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $throwable

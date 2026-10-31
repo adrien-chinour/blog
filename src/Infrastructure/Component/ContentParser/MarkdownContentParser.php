@@ -31,7 +31,7 @@ final readonly class MarkdownContentParser implements ContentParserInterface
     {
         $environment = new Environment([
             'external_link' => [
-                'internal_hosts' => self::normalizeHosts($internalHosts),
+                'internal_hosts' => $this->normalizeHosts($internalHosts),
                 'open_in_new_window' => true,
                 'nofollow' => ExternalLinkProcessor::APPLY_EXTERNAL,
                 'noopener' => ExternalLinkProcessor::APPLY_EXTERNAL,
@@ -57,20 +57,20 @@ final readonly class MarkdownContentParser implements ContentParserInterface
         try {
             return $this->converter->convert($content)->getContent();
         } catch (CommonMarkException $e) {
-            throw new ContentRendererException('Fail to render content', previous: $e);
+            throw new ContentRendererException('Fail to render content', $e->getCode(), previous: $e);
         }
     }
 
     /**
      * @return string[]
      */
-    private static function normalizeHosts(array $hosts): array
+    private function normalizeHosts(array $hosts): array
     {
         $normalized = array_map(
-            static fn (mixed $host) => is_string($host) ? strtolower(trim($host)) : '',
+            static fn (mixed $host): string => is_string($host) ? strtolower(trim($host)) : '',
             $hosts
         );
 
-        return array_values(array_filter($normalized, static fn (string $host) => $host !== ''));
+        return array_values(array_filter($normalized, static fn (string $host): bool => $host !== ''));
     }
 }

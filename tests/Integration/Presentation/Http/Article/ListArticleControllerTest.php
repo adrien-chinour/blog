@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Presentation\Http\Article;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -35,12 +36,10 @@ final class ListArticleControllerTest extends WebTestCase
         $this->assertCount(1, $payload);
     }
 
-    /**
-     * @dataProvider invalidLimits
-     */
+    #[DataProvider('invalidLimits')]
     public function testListArticleWithInvalidLimitWillReturnBadRequest(string $limit): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request('GET', '/articles', ['limit' => $limit]);
 
         $this->assertResponseStatusCodeSame(Response::HTTP_BAD_REQUEST);

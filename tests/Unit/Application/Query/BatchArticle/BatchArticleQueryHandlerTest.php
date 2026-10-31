@@ -30,7 +30,7 @@ final class BatchArticleQueryHandlerTest extends TestCase
                     default => null,
                 };
 
-                return (new Envelope($query))->with(new HandledStamp($result, 'handler'));
+                return new Envelope($query)->with(new HandledStamp($result, 'handler'));
             });
 
         $articles = (new BatchArticleQueryHandler($bus))(new BatchArticleQuery(['first', 'unknown', 'third']));

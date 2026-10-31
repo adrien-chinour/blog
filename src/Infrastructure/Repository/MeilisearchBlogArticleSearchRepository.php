@@ -7,11 +7,12 @@ namespace App\Infrastructure\Repository;
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogArticleSearchRepository;
 use App\Domain\Blogging\Exception\BlogArticleIndexationFailedException;
+use Exception;
 use Meilisearch\Client;
 
 final readonly class MeilisearchBlogArticleSearchRepository implements BlogArticleSearchRepository
 {
-    private const INDEX = 'articles';
+    private const string INDEX = 'articles';
 
     public function __construct(
         private Client $client,
@@ -30,16 +31,13 @@ final readonly class MeilisearchBlogArticleSearchRepository implements BlogArtic
                             'title' => $article->title,
                             'description' => $article->description,
                             // content is already rendered as HTML: index the text, not the markup
-                            'content' => self::toPlainText($article->content),
+                            'content' => $this->toPlainText($article->content),
                             'tags' => array_map(fn ($tag) => $tag->name, $article->tags),
                         ]
                     ],
                 );
-        } catch (\Exception $exception) {
-            throw new BlogArticleIndexationFailedException(
-                sprintf('Fail to index article %s: %s', $article->id, $exception->getMessage()),
-                previous: $exception
-            );
+        } catch (Exception $exception) {
+            throw new BlogArticleIndexationFailedException(sprintf('Fail to index article %s: %s', $article->id, $exception->getMessage()), $exception->getCode(), previous: $exception);
         }
     }
 
@@ -54,7 +52,7 @@ final readonly class MeilisearchBlogArticleSearchRepository implements BlogArtic
         );
     }
 
-    private static function toPlainText(string $html): string
+    private function toPlainText(string $html): string
     {
         $text = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 

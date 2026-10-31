@@ -21,7 +21,7 @@ final class StrapiCommentRepositoryTest extends TestCase
     protected function setUp(): void
     {
         $this->client = $this->createMock(StrapiApiClient::class);
-        $this->repository = new StrapiCommentRepository($this->client, $this->createMock(StrapiCommentFactory::class));
+        $this->repository = new StrapiCommentRepository($this->client, $this->createStub(StrapiCommentFactory::class));
     }
 
     public function testCreateCommentDelegatesToClient(): void

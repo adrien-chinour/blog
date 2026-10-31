@@ -25,7 +25,7 @@ final class ListProjectController extends AbstractController
     /**
      * Bounded on purpose: every distinct value creates a new cache entry and GitHub caps per_page to 100.
      */
-    private const MAX_LIMIT = 100;
+    private const int MAX_LIMIT = 100;
 
     public function __construct(MessageBusInterface $messageBus)
     {

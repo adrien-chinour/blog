@@ -35,7 +35,7 @@ final class GetArticleControllerTest extends WebTestCase
 
     public function testGetArticleBySlugWillReturnJsonArticle(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/construire-un-site-statique-avec-php');
 
@@ -46,7 +46,7 @@ final class GetArticleControllerTest extends WebTestCase
 
     public function testGetArticleBySlugWithoutDashWillReturnJsonArticle(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/docker');
 
@@ -56,7 +56,7 @@ final class GetArticleControllerTest extends WebTestCase
 
     public function testGetArticleWillReturnNotFoundOnUnknownSlug(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
@@ -68,7 +68,7 @@ final class GetArticleControllerTest extends WebTestCase
 
     public function testGetArticleSerializesRecommendationsAsList(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/1');
 
@@ -78,7 +78,7 @@ final class GetArticleControllerTest extends WebTestCase
 
     public function testGetArticlePreviewIsForbiddenToAnonymous(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/1', ['published' => 'false']);
 
@@ -87,7 +87,7 @@ final class GetArticleControllerTest extends WebTestCase
 
     public function testGetArticlePreviewIsAllowedToAdmin(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/1', ['published' => 'false'], server: ['HTTP_AUTHORIZATION' => 'Bearer TestToken']);
 
