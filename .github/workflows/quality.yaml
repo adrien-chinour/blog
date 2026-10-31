@@ -58,6 +58,14 @@ jobs:
             -   name: "Dependency hygiene (composer-require-checker, composer-unused)"
                 run: composer quality:deps
 
+            -   name: "OpenAPI specification is up to date"
+                run: |
+                    composer docs:api
+                    git diff --exit-code -- docs/reference/openapi.json || {
+                      echo "::error file=docs/reference/openapi.json::docs/reference/openapi.json is out of date, run 'make doc-api' and commit the result"
+                      exit 1
+                    }
+
             -   name: "Tests with coverage (PHPUnit)"
                 run: composer test-coverage
 
