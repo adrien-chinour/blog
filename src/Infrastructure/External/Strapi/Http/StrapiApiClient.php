@@ -12,7 +12,6 @@ use DateTimeImmutable;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use RuntimeException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -24,9 +23,20 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 use Throwable;
 use Webmozart\Assert\Assert;
 
+/**
+ * Low level Strapi REST client.
+ *
+ * Failures are logged and re-thrown on purpose: swallowing them into empty results would let the
+ * CacheMiddleware store a transient outage as a legitimate (and long lived) response.
+ */
 final class StrapiApiClient implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    /**
+     * Strapi default page size is 25, 100 is the default maximum allowed by Strapi.
+     */
+    private const MAX_PAGE_SIZE = 100;
 
     public function __construct(
         private readonly HttpClientInterface $strapiClient,
@@ -35,6 +45,9 @@ final class StrapiApiClient implements LoggerAwareInterface
         $this->logger = new NullLogger();
     }
 
+    /**
+     * @throws Throwable
+     */
     public function getPage(string $path): ?PageContentType
     {
         try {
@@ -53,17 +66,18 @@ final class StrapiApiClient implements LoggerAwareInterface
             return match ($total = $collection->meta->pagination->total) {
                 0 => null,
                 1 => $this->serializer->deserialize(json_encode($collection->data[0]), PageContentType::class, JsonEncoder::FORMAT),
-                default => throw new RuntimeException(sprintf('Too much result. Page url must be unique. %d result for path %s', $total, $path)),
+                default => throw new \RuntimeException(sprintf('Too much result. Page url must be unique. %d result for path %s', $total, $path)),
             };
         } catch (Throwable $throwable) {
-            $this->logger?->critical($throwable->getMessage());
+            $this->logger?->critical($throwable->getMessage(), ['exception' => $throwable]);
 
-            return null;
+            throw $throwable;
         }
     }
 
     /**
      * @return FeatureContentType[]
+     * @throws Throwable
      */
     public function getFeatures(): array
     {
@@ -71,14 +85,14 @@ final class StrapiApiClient implements LoggerAwareInterface
             $response = $this->strapiClient->request('GET', '/api/features');
 
             $features = array_map(
-                fn ($item): mixed => $this->serializer->deserialize(json_encode($item), FeatureContentType::class, JsonEncoder::FORMAT),
+                fn ($item) => $this->serializer->deserialize(json_encode($item), FeatureContentType::class, JsonEncoder::FORMAT),
                 $this->toCollection($response)->data ?? []
             );
             Assert::allIsInstanceOf($features, FeatureContentType::class);
         } catch (Throwable $throwable) {
-            $this->logger?->critical($throwable->getMessage());
+            $this->logger?->critical($throwable->getMessage(), ['exception' => $throwable]);
 
-            return [];
+            throw $throwable;
         }
 
         return $features;
@@ -86,6 +100,7 @@ final class StrapiApiClient implements LoggerAwareInterface
 
     /**
      * @return CommentContentType[]
+     * @throws Throwable
      */
     public function getArticleComments(string $articleIdentifier): array
     {
@@ -96,29 +111,35 @@ final class StrapiApiClient implements LoggerAwareInterface
                         'article_id' => [
                             '$eq' => $articleIdentifier,
                         ]
-                    ]
+                    ],
+                    'pagination' => [
+                        'pageSize' => self::MAX_PAGE_SIZE,
+                    ],
                 ]
             ]);
 
             $comments = array_map(
-                fn ($item): mixed => $this->serializer->deserialize(json_encode($item), CommentContentType::class, JsonEncoder::FORMAT),
+                fn ($item) => $this->serializer->deserialize(json_encode($item), CommentContentType::class, JsonEncoder::FORMAT),
                 $this->toCollection($response)->data ?? []
             );
             Assert::allIsInstanceOf($comments, CommentContentType::class);
         } catch (Throwable $throwable) {
-            $this->logger?->critical($throwable->getMessage());
+            $this->logger?->critical($throwable->getMessage(), ['exception' => $throwable]);
 
-            return [];
+            throw $throwable;
         }
 
         return $comments;
     }
 
+    /**
+     * @throws Throwable when Strapi is unreachable or does not acknowledge the creation
+     */
     public function postComment(string $articleIdentifier, string $username, string $message, DateTimeImmutable $publishedAt): void
     {
         try {
             $response = $this->strapiClient->request('POST', '/api/comments', [
-                'body' => [
+                'json' => [
                     'data' => [
                         'article_id' => $articleIdentifier,
                         'username' => $username,
@@ -127,11 +148,13 @@ final class StrapiApiClient implements LoggerAwareInterface
                 ]
             ]);
 
-            if (201 !== $response->getStatusCode()) {
-                throw new RuntimeException(sprintf('Unexpected status code %d', $response->getStatusCode()));
+            if (201 !== $statusCode = $response->getStatusCode()) {
+                throw new \RuntimeException(sprintf('Unexpected status code %d when posting comment', $statusCode));
             }
         } catch (Throwable $throwable) {
-            $this->logger?->critical($throwable->getMessage());
+            $this->logger?->critical($throwable->getMessage(), ['exception' => $throwable]);
+
+            throw $throwable;
         }
     }
 

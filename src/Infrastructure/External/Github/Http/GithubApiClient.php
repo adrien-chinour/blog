@@ -26,7 +26,11 @@ final class GithubApiClient implements LoggerAwareInterface
     }
 
     /**
+     * Failures are logged and re-thrown on purpose: returning an empty list would let the
+     * CacheMiddleware store a transient outage as a legitimate (and long lived) response.
+     *
      * @return GithubRepository[]
+     * @throws Throwable
      */
     public function getRepositories(int $limit = 10): array
     {
@@ -50,7 +54,8 @@ final class GithubApiClient implements LoggerAwareInterface
             );
         } catch (Throwable $e) {
             $this->logger?->error($e->getMessage(), ['exception' => $e]);
-            $result = [];
+
+            throw $e;
         }
 
         Assert::isArray($result);
