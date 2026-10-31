@@ -8,6 +8,12 @@ updates:
             time: "06:00"
             timezone: "Europe/Paris"
         open-pull-requests-limit: 10
+        # Only touch composer.json when the new version does not fit the current constraint
+        versioning-strategy: increase-if-necessary
+        ignore:
+            # Symfony major upgrades (7.4.* -> 8.x) are a deliberate migration, not a Dependabot PR
+            -   dependency-name: "symfony/*"
+                update-types: [ "version-update:semver-major" ]
         groups:
             symfony:
                 patterns: [ "symfony/*" ]
