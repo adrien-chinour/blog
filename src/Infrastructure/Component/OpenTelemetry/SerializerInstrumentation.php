@@ -11,6 +11,7 @@ use OpenTelemetry\API\Trace\StatusCode;
 use OpenTelemetry\Context\Context;
 use OpenTelemetry\SemConv\TraceAttributes;
 use Symfony\Component\Serializer\SerializerInterface;
+use Throwable;
 use function OpenTelemetry\Instrumentation\hook;
 
 final class SerializerInstrumentation
@@ -56,7 +57,7 @@ final class SerializerInstrumentation
                 SerializerInterface $serializer,
                 array $params,
                 ?string $result,
-                ?\Throwable $exception
+                ?Throwable $exception
             ): void {
                 $scope = Context::storage()->scope();
                 if (null === $scope) {
@@ -108,7 +109,7 @@ final class SerializerInstrumentation
                 SerializerInterface $serializer,
                 array $params,
                 mixed $result,
-                ?\Throwable $exception
+                ?Throwable $exception
             ): void {
                 $scope = Context::storage()->scope();
                 if (null === $scope) {

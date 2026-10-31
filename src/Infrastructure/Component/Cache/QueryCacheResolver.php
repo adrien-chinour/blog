@@ -8,6 +8,8 @@ use App\Application\Query\QueryCache;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use ReflectionClass;
+use ReflectionProperty;
 
 final class QueryCacheResolver implements LoggerAwareInterface
 {
@@ -20,7 +22,7 @@ final class QueryCacheResolver implements LoggerAwareInterface
 
     public function resolve(object $query): ?QueryCacheConfig
     {
-        $reflectionClass = new \ReflectionClass($query);
+        $reflectionClass = new ReflectionClass($query);
         if (null === ($cacheAttribute = $reflectionClass->getAttributes(QueryCache::class)[0] ?? null)) {
             return null;
         }
@@ -32,10 +34,10 @@ final class QueryCacheResolver implements LoggerAwareInterface
         );
     }
 
-    private function buildCacheKey(\ReflectionClass $class, object $query): string
+    private function buildCacheKey(ReflectionClass $class, object $query): string
     {
         $properties = array_map(
-            fn (\ReflectionProperty $property) => $property->getValue($query),
+            fn (ReflectionProperty $property): mixed => $property->getValue($query),
             $class->getProperties()
         );
 

@@ -24,15 +24,7 @@ final readonly class InMemoryBlogArticleRepository implements BlogArticleReposit
         $results = array_values(
             array_filter(
                 $this->articles,
-                function (BlogArticle $article) use ($filters) {
-                    foreach ($filters as $key => $value) {
-                        if (!isset($article->{$key}) || $article->{$key} !== $value) {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
+                fn (BlogArticle $article): bool => array_all($filters, fn ($value, $key): bool => isset($article->{$key}) && $article->{$key} === $value)
             )
         );
 

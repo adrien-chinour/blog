@@ -18,11 +18,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
  */
 final readonly class CommentValidator
 {
-    private const MIN_USERNAME_LENGTH = 2;
-    private const MAX_USERNAME_LENGTH = 50;
-    private const MIN_MESSAGE_LENGTH = 3;
-    private const MAX_MESSAGE_LENGTH = 2000;
-    private const MAX_MESSAGE_LINES = 50;
+    private const int MIN_USERNAME_LENGTH = 2;
+    private const int MAX_USERNAME_LENGTH = 50;
+    private const int MIN_MESSAGE_LENGTH = 3;
+    private const int MAX_MESSAGE_LENGTH = 2000;
+    private const int MAX_MESSAGE_LINES = 50;
 
     public function __construct(
         private ValidatorInterface $validator

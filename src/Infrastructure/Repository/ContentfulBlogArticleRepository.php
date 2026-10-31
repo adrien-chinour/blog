@@ -58,7 +58,7 @@ final class ContentfulBlogArticleRepository extends AbstractContentfulRepository
         $articles = $this->blogArticleFactory->fromBlogPageCollection($data);
         usort(
             $articles,
-            fn (BlogArticle $a, BlogArticle $b) => $a->publicationDate->getTimestamp() > $b->publicationDate->getTimestamp() ? -1 : 1
+            fn (BlogArticle $a, BlogArticle $b): int => $a->publicationDate->getTimestamp() > $b->publicationDate->getTimestamp() ? -1 : 1
         );
 
         return $articles;

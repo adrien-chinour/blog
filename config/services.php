@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use App\Domain\Blogging\BlogArticleRepository;
@@ -74,22 +76,22 @@ return function (ContainerConfigurator $container): void {
      */
     if ($container->env() === 'test') {
         $services->alias(BlogArticleRepository::class, InMemoryBlogArticleRepository::class);
-        $services->set(InMemoryBlogArticleRepository::class)->factory([InMemoryBlogArticleRepositoryFactory::class, 'create']);
+        $services->set(InMemoryBlogArticleRepository::class)->factory(InMemoryBlogArticleRepositoryFactory::create(...));
 
         $services->alias(BlogArticleSearchRepository::class, InMemoryBlogArticleSearchRepository::class);
-        $services->set(InMemoryBlogArticleSearchRepository::class)->factory([InMemoryBlogArticleRepositoryFactory::class, 'createSearch']);
+        $services->set(InMemoryBlogArticleSearchRepository::class)->factory(InMemoryBlogArticleRepositoryFactory::createSearch(...));
 
         $services->alias(ProjectRepository::class, InMemoryProjectRepository::class);
-        $services->set(InMemoryProjectRepository::class)->factory([InMemoryProjectRepositoryFactory::class, 'create']);
+        $services->set(InMemoryProjectRepository::class)->factory(InMemoryProjectRepositoryFactory::create(...));
 
         $services->alias(FeatureRepository::class, InMemoryFeatureRepository::class);
-        $services->set(InMemoryFeatureRepository::class)->factory([InMemoryFeatureRepositoryFactory::class, 'create']);
+        $services->set(InMemoryFeatureRepository::class)->factory(InMemoryFeatureRepositoryFactory::create(...));
 
         $services->alias(CommentRepository::class, InMemoryCommentRepository::class);
-        $services->set(InMemoryCommentRepository::class)->factory([InMemoryCommentRepositoryFactory::class, 'create']);
+        $services->set(InMemoryCommentRepository::class)->factory(InMemoryCommentRepositoryFactory::create(...));
 
         $services->alias(PageRepository::class, InMemoryPageRepository::class);
-        $services->set(InMemoryPageRepository::class)->factory([InMemoryPageRepositoryFactory::class, 'create']);
+        $services->set(InMemoryPageRepository::class)->factory(InMemoryPageRepositoryFactory::create(...));
     }
 
     /**

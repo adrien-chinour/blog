@@ -1,13 +1,14 @@
 <?php
 
+use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Config\WebProfilerConfig;
 
-if (!class_exists('\Symfony\Bundle\WebProfilerBundle\WebProfilerBundle')) {
+if (!class_exists(WebProfilerBundle::class)) {
     return;
 }
 
-return static function (WebProfilerConfig $profiler, ContainerConfigurator $container) {
+return static function (WebProfilerConfig $profiler, ContainerConfigurator $container): void {
     if ($container->env() === 'dev') {
         $profiler->interceptRedirects(false);
         $profiler->toolbar()->enabled(true);

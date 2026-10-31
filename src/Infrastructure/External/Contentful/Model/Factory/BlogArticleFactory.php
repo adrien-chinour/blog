@@ -20,9 +20,6 @@ final readonly class BlogArticleFactory
 
     /**
      * Convert BlogPage to BlogArticle
-     *
-     * @param BlogPage $blogPage
-     * @return BlogArticle
      */
     public function fromBlogPage(BlogPage $blogPage): BlogArticle
     {
@@ -43,14 +40,13 @@ final readonly class BlogArticleFactory
     /**
      * Convert all BlogPage items from BlogPageCollection to BlogArticle list
      *
-     * @param BlogPageCollection $collection
      * @return BlogArticle[]
      */
     public function fromBlogPageCollection(BlogPageCollection $collection): array
     {
         return array_values(
             array_filter(
-                array_map(fn (BlogPage $blogPage) => $this->fromBlogPage($blogPage), $collection->items)
+                array_map($this->fromBlogPage(...), $collection->items)
             )
         );
     }

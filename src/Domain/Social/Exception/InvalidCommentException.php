@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Domain\Social\Exception;
 
+use DomainException;
+
 /**
  * Exception thrown when comment data is invalid.
  */
-final class InvalidCommentException extends \DomainException
+final class InvalidCommentException extends DomainException
 {
     public static function invalidArticle(string $articleIdentifier): self
     {

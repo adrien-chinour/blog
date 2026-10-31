@@ -25,9 +25,7 @@ final class InMemoryCommentRepository implements CommentRepository
 
     public function createComment(string $articleIdentifier, string $username, string $message, DateTimeImmutable $publishedAt): void
     {
-        if (!isset($this->comments[$articleIdentifier])) {
-            $this->comments[$articleIdentifier] = [];
-        }
+        $this->comments[$articleIdentifier] ??= [];
 
         $this->comments[$articleIdentifier][] = new Comment(uniqid(), $username, $message, $publishedAt);
     }

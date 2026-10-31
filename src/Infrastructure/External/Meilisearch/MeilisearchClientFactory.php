@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Infrastructure\External\Meilisearch;
 
 use Meilisearch\Client;
+use SensitiveParameter;
 
 final readonly class MeilisearchClientFactory
 {
     public function __construct(
         private string $meilisearchHost,
-        #[\SensitiveParameter]
+        #[SensitiveParameter]
         private string $meilisearchToken,
     ) {}
 

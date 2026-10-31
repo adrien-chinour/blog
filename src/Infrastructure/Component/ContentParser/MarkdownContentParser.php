@@ -27,7 +27,7 @@ final readonly class MarkdownContentParser implements ContentParserInterface
         try {
             $content = $this->converter()->convert($content);
         } catch (CommonMarkException $e) {
-            throw new ContentRendererException("Fail to renderer content", previous: $e);
+            throw new ContentRendererException("Fail to renderer content", $e->getCode(), previous: $e);
         }
 
         // add on all content links target blank and nofollow

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domain\Blogging;
 
+use DateTimeInterface;
+
 final readonly class BlogArticle
 {
     public function __construct(
@@ -13,7 +15,7 @@ final readonly class BlogArticle
         public string             $content,
         public string             $imageUrl,
         public string             $slug,
-        public \DateTimeInterface $publicationDate,
+        public DateTimeInterface $publicationDate,
         public array              $tags = [],
         public array              $recommendations = [],
         public ?string             $imageDescription = null,

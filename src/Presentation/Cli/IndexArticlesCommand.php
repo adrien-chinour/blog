@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[AsCommand('search:articles:index')]
 final class IndexArticlesCommand extends Command
 {
-    public function __construct(private MessageBusInterface $messageBus)
+    public function __construct(private readonly MessageBusInterface $messageBus)
     {
         parent::__construct();
     }

@@ -27,7 +27,7 @@ final class BatchArticleQueryHandler
     public function __invoke(BatchArticleQuery $query): array
     {
         $articles = array_map(
-            fn (string $identifier) => $this->handle(new GetArticleQuery($identifier)),
+            fn (string $identifier): mixed => $this->handle(new GetArticleQuery($identifier)),
             $query->identifiers
         );
 

@@ -9,24 +9,26 @@ use App\Infrastructure\Component\GraphQL\Exception\GraphQLQueryBuilderException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use ReflectionClass;
+use ReflectionException;
+use ReflectionNamedType;
 use function Symfony\Component\String\s;
 
 final class GraphQLQueryBuilder implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    private const MAX_QUERY_DEPTH = 10;
-    private const MAX_FILTER_COUNT = 50;
-    private const MAX_STRING_LENGTH = 10000;
-    private const MAX_QUERY_SIZE = 50000;
+    private const int MAX_QUERY_DEPTH = 10;
+    private const int MAX_FILTER_COUNT = 50;
+    private const int MAX_STRING_LENGTH = 10000;
+    private const int MAX_QUERY_SIZE = 50000;
 
     /**
      * GraphQL identifier pattern: must start with letter or underscore, followed by letters, digits, or underscores
      */
-    private const IDENTIFIER_PATTERN = '/^[a-zA-Z_][a-zA-Z0-9_]*$/';
+    private const string IDENTIFIER_PATTERN = '/^[a-zA-Z_][a-zA-Z0-9_]*$/';
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @throws GraphQLQueryBuilderException
      */
     public function buildQuery(ReflectionClass $class, array $filters = []): string
@@ -217,7 +219,7 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @throws GraphQLQueryBuilderException
      */
     private function buildFields(ReflectionClass $class, int $depth): string
@@ -257,7 +259,7 @@ final class GraphQLQueryBuilder implements LoggerAwareInterface
 
             // Return property if it's built-in type or DateTime
             if (
-                ($property->getType() instanceof \ReflectionNamedType && ($property->getType()->isBuiltin()))
+                ($property->getType() instanceof ReflectionNamedType && ($property->getType()->isBuiltin()))
                 || (1 === preg_match('/^\??\\?DateTime(Immutable)?(Interface)?$/', (string)$property->getType()))
             ) {
                 $fields[] = $propertyName;

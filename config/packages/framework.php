@@ -110,11 +110,11 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
     $framework->httpClient()
         ->scopedClient('strapi.client', [
             'base_uri' => '%env(STRAPI_HOST)%',
-            'headers' => array(
+            'headers' => [
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer %env(STRAPI_TOKEN)%',
-            ),
+            ],
         ]);
 
     /**

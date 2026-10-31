@@ -30,10 +30,10 @@ final class ResourceCollection
         if (null !== $resourceTypeFilter) {
             $items = array_filter(
                 $items,
-                fn (Resource $resource) => $resource->typename === $resourceTypeFilter->value
+                fn (Resource $resource): bool => $resource->typename === $resourceTypeFilter->value
             );
         }
 
-        return array_map(fn (Resource $resource) => $resource->sys->id, $items);
+        return array_map(fn (Resource $resource): string => $resource->sys->id, $items);
     }
 }

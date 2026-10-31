@@ -8,6 +8,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Throwable;
 
 final class ContentfulApiClient implements LoggerAwareInterface
 {
@@ -30,7 +31,7 @@ final class ContentfulApiClient implements LoggerAwareInterface
             $response = $this->contentfulClient
                 ->request('POST', sprintf('/content/v1/spaces/%s', $this->contentfulSpaceId), $options)
                 ->toArray();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $this->logger?->error($e->getMessage(), ['exception' => $e]);
 
             throw $e;

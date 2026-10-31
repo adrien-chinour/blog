@@ -12,6 +12,7 @@ use DateTimeImmutable;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use RuntimeException;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -52,7 +53,7 @@ final class StrapiApiClient implements LoggerAwareInterface
             return match ($total = $collection->meta->pagination->total) {
                 0 => null,
                 1 => $this->serializer->deserialize(json_encode($collection->data[0]), PageContentType::class, JsonEncoder::FORMAT),
-                default => throw new \RuntimeException(sprintf('Too much result. Page url must be unique. %d result for path %s', $total, $path)),
+                default => throw new RuntimeException(sprintf('Too much result. Page url must be unique. %d result for path %s', $total, $path)),
             };
         } catch (Throwable $throwable) {
             $this->logger?->critical($throwable->getMessage());
@@ -70,7 +71,7 @@ final class StrapiApiClient implements LoggerAwareInterface
             $response = $this->strapiClient->request('GET', '/api/features');
 
             $features = array_map(
-                fn ($item) => $this->serializer->deserialize(json_encode($item), FeatureContentType::class, JsonEncoder::FORMAT),
+                fn ($item): mixed => $this->serializer->deserialize(json_encode($item), FeatureContentType::class, JsonEncoder::FORMAT),
                 $this->toCollection($response)->data ?? []
             );
             Assert::allIsInstanceOf($features, FeatureContentType::class);
@@ -100,7 +101,7 @@ final class StrapiApiClient implements LoggerAwareInterface
             ]);
 
             $comments = array_map(
-                fn ($item) => $this->serializer->deserialize(json_encode($item), CommentContentType::class, JsonEncoder::FORMAT),
+                fn ($item): mixed => $this->serializer->deserialize(json_encode($item), CommentContentType::class, JsonEncoder::FORMAT),
                 $this->toCollection($response)->data ?? []
             );
             Assert::allIsInstanceOf($comments, CommentContentType::class);
@@ -127,7 +128,7 @@ final class StrapiApiClient implements LoggerAwareInterface
             ]);
 
             if (201 !== $response->getStatusCode()) {
-                throw new \HttpException(sprintf('Unexpected status code %d', $response->getStatusCode()));
+                throw new RuntimeException(sprintf('Unexpected status code %d', $response->getStatusCode()));
             }
         } catch (Throwable $throwable) {
             $this->logger?->critical($throwable->getMessage());

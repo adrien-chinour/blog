@@ -38,7 +38,7 @@ final readonly class MeilisearchBlogArticleSearchRepository implements BlogArtic
 
         return array_values(
             array_filter(
-                array_map(fn ($hit) => $hit['id'] ?? null, $result->getHits())
+                array_map(fn (array $hit) => $hit['id'] ?? null, $result->getHits())
             )
         );
     }
