@@ -118,6 +118,15 @@ return static function (FrameworkConfig $framework, ContainerConfigurator $conta
         ]);
 
     /**
+     * Assets Configuration
+     * symfony/asset is a dev dependency (needed by the Swagger UI of NelmioApiDocBundle),
+     * so Symfony does not enable it automatically: enable it outside prod.
+     */
+    if (in_array($container->env(), ['dev', 'test'], true)) {
+        $framework->assets()->enabled(true);
+    }
+
+    /**
      * Profiler Configuration
      * @see \Symfony\Config\Framework\ProfilerConfig
      */

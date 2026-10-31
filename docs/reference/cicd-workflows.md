@@ -17,6 +17,7 @@ Three jobs run in parallel. All of them use the PHP version from `.php-version`,
 - PHPArkitect (architecture rules) — `composer quality:arkitect`
 - Rector dry-run (no pending automated refactoring) — `composer quality:rector`
 - composer-require-checker and composer-unused (dependency hygiene) — `composer quality:deps`
+- OpenAPI specification drift check: `composer docs:api` regenerates `docs/reference/openapi.json` and the job fails if it differs from the committed file
 - PHPUnit with coverage (pcov) — `composer test-coverage`
 - Coverage summary posted to the job summary and as a sticky PR comment; the job fails under 70% line coverage (orange under 85%)
 - HTML coverage report uploaded as the `coverage-html` artifact (14 days)
@@ -74,6 +75,7 @@ The CI pipeline enforces:
 - ✅ Mutation score (minimum 80% MSI)
 - ✅ Architecture rules (PHPArkitect)
 - ✅ No pending Rector refactoring
+- ✅ OpenAPI specification up to date
 - ✅ Dependency hygiene (composer-require-checker, composer-unused)
 - ✅ Dependency security (composer audit + Grype)
 

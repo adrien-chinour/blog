@@ -63,5 +63,6 @@ make cc                           # Clear cache
 
 ```bash
 make doc  # Start Docsify documentation server (requires npm)
+make doc-api  # Regenerate the OpenAPI specification (docs/reference/openapi.json)
 ```
 

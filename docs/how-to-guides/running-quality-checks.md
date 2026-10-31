@@ -52,6 +52,14 @@ docker compose run --rm php vendor/bin/rector process
 - `composer-require-checker` reports symbols used in `src/` whose package is not in `require`. Fix it by adding the package to composer.json, even when it is already pulled transitively.
 - `composer-unused` reports packages in `require` that no PHP code imports. Packages wired only through `config/` (bundles, runtime, Flex...) are whitelisted in `composer-unused.php`.
 
+## API Documentation
+
+The OpenAPI specification in `docs/reference/openapi.json` is generated from the controllers (see [API Endpoints Reference](../reference/api-endpoints.md)). Regenerate it after any route, parameter or payload change, the CI fails otherwise:
+
+```bash
+make doc-api
+```
+
 ## Tests and Coverage
 
 ```bash

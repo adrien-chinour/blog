@@ -1,0 +1,620 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Blog API",
+        "description": "API gateway for the blog front end: articles (Contentful), projects (GitHub),\ncomments, features and pages (Strapi), full-text search (Meilisearch).\n\nEvery response carries `X-RateLimit-Limit` and `X-RateLimit-Remaining` headers.\nErrors are JSON objects with an `error` message.\n",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/articles/{id}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "operationId": "get_app_presentation_http_article_getarticle__invoke",
+                "parameters": [
+                    {
+                        "name": "published",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": true
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "\\w+"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Article identified by its Contentful entry id. `published=false` returns the preview (draft) version and disables caching",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BlogArticle"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/articles/{slug}": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "operationId": "get_app_presentation_http_article_getarticlebyslug__invoke",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "[a-z0-9\\-]+"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Published article identified by its slug",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BlogArticle"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/articles/{id}/recommendations": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "operationId": "get_app_presentation_http_article_getarticlerecommendations__invoke",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "\\w+"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Articles recommended for the given article",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/BlogArticle"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/articles": {
+            "get": {
+                "tags": [
+                    "Articles"
+                ],
+                "operationId": "get_app_presentation_http_article_listarticle__invoke",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Latest published articles, most recent first",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/BlogArticle"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cache/invalidation": {
+            "get": {
+                "tags": [
+                    "Cache"
+                ],
+                "operationId": "get_app_presentation_http_cache_cacheinvalidation__invoke",
+                "parameters": [
+                    {
+                        "name": "tag[]",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cache entries carrying the given tags were invalidated"
+                    },
+                    "401": {
+                        "description": "Missing or invalid admin token"
+                    }
+                },
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ]
+            }
+        },
+        "/comments": {
+            "post": {
+                "tags": [
+                    "Comments"
+                ],
+                "operationId": "post_app_presentation_http_comment_createarticlecomment__invoke",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PostCommentDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Comment submitted for moderation"
+                    },
+                    "400": {
+                        "description": "Invalid comment (unknown article, length or content rules)"
+                    },
+                    "422": {
+                        "description": "Malformed payload"
+                    }
+                }
+            }
+        },
+        "/articles/{id}/comments": {
+            "get": {
+                "tags": [
+                    "Comments"
+                ],
+                "operationId": "get_app_presentation_http_comment_getarticlecomments__invoke",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "\\w+"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Published comments of the article",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Comment"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/features": {
+            "get": {
+                "tags": [
+                    "Features"
+                ],
+                "operationId": "get_app_presentation_http_feature_listfeature__invoke",
+                "responses": {
+                    "200": {
+                        "description": "Feature flags with their current state",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Feature"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "operationId": "get_app_presentation_http_home__invoke",
+                "responses": {
+                    "200": {
+                        "description": "Service is up",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "string",
+                                            "example": "ok"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pages": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "operationId": "get_app_presentation_http_page_getpage__invoke",
+                "parameters": [
+                    {
+                        "name": "path",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Static page identified by its path",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Page"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/projects": {
+            "get": {
+                "tags": [
+                    "Projects"
+                ],
+                "operationId": "get_app_presentation_http_project_listproject__invoke",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Public GitHub repositories of the author",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Project"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search/articles": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "operationId": "get_app_presentation_http_search_searcharticle__invoke",
+                "parameters": [
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Identifiers of the articles matching the full-text query (Meilisearch)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "4rDKoxkMBXRMGZ7ucuMg6y"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PostCommentDto": {
+                "required": [
+                    "articleId",
+                    "username",
+                    "message"
+                ],
+                "properties": {
+                    "articleId": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "BlogTag": {
+                "required": [
+                    "id",
+                    "name",
+                    "slug"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "BlogArticle": {
+                "required": [
+                    "id",
+                    "title",
+                    "description",
+                    "content",
+                    "imageUrl",
+                    "slug",
+                    "publicationDate"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    },
+                    "imageUrl": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "publicationDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/BlogTag"
+                        },
+                        "default": []
+                    },
+                    "recommendations": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "default": []
+                    },
+                    "imageDescription": {
+                        "type": "string",
+                        "nullable": true,
+                        "default": null
+                    }
+                },
+                "type": "object"
+            },
+            "Comment": {
+                "required": [
+                    "id",
+                    "username",
+                    "message",
+                    "publishedAt"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "publishedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Feature": {
+                "required": [
+                    "name",
+                    "description",
+                    "enable"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "enable": {
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "Page": {
+                "required": [
+                    "title",
+                    "path",
+                    "content"
+                ],
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "content": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "Project": {
+                "required": [
+                    "name",
+                    "url"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "language": {
+                        "type": "string",
+                        "nullable": true,
+                        "default": null
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true,
+                        "default": null
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "description": "Admin token (ADMIN_TOKEN environment variable)",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Articles"
+        },
+        {
+            "name": "Cache"
+        },
+        {
+            "name": "Comments"
+        },
+        {
+            "name": "Features"
+        },
+        {
+            "name": "Health"
+        },
+        {
+            "name": "Pages"
+        },
+        {
+            "name": "Projects"
+        },
+        {
+            "name": "Search"
+        }
+    ]
+}

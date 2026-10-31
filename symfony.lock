@@ -1,4 +1,13 @@
 {
+    "doctrine/deprecations": {
+        "version": "1.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "fdd756167454623e21f1d769c5b814b243782a67"
+        }
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.13",
         "recipe": {
@@ -24,6 +33,9 @@
         "files": [
             "config/packages/meilisearch.yaml"
         ]
+    },
+    "nelmio/api-doc-bundle": {
+        "version": "v5.13.2"
     },
     "php-http/discovery": {
         "version": "1.19",

@@ -16,6 +16,7 @@
 
 * **Reference**
   * [API Endpoints](reference/api-endpoints.md)
+  * [API Reference (Swagger UI)](api.html ':ignore')
   * [Environment Variables](reference/environment-variables.md)
   * [Makefile Commands](reference/makefile-commands.md)
   * [Coding Standards](reference/coding-standards.md)

@@ -8,6 +8,10 @@ use DateTimeInterface;
 
 final readonly class BlogArticle
 {
+    /**
+     * @param list<BlogTag> $tags
+     * @param list<string> $recommendations Identifiers of the recommended articles
+     */
     public function __construct(
         public string             $id,
         public string             $title,

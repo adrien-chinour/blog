@@ -12,7 +12,7 @@ SYMFONY  = $(PHP) bin/console
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help build up start down logs sh install composer vendor console cc npm watch quality test test-coverage test-mutation test-unit test-integration
+.PHONY        : help build up start down logs sh install composer vendor console cc npm watch quality test test-coverage test-mutation test-unit test-integration doc-api
 
 ## —— 🎵 🐳 The Symfony Docker Makefile 🐳 🎵 ——————————————————————————————————
 help: ## Outputs this help screen
@@ -82,6 +82,10 @@ cc: c=c:c ## Clear the cache
 cc: console
 
 ## —— Docsify 📚 ———————————————————————————————————————————————————————————————
+doc-api: ## Regenerate the OpenAPI specification (docs/reference/openapi.json)
+doc-api: c=run-script docs:api
+doc-api: composer
+
 doc: ## Start documentation in local environment (without docker)
 	@(docsify serve docs) || echo "\n\e[31minstall Docsify : 'npm i -g docsify-cli'\e[0m\n"
 

@@ -24,4 +24,7 @@ return static fn(Configuration $config): Configuration => $config
     ->addNamedFilter(NamedFilter::fromString('monolog/monolog'))
     ->addNamedFilter(NamedFilter::fromString('sentry/sentry-symfony'))
     ->addNamedFilter(NamedFilter::fromString('symfony/security-bundle'))
-    ->addNamedFilter(NamedFilter::fromString('symfony/lock'));
+    ->addNamedFilter(NamedFilter::fromString('symfony/lock'))
+    // Enables the PhpStan PropertyInfo extractor (docblock types in generated OpenAPI schemas and the serializer)
+    ->addNamedFilter(NamedFilter::fromString('phpstan/phpdoc-parser'))
+    ->addNamedFilter(NamedFilter::fromString('phpdocumentor/type-resolver'));

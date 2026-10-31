@@ -1,150 +1,59 @@
 # API Endpoints Reference
 
-Complete reference of all available API endpoints.
+The API reference is **generated from the code** with [NelmioApiDocBundle](https://github.com/nelmio/NelmioApiDocBundle) and must not be edited by hand.
 
-## Base URL
+- **Interactive reference (Swagger UI)**: [api.html](../api.html ':ignore')
+- **OpenAPI 3 specification**: [`reference/openapi.json`](openapi.json ':ignore')
+- **Local development**: `http://localhost:8080/api/doc` (Swagger UI) and `http://localhost:8080/api/doc.json`
 
-- **Development**: `http://localhost:8080`
-- **Production**: Configure in your environment
+## Regenerating the Specification
 
-## Articles
-
-### List Articles
-
-```
-GET /articles
-```
-
-Returns a list of all articles.
-
-### Get Article by ID
-
-```
-GET /articles/{id}
+```bash
+make doc-api
+# or
+docker compose run --rm php composer docs:api
 ```
 
-Returns a specific article by its ID.
+The CI regenerates the specification and fails when `docs/reference/openapi.json` is out of date, so any route, parameter or payload change must be committed together with the regenerated file.
 
-### Get Article by Slug
+## Where the Documentation Comes From
 
-```
-GET /articles/slug/{slug}
-```
+| Element | Source |
+|---------|--------|
+| Paths, methods, path parameters | `#[Route]` attributes on controllers |
+| Query parameters | `#[MapQueryParameter]` controller arguments |
+| Request bodies | `#[MapRequestPayload]` DTOs (e.g. `PostCommentDto`) |
+| Responses | `#[OA\Response]` attributes on controllers, schemas derived from Domain models |
 
-Returns a specific article by its slug.
+The OpenAPI attributes come from a dev dependency, so the symbols are whitelisted in `composer-require-checker.json`. Add any new `OA\*` attribute there.
+| Authentication | `#[IsGranted]` + the `Bearer` security scheme |
 
-### Get Article Recommendations
+## Conventions
 
-```
-GET /articles/{id}/recommendations
-```
+### Authentication
 
-Returns recommended articles for a given article.
+Protected endpoints require a Bearer token (`Authorization: Bearer {ADMIN_TOKEN}`). See the [Security Reference](security.md).
 
-### Search Articles
+### Rate Limiting
 
-```
-GET /articles/search?q={query}
-```
+Every response carries `X-RateLimit-Limit` and `X-RateLimit-Remaining`. See the [Rate Limiter Strategy](../explanation/rate-limiter-strategy.md).
 
-Searches articles using Meilisearch.
+### Errors
 
-**Query Parameters:**
-- `q` (required): Search query string
-
-## Comments
-
-### Get Article Comments
-
-```
-GET /articles/{id}/comments
-```
-
-Returns all comments for a specific article.
-
-### Post Comment
-
-```
-POST /articles/{id}/comments
-```
-
-Creates a new comment for an article.
-
-**Request Body:**
-```json
-{
-  "author": "John Doe",
-  "content": "Great article!"
-}
-```
-
-## Projects
-
-### List Projects
-
-```
-GET /projects
-```
-
-Returns a list of all projects.
-
-## Pages
-
-### Get Page
-
-```
-GET /pages?path={page_path}
-```
-
-Returns a static page by its path.
-
-**Query Parameters:**
-- `path` (required): Page path
-
-## Features
-
-### List Features
-
-```
-GET /features
-```
-
-Returns all feature flags.
-
-## Cache
-
-### Invalidate Cache
-
-```
-POST /cache/invalidation?tag[]={tag}
-```
-
-Invalidates cache entries by tag. Requires authentication.
-
-**Query Parameters:**
-- `tag[]` (required): One or more cache tags to invalidate
-
-**Authentication:** Bearer token required
-
-## Response Format
-
-All endpoints return JSON responses. Error responses follow this format:
+Errors are JSON objects with an `error` message. In `dev` and `test` a `debug` object (exception class, code, file, line) is added:
 
 ```json
 {
-  "error": "Error message",
-  "code": 400
+  "error": "Not Found",
+  "debug": { "class": "...", "code": 0, "file": "...", "line": 42 }
 }
 ```
 
-## Rate Limiting
+### Caching
 
-All endpoints are subject to rate limiting. See response headers:
-- `X-RateLimit-Limit`: Total available tokens
-- `X-RateLimit-Remaining`: Remaining tokens
+Public `GET` endpoints send `Cache-Control` headers (`max-age`, `s-maxage`, `public`), see the `#[Cache]` attribute on each controller.
 
 ## See Also
 
 - [How to Use Bruno API Collection](../how-to-guides/using-bruno-api-collection.md)
-- [Security Reference](../reference/security.md)
-
+- [Security Reference](security.md)

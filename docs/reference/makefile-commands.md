@@ -65,6 +65,7 @@ docker compose run --rm php bin/console about
 | Command | Description |
 |---------|-------------|
 | `make doc` | Start Docsify documentation server (requires npm) |
+| `make doc-api` | Regenerate the OpenAPI specification in `docs/reference/openapi.json` |
 
 ## Help
 

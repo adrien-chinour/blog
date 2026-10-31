@@ -9,7 +9,7 @@ use App\Infrastructure\Component\GraphQL\Attribute\CollectionOf;
 final class ResourceCollection
 {
     /**
-     * @var Resource[]
+     * @var list<Resource>
      */
     #[CollectionOf(Resource::class)]
     public array $items = [];
@@ -22,7 +22,7 @@ final class ResourceCollection
     }
 
     /**
-     * @return string[]
+     * @return list<string>
      */
     public function getResourceIds(?ContentTypes $resourceTypeFilter = null): array
     {
@@ -34,6 +34,6 @@ final class ResourceCollection
             );
         }
 
-        return array_map(fn (Resource $resource): string => $resource->sys->id, $items);
+        return array_values(array_map(fn (Resource $resource): string => $resource->sys->id, $items));
     }
 }

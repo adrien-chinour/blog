@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Nelmio\ApiDocBundle\NelmioApiDocBundle;
 use Sentry\SentryBundle\SentryBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\MonologBundle\MonologBundle;
@@ -13,6 +14,7 @@ return [
     FrameworkBundle::class => ['all' => true],
     TwigBundle::class => ['all' => true],
     WebProfilerBundle::class => ['dev' => true, 'test' => true],
+    NelmioApiDocBundle::class => ['dev' => true, 'test' => true],
     SecurityBundle::class => ['all' => true],
     MonologBundle::class => ['all' => true],
     SentryBundle::class => ['prod' => true],

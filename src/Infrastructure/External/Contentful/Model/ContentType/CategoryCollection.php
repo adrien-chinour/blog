@@ -9,7 +9,7 @@ use App\Infrastructure\Component\GraphQL\Attribute\CollectionOf;
 final class CategoryCollection
 {
     /**
-     * @var Category[]
+     * @var list<Category>
      */
     #[CollectionOf(Category::class)]
     public array $items = [];

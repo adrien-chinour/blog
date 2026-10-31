@@ -26,7 +26,7 @@ final readonly class LayerRules implements RulesInterface
             // Rules
             ->where('Domain')->shouldOnlyDependOnComponents('Domain', 'ComponentValidator', 'ComponentString')
             ->where('Application')->mayDependOnComponents(componentNames: 'Domain')
-            ->where('Presentation')->mayDependOnComponents('Application')
+            ->where('Presentation')->mayDependOnComponents('Application', 'Domain')
             ->where('Infrastructure')->mayDependOnComponents('Domain', 'Application')
 
             ->rules();

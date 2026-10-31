@@ -1,4 +1,12 @@
 {
     "scan-files": ["bin/console", "public/index.php"],
-    "symbol-whitelist": []
+    "symbol-whitelist": [
+        "Nelmio\\ApiDocBundle\\Attribute\\Model",
+        "Nelmio\\ApiDocBundle\\Attribute\\Security",
+        "OpenApi\\Attributes\\Items",
+        "OpenApi\\Attributes\\JsonContent",
+        "OpenApi\\Attributes\\Property",
+        "OpenApi\\Attributes\\Response",
+        "OpenApi\\Attributes\\Tag"
+    ]
 }

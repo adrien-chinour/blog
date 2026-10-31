@@ -32,6 +32,7 @@ use App\Tests\Factory\Repository\InMemoryProjectRepositoryFactory;
 use Meilisearch\Client as MeilisearchClient;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\PropertyInfo\Extractor\PhpStanExtractor;
 
 return function (ContainerConfigurator $container): void {
     $services = $container->services();
@@ -47,6 +48,15 @@ return function (ContainerConfigurator $container): void {
         ->bind('$adminToken', '%env(ADMIN_TOKEN)%')
         ->bind('$meilisearchHost', '%env(MEILISEARCH_HOST)%')
         ->bind('$meilisearchToken', '%env(MEILISEARCH_TOKEN)%');
+
+    /**
+     * PropertyInfo: read docblock types (`@param list<Foo> $bar`, `@var Foo[]`) for promoted properties.
+     * FrameworkBundle only registers this extractor when its packages are non-dev requirements,
+     * so it is registered explicitly: the serializer and the generated OpenAPI schemas rely on it.
+     */
+    $services->set('property_info.phpstan_extractor', PhpStanExtractor::class)
+        ->tag('property_info.type_extractor', ['priority' => -1000])
+        ->tag('property_info.constructor_extractor', ['priority' => -1000]);
 
     /**
      * Automatically registers App namespace has services

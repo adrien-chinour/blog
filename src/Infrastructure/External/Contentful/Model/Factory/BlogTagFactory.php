@@ -20,7 +20,7 @@ final readonly class BlogTagFactory
     }
 
     /**
-     * @return BlogTag[]
+     * @return list<BlogTag>
      */
     public function fromCategoryCollection(CategoryCollection $collection): array
     {

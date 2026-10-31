@@ -1,0 +1,24 @@
+when@dev: &nelmio
+    nelmio_api_doc:
+        documentation:
+            info:
+                title: Blog API
+                description: |
+                    API gateway for the blog front end: articles (Contentful), projects (GitHub),
+                    comments, features and pages (Strapi), full-text search (Meilisearch).
+
+                    Every response carries `X-RateLimit-Limit` and `X-RateLimit-Remaining` headers.
+                    Errors are JSON objects with an `error` message.
+                version: 1.0.0
+            components:
+                securitySchemes:
+                    Bearer:
+                        type: http
+                        scheme: bearer
+                        description: "Admin token (ADMIN_TOKEN environment variable)"
+        areas:
+            default:
+                # Exclude the documentation itself and Symfony internal routes (profiler, errors)
+                path_patterns: [ '^/(?!api/doc|_)' ]
+
+when@test: *nelmio
