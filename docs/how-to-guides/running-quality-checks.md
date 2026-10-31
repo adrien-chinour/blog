@@ -1,10 +1,8 @@
 # How to Run Quality Checks
 
-This guide explains how to run code quality checks locally.
+This guide explains how to run code quality checks locally. The CI runs exactly the same composer scripts, so a green `make quality` locally means a green CI.
 
 ## Running All Quality Checks
-
-Run all quality checks (validation, static analysis, coding standards, architecture):
 
 ```bash
 # Using Makefile (recommended)
@@ -14,37 +12,54 @@ make quality
 docker compose run --rm php composer run-script quality
 ```
 
-This command runs:
-- `composer validate --strict`: Validates composer.json
-- `phpstan analyse`: Static analysis with PHPStan
-- `ecs check`: Coding standards with Easy Coding Standard
-- `phparkitect check`: Architecture rules validation
+This command runs, in order:
+
+| Script | Tool | Purpose |
+|--------|------|---------|
+| `composer validate --strict` | Composer | Validates composer.json and composer.lock |
+| `composer quality:lint` | Symfony console | `lint:yaml` on config/ and `lint:container` |
+| `composer quality:phpstan` | PHPStan (level 9) | Static analysis |
+| `composer quality:ecs` | Easy Coding Standard | Coding standards |
+| `composer quality:arkitect` | PHPArkitect | Architecture rules (`tests/Architecture/arkitect.php`) |
+| `composer quality:rector` | Rector (dry-run) | Fails if automated refactorings are pending (`rector.php`) |
+| `composer quality:deps` | composer-require-checker, composer-unused | Dependencies must be declared explicitly and actually used |
 
 ## Individual Checks
 
-### Code Style (ECS)
+Every check is available as its own composer script, extra options go after `--`:
 
 ```bash
-docker compose run --rm php vendor/bin/ecs check
+docker compose run --rm php composer quality:phpstan
+docker compose run --rm php composer quality:ecs -- --no-progress-bar
+docker compose run --rm php composer quality:arkitect
+docker compose run --rm php composer quality:rector
+docker compose run --rm php composer quality:deps
+docker compose run --rm php composer quality:lint
 ```
 
-### Static Analysis (PHPStan)
+## Fixing Issues Automatically
 
 ```bash
-docker compose run --rm php vendor/bin/phpstan analyse --memory-limit=-1
-```
-
-### Architecture Rules (PHPArkitect)
-
-```bash
-docker compose run --rm php vendor/bin/phparkitect check --config=tests/Architecture/arkitect.php
-```
-
-## Fixing Code Style Issues
-
-ECS can automatically fix many code style issues:
-
-```bash
+# Code style
 docker compose run --rm php vendor/bin/ecs check --fix
+
+# Apply pending Rector refactorings (review the diff afterwards)
+docker compose run --rm php vendor/bin/rector process
 ```
 
+## Dependency Hygiene
+
+- `composer-require-checker` reports symbols used in `src/` whose package is not in `require`. Fix it by adding the package to composer.json, even when it is already pulled transitively.
+- `composer-unused` reports packages in `require` that no PHP code imports. Packages wired only through `config/` (bundles, runtime, Flex...) are whitelisted in `composer-unused.php`.
+
+## Tests and Coverage
+
+```bash
+make test            # All test suites
+make test-unit       # Unit tests only
+make test-integration
+make test-coverage   # Clover, Cobertura and HTML reports in var/coverage/ (needs pcov or XDEBUG_MODE=coverage)
+make test-mutation   # Infection mutation testing on the Unit suite (infection.json5)
+```
+
+The CI fails under 70% line coverage and under 80% MSI (mutation score indicator).

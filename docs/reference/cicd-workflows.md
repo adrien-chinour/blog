@@ -6,25 +6,31 @@ Reference for all GitHub Actions workflows.
 
 **Trigger**: Every push on `main` and every pull request. Concurrent runs on the same branch are cancelled.
 
-Two jobs run in parallel.
+Three jobs run in parallel. All of them use the PHP version from `.php-version`, with the `opentelemetry` extension, and call the same composer scripts as local development so both stay in sync.
 
-**Quality & tests** (PHP version from `.php-version`, extensions incl. `opentelemetry`, coverage via `pcov`):
+**Quality & tests**:
 
 - `composer validate --strict`
+- Symfony lints (`lint:yaml`, `lint:container`) — `composer quality:lint`
 - ECS (coding standards) — `composer quality:ecs`
 - PHPStan (static analysis) — `composer quality:phpstan`
 - PHPArkitect (architecture rules) — `composer quality:arkitect`
-- PHPUnit with coverage — `composer test-coverage`
+- Rector dry-run (no pending automated refactoring) — `composer quality:rector`
+- composer-require-checker and composer-unused (dependency hygiene) — `composer quality:deps`
+- PHPUnit with coverage (pcov) — `composer test-coverage`
 - Coverage summary posted to the job summary and as a sticky PR comment; the job fails under 70% line coverage (orange under 85%)
 - HTML coverage report uploaded as the `coverage-html` artifact (14 days)
+
+**Mutation testing**:
+
+- Infection on the Unit suite — `composer test-mutation`, fails under 80% MSI
+- Logs uploaded as the `infection-logs` artifact
 
 **Security**:
 
 - `composer audit --locked` (PHP security advisories)
 - SBOM generation (Anchore Syft) and vulnerability scan (Grype), failing on critical findings
 - Scan results uploaded as SARIF to the repository Security tab
-
-The CI calls the same composer scripts as local development, so both stay in sync.
 
 ## Load Testing (`load_test.yaml`)
 
@@ -46,8 +52,17 @@ Builds and publishes the Docker base image to GitHub Container Registry:
 - Image: `ghcr.io/adrien-chinour/blog:base-php8.4`
 - Base: FrankenPHP with PHP 8.4, always pulled fresh so upstream PHP security patches land weekly
 - The PHP version of the published image is written to the job summary
+- The published image is scanned with Grype (fails on critical vulnerabilities with an available fix) and the results are uploaded to the Security tab
 
 After a rebuild, redeploy the production image so it picks up the new base.
+
+## Dependabot (`dependabot.yml`)
+
+Weekly pull requests (Monday morning, Europe/Paris) for Composer packages (grouped: Symfony, OpenTelemetry, dev tools), GitHub Actions (grouped, SHA-pinned), Docker base images and compose images.
+
+## Supply chain
+
+Every GitHub Action is pinned to a commit SHA with the version in a trailing comment. Dependabot keeps the pins up to date.
 
 ## Quality Gates
 
@@ -56,7 +71,10 @@ The CI pipeline enforces:
 - ✅ Code style (ECS)
 - ✅ Static analysis (PHPStan)
 - ✅ Test coverage (minimum 70% lines)
+- ✅ Mutation score (minimum 80% MSI)
 - ✅ Architecture rules (PHPArkitect)
+- ✅ No pending Rector refactoring
+- ✅ Dependency hygiene (composer-require-checker, composer-unused)
 - ✅ Dependency security (composer audit + Grype)
 
 ## Local Quality Checks
@@ -68,6 +86,7 @@ Run quality checks locally before pushing:
 make quality        # All quality checks
 make test           # Run tests only
 make test-coverage  # Tests with coverage reports in var/coverage/
+make test-mutation  # Infection mutation testing
 make test-unit
 make test-integration
 

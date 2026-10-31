@@ -19,10 +19,10 @@ jobs:
             pull-requests: write # coverage comment on PRs
         steps:
             -   name: "Checkout"
-                uses: actions/checkout@v5
+                uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
             -   name: "Setup PHP"
-                uses: shivammathur/setup-php@v2
+                uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
                 with:
                     # Single source of truth for the PHP version: .php-version (keep in sync with the Dockerfile)
                     php-version-file: .php-version
@@ -36,9 +36,12 @@ jobs:
                 run: composer validate --strict
 
             -   name: "Install dependencies"
-                uses: ramsey/composer-install@v3
+                uses: ramsey/composer-install@a8d0d959dab41457692a5e2041bd9b757a119e3f # 3.2.1
                 with:
                     composer-options: "--no-scripts --prefer-dist"
+
+            -   name: "Symfony lints (YAML, container)"
+                run: composer quality:lint
 
             -   name: "Coding style (ECS)"
                 run: composer quality:ecs -- --no-progress-bar
@@ -49,11 +52,17 @@ jobs:
             -   name: "Architecture rules (PHPArkitect)"
                 run: composer quality:arkitect
 
+            -   name: "Automated refactoring check (Rector dry-run)"
+                run: composer quality:rector -- --no-progress-bar
+
+            -   name: "Dependency hygiene (composer-require-checker, composer-unused)"
+                run: composer quality:deps
+
             -   name: "Tests with coverage (PHPUnit)"
                 run: composer test-coverage
 
             -   name: "Coverage summary"
-                uses: irongut/CodeCoverageSummary@v1.3.0
+                uses: irongut/CodeCoverageSummary@51cc3a756ddcd398d447c044c02cb6aa83fdae95 # v1.3.0
                 with:
                     filename: var/coverage/cobertura.xml
                     format: markdown
@@ -71,7 +80,7 @@ jobs:
 
             -   name: "Comment coverage on PR"
                 if: github.event_name == 'pull_request'
-                uses: marocchino/sticky-pull-request-comment@v2
+                uses: marocchino/sticky-pull-request-comment@773744901bac0e8cbb5a0dc842800d45e9b2b405 # v2.9.4
                 with:
                     header: coverage
                     recreate: true
@@ -79,7 +88,7 @@ jobs:
 
             -   name: "Upload HTML coverage report"
                 if: always()
-                uses: actions/upload-artifact@v4
+                uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
                 with:
                     name: coverage-html
                     path: var/coverage/html
@@ -93,10 +102,10 @@ jobs:
             security-events: write # SARIF upload to the Security tab
         steps:
             -   name: "Checkout"
-                uses: actions/checkout@v5
+                uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
             -   name: "Setup PHP"
-                uses: shivammathur/setup-php@v2
+                uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
                 with:
                     php-version-file: .php-version
                     coverage: none
@@ -106,14 +115,14 @@ jobs:
                 run: composer audit --locked
 
             -   name: "Create SBOM"
-                uses: anchore/sbom-action@v0
+                uses: anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
                 with:
                     format: spdx-json
                     output-file: "${{ github.event.repository.name }}-sbom.spdx.json"
 
             -   name: "Scan SBOM"
                 id: scan
-                uses: anchore/scan-action@v7
+                uses: anchore/scan-action@e1165082ffb1fe366ebaf02d8526e7c4989ea9d2 # v7.4.0
                 with:
                     sbom: "${{ github.event.repository.name }}-sbom.spdx.json"
                     fail-build: true
@@ -121,7 +130,40 @@ jobs:
 
             -   name: "Upload scan results to GitHub Security"
                 if: always() && steps.scan.outputs.sarif != ''
-                uses: github/codeql-action/upload-sarif@v4
+                uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
                 with:
                     sarif_file: ${{ steps.scan.outputs.sarif }}
                     category: grype
+
+    mutation_testing:
+        name: "Mutation testing"
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        steps:
+            -   name: "Checkout"
+                uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+
+            -   name: "Setup PHP"
+                uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # 2.40.0
+                with:
+                    php-version-file: .php-version
+                    extensions: mbstring, ctype, iconv, intl, opentelemetry
+                    coverage: pcov
+                    tools: composer:v2
+
+            -   name: "Install dependencies"
+                uses: ramsey/composer-install@a8d0d959dab41457692a5e2041bd9b757a119e3f # 3.2.1
+                with:
+                    composer-options: "--no-scripts --prefer-dist"
+
+            -   name: "Infection (unit test suite)"
+                run: composer test-mutation -- --min-msi=80 --min-covered-msi=80 --logger-github
+
+            -   name: "Upload Infection logs"
+                if: always()
+                uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+                with:
+                    name: infection-logs
+                    path: var/infection/*.log
+                    retention-days: 14

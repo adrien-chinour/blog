@@ -42,12 +42,14 @@ make vendor                              # Install vendors (production mode)
 make test              # Run all tests
 make test-unit         # Run unit tests only
 make test-integration  # Run integration tests only
+make test-coverage     # Tests with coverage reports in var/coverage/
+make test-mutation     # Infection mutation testing (Unit suite)
 ```
 
 ## Quality Checks
 
 ```bash
-make quality  # Run all quality checks (ECS, PHPStan, PHPArkitect)
+make quality  # Run all quality checks (lints, PHPStan, ECS, PHPArkitect, Rector, dependency checks)
 ```
 
 ## Symfony Console

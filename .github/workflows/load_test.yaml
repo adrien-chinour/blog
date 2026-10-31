@@ -9,13 +9,13 @@ jobs:
             contents: read
         steps:
             -   name: Checkout
-                uses: actions/checkout@v4
+                uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
 
             -   name: Setup K6
-                uses: grafana/setup-k6-action@v1
+                uses: grafana/setup-k6-action@43b9fc21641a76002687994433dd586f56e791b1 # v1.2.2
 
             -   name: Run local k6 / API Smoke testing
-                uses: grafana/run-k6-action@v1
+                uses: grafana/run-k6-action@4082a08c7e40cf6d65863911077dfb60ae0a4f04 # v1.5.0
                 env:
                     K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
                     K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}
@@ -24,7 +24,7 @@ jobs:
                     path: k6/api-smoke.js
 
             -   name: Run local k6 / API Stress testing
-                uses: grafana/run-k6-action@v1
+                uses: grafana/run-k6-action@4082a08c7e40cf6d65863911077dfb60ae0a4f04 # v1.5.0
                 env:
                     K6_CLOUD_TOKEN: ${{ secrets.K6_CLOUD_TOKEN }}
                     K6_CLOUD_PROJECT_ID: ${{ secrets.K6_CLOUD_PROJECT_ID }}

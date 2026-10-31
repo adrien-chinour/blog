@@ -37,12 +37,14 @@ docker compose run --rm php composer require symfony/package
 | `make test` | Run all tests | `docker compose run --rm php vendor/bin/phpunit` |
 | `make test-unit` | Run unit tests only | `docker compose run --rm php vendor/bin/phpunit --testsuite Unit` |
 | `make test-integration` | Run integration tests only | `docker compose run --rm php vendor/bin/phpunit --testsuite Integration` |
+| `make test-coverage` | Run all tests with coverage reports in `var/coverage/` | `docker compose run --rm php composer run-script test-coverage` |
+| `make test-mutation` | Run Infection mutation testing on the Unit suite | `docker compose run --rm php composer run-script test-mutation` |
 
 ## Quality Commands
 
 | Command | Description | Docker Equivalent |
 |---------|-------------|-------------------|
-| `make quality` | Run all quality checks (ECS, PHPStan, PHPArkitect) | `docker compose run --rm php composer run-script quality` |
+| `make quality` | Run all quality checks (lints, PHPStan, ECS, PHPArkitect, Rector, dependency checks) | `docker compose run --rm php composer run-script quality` |
 
 ## Symfony Console Commands
 

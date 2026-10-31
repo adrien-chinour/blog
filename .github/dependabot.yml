@@ -1,0 +1,56 @@
+version: 2
+updates:
+    -   package-ecosystem: "composer"
+        directory: "/"
+        schedule:
+            interval: "weekly"
+            day: "monday"
+            time: "06:00"
+            timezone: "Europe/Paris"
+        open-pull-requests-limit: 10
+        groups:
+            symfony:
+                patterns: [ "symfony/*" ]
+            open-telemetry:
+                patterns: [ "open-telemetry/*" ]
+            dev-tools:
+                dependency-type: "development"
+        labels: [ "dependencies", "composer" ]
+        commit-message:
+            prefix: "chore(deps)"
+
+    -   package-ecosystem: "github-actions"
+        directory: "/"
+        schedule:
+            interval: "weekly"
+            day: "monday"
+            time: "06:00"
+            timezone: "Europe/Paris"
+        groups:
+            actions:
+                patterns: [ "*" ]
+        labels: [ "dependencies", "ci" ]
+        commit-message:
+            prefix: "ci(deps)"
+
+    -   package-ecosystem: "docker"
+        directory: "/"
+        schedule:
+            interval: "weekly"
+            day: "monday"
+            time: "06:00"
+            timezone: "Europe/Paris"
+        labels: [ "dependencies", "docker" ]
+        commit-message:
+            prefix: "chore(deps)"
+
+    -   package-ecosystem: "docker-compose"
+        directory: "/"
+        schedule:
+            interval: "weekly"
+            day: "monday"
+            time: "06:00"
+            timezone: "Europe/Paris"
+        labels: [ "dependencies", "docker" ]
+        commit-message:
+            prefix: "chore(deps)"
