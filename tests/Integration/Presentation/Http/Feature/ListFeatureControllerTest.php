@@ -10,7 +10,7 @@ final class ListFeatureControllerTest extends WebTestCase
 {
     public function testListFeatureWillReturnCollectionOfFeature(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/features');
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Symfony\Messenger\Middleware;
 
+use stdClass;
 use App\Application\Query\QueryCache;
 use App\Infrastructure\Component\Cache\QueryCacheConfig;
 use App\Infrastructure\Component\Cache\QueryCacheResolver;
@@ -31,6 +32,7 @@ final class CacheMiddlewareTest extends TestCase
 
     public function testHandleSkipsCacheWhenNoConfig(): void
     {
+        $this->cache->expects($this->never())->method($this->anything());
         $message = new class {};
         $envelope = new Envelope($message);
         $stack = $this->createMock(StackInterface::class);
@@ -102,10 +104,8 @@ final class CacheMiddlewareTest extends TestCase
 
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('cache-key', $this->isType('callable'))
-            ->willReturnCallback(function ($key, $callback) use ($cacheItem) {
-                return $callback($cacheItem);
-            });
+            ->with('cache-key', $this->isCallable())
+            ->willReturnCallback(fn($key, $callback) => $callback($cacheItem));
 
         $result = $this->middleware->handle($envelope, $stack);
 
@@ -116,8 +116,8 @@ final class CacheMiddlewareTest extends TestCase
     {
         $message = new #[QueryCache(ttl: 3600, tags: ['article'])] class {};
         $envelope = new Envelope($message);
-        $cachedEnvelope = new Envelope(new \stdClass());
-        $stack = $this->createMock(StackInterface::class);
+        $cachedEnvelope = new Envelope(new stdClass());
+        $stack = $this->createStub(StackInterface::class);
         $config = new QueryCacheConfig('cache-key', 3600, ['article']);
 
         $this->resolver->expects($this->once())
@@ -134,10 +134,8 @@ final class CacheMiddlewareTest extends TestCase
 
         $this->cache->expects($this->once())
             ->method('get')
-            ->with('cache-key', $this->isType('callable'))
-            ->willReturnCallback(function ($key, $callback) use ($cacheItem) {
-                return $callback($cacheItem);
-            });
+            ->with('cache-key', $this->isCallable())
+            ->willReturnCallback(fn($key, $callback) => $callback($cacheItem));
 
         $result = $this->middleware->handle($envelope, $stack);
 

@@ -11,7 +11,7 @@ final class GetPageControllerTest extends WebTestCase
 {
     public function testGetPageWillReturnJsonPage(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/pages', [
             'path' => '/about/',
@@ -23,7 +23,7 @@ final class GetPageControllerTest extends WebTestCase
 
     public function testGetPageWillReturnNotFoundOnUnknownUrl(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);

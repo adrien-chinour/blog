@@ -100,7 +100,7 @@ final class InMemoryBlogArticleSearchRepositoryTest extends TestCase
         $results = $this->repository->search('Test');
 
         $this->assertIsArray($results);
-        $this->assertContainsOnly('string', $results);
+        $this->assertContainsOnlyString($results);
     }
 
     public function testIndexOverwritesExistingArticle(): void

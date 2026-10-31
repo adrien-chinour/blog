@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Component\GraphQL;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use App\Infrastructure\Component\GraphQL\Exception\GraphQLQueryBuilderException;
 use App\Infrastructure\Component\GraphQL\GraphQLQueryBuilder;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +21,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     // ==================== Test Classes ====================
 
-    private static function createSimpleTestClass(): ReflectionClass
+    private function createSimpleTestClass(): ReflectionClass
     {
         return new ReflectionClass(new class {
             public string $id;
@@ -28,7 +29,7 @@ final class GraphQLQueryBuilderTest extends TestCase
         });
     }
 
-    private static function createNestedTestClass(): ReflectionClass
+    private function createNestedTestClass(): ReflectionClass
     {
         return new ReflectionClass(new class {
             public string $id;
@@ -36,7 +37,7 @@ final class GraphQLQueryBuilderTest extends TestCase
         });
     }
 
-    private static function createTestClassWithTypename(): ReflectionClass
+    private function createTestClassWithTypename(): ReflectionClass
     {
         return new ReflectionClass(new class {
             public string $typename;
@@ -48,7 +49,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithNoFilters(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, []);
 
         $this->assertStringContainsString('query {', $query);
@@ -58,7 +59,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithStringFilter(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => 'test-123']);
 
         $filters = $this->extractFilters($query);
@@ -67,7 +68,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithBooleanFilter(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['preview' => true]);
 
         $filters = $this->extractFilters($query);
@@ -76,7 +77,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithIntegerFilter(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['limit' => 10]);
 
         $filters = $this->extractFilters($query);
@@ -85,7 +86,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithFloatFilter(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['score' => 3.14]);
 
         $filters = $this->extractFilters($query);
@@ -94,7 +95,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithNestedFilters(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, [
             'where' => [
                 'slug' => 'my-article',
@@ -109,7 +110,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithNullFilter(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['optional' => null]);
 
         // Null filters should be omitted
@@ -118,7 +119,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testBuildQueryWithTypenameField(): void
     {
-        $class = self::createTestClassWithTypename();
+        $class = $this->createTestClassWithTypename();
         $query = $this->builder->buildQuery($class, []);
 
         $this->assertStringContainsString('__typename', $query);
@@ -128,7 +129,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeDoubleQuotes(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => 'test"injection']);
 
         $filters = $this->extractFilters($query);
@@ -138,7 +139,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeBackslashes(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => 'test\\path']);
 
         $filters = $this->extractFilters($query);
@@ -147,7 +148,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeNewlines(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => "test\nline"]);
 
         $filters = $this->extractFilters($query);
@@ -157,7 +158,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeCarriageReturns(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => "test\rline"]);
 
         $filters = $this->extractFilters($query);
@@ -167,7 +168,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeTabs(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => "test\tline"]);
 
         $filters = $this->extractFilters($query);
@@ -177,7 +178,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeControlCharacters(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => "test\x00null"]);
 
         $filters = $this->extractFilters($query);
@@ -186,7 +187,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeMultipleSpecialCharacters(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $malicious = 'test"with\nmultiple\t\\special\rchars';
         $query = $this->builder->buildQuery($class, ['id' => $malicious]);
 
@@ -199,7 +200,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEscapeUnicodeCharacters(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => 'café']);
 
         // Unicode characters above 0x7F should be preserved
@@ -211,7 +212,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testValidIdentifier(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['validIdentifier' => 'value']);
 
         $this->assertStringContainsString('validIdentifier', $query);
@@ -219,7 +220,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testValidIdentifierWithUnderscore(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['_valid_identifier' => 'value']);
 
         $this->assertStringContainsString('_valid_identifier', $query);
@@ -227,7 +228,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testInvalidIdentifierWithHyphen(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('not a valid GraphQL identifier');
@@ -237,7 +238,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testInvalidIdentifierStartingWithNumber(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('not a valid GraphQL identifier');
@@ -247,7 +248,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testInvalidIdentifierWithSpecialCharacters(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('not a valid GraphQL identifier');
@@ -257,7 +258,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEmptyIdentifier(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('cannot be empty');
@@ -269,7 +270,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testMaxDepthAllowed(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         // MAX_QUERY_DEPTH is 10, so depth 0-9 is allowed (10 levels total)
         // We test with 9 levels of nesting (depth 0 + 9 nested = 10 total)
         $filters = $this->createNestedFilters(9);
@@ -281,7 +282,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testMaxDepthExceeded(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $filters = $this->createNestedFilters(11);
 
         $this->expectException(GraphQLQueryBuilderException::class);
@@ -293,7 +294,7 @@ final class GraphQLQueryBuilderTest extends TestCase
     public function testNestedFieldsWork(): void
     {
         // Test that nested object fields are properly handled
-        $nestedClass = self::createNestedTestClass();
+        $nestedClass = $this->createNestedTestClass();
         $query = $this->builder->buildQuery($nestedClass, []);
         
         $this->assertIsString($query);
@@ -302,6 +303,7 @@ final class GraphQLQueryBuilderTest extends TestCase
         $this->assertStringContainsString('name', $query);
     }
 
+    #[DoesNotPerformAssertions]
     public function testMaxFieldDepthExceeded(): void
     {
         $this->markTestSkipped('Field depth limit is enforced in buildFields() method');
@@ -311,7 +313,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testMaxFilterCount(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $filters = [];
         for ($i = 0; $i < 50; $i++) {
             $filters["filter$i"] = "value$i";
@@ -324,7 +326,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testMaxFilterCountExceeded(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $filters = [];
         for ($i = 0; $i < 51; $i++) {
             $filters["filter$i"] = "value$i";
@@ -338,7 +340,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testMaxStringLength(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $longString = str_repeat('a', 10000);
 
         // Should not throw
@@ -348,7 +350,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testMaxStringLengthExceeded(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $tooLongString = str_repeat('a', 10001);
 
         $this->expectException(GraphQLQueryBuilderException::class);
@@ -361,7 +363,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testUnsupportedTypeThrowsException(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('Unsupported filter value type');
@@ -372,7 +374,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testInvalidFloatValue(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('Invalid float value');
@@ -382,7 +384,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testInvalidFloatInfinity(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('Invalid float value');
@@ -392,7 +394,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testNonStringFilterKey(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
 
         $this->expectException(GraphQLQueryBuilderException::class);
         $this->expectExceptionMessage('Filter key must be a string');
@@ -404,7 +406,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testEmptyStringValue(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['id' => '']);
 
         $filters = $this->extractFilters($query);
@@ -413,7 +415,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testZeroValue(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['limit' => 0]);
 
         $filters = $this->extractFilters($query);
@@ -422,7 +424,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testNegativeNumber(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['offset' => -10]);
 
         $filters = $this->extractFilters($query);
@@ -431,7 +433,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testVeryLargeInteger(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         $query = $this->builder->buildQuery($class, ['limit' => PHP_INT_MAX]);
 
         $this->assertStringContainsString((string)PHP_INT_MAX, $query);
@@ -439,7 +441,7 @@ final class GraphQLQueryBuilderTest extends TestCase
 
     public function testComplexNestedQuery(): void
     {
-        $class = self::createSimpleTestClass();
+        $class = $this->createSimpleTestClass();
         // Use proper associative array structure (no numeric indices)
         $query = $this->builder->buildQuery($class, [
             'where' => [

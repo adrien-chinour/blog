@@ -10,7 +10,7 @@ final class ListArticleControllerTest extends WebTestCase
 {
     public function testListArticleWillReturnCollectionOfArticle(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles');
 
@@ -20,7 +20,7 @@ final class ListArticleControllerTest extends WebTestCase
 
     public function testListArticleWithLimitWillReturnCollectionOfArticleWithSameLimit(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request('GET', '/articles', ['limit' => 1]);
 
         $this->assertResponseIsSuccessful();

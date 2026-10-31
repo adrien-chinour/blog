@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Symfony\Messenger\Middleware;
 
+use stdClass;
 use App\Infrastructure\Symfony\Messenger\Middleware\LoggerMiddleware;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,26 +27,16 @@ final class LoggerMiddlewareTest extends TestCase
 
     public function testHandleLogsMessageStartAndEnd(): void
     {
-        $message = new \stdClass();
+        $message = new stdClass();
         $envelope = new Envelope($message);
         $stack = $this->createMock(StackInterface::class);
 
+        $calls = [];
         $this->logger->expects($this->exactly(2))
             ->method('info')
-            ->withConsecutive(
-                [
-                    'Handling message {message}, started at {timestamp}',
-                    $this->callback(function (array $context) {
-                        return isset($context['message']) && isset($context['timestamp']);
-                    })
-                ],
-                [
-                    'Message {message} handled in {time}ms',
-                    $this->callback(function (array $context) {
-                        return isset($context['message']) && isset($context['time']);
-                    })
-                ]
-            );
+            ->willReturnCallback(static function (string $message, array $context) use (&$calls): void {
+                $calls[] = [$message, $context];
+            });
 
         $nextMiddleware = $this->createMock(MiddlewareInterface::class);
         $nextMiddleware->expects($this->once())
@@ -60,12 +51,19 @@ final class LoggerMiddlewareTest extends TestCase
         $result = $this->middleware->handle($envelope, $stack);
 
         $this->assertSame($envelope, $result);
+        $this->assertSame('Handling message {message}, started at {timestamp}', $calls[0][0]);
+        $this->assertArrayHasKey('message', $calls[0][1]);
+        $this->assertArrayHasKey('timestamp', $calls[0][1]);
+        $this->assertSame('Message {message} handled in {time}ms', $calls[1][0]);
+        $this->assertArrayHasKey('message', $calls[1][1]);
+        $this->assertArrayHasKey('time', $calls[1][1]);
     }
 
     public function testHandleWorksWithoutLogger(): void
     {
+        $this->logger->expects($this->never())->method($this->anything());
         $middleware = new LoggerMiddleware();
-        $message = new \stdClass();
+        $message = new stdClass();
         $envelope = new Envelope($message);
         $stack = $this->createMock(StackInterface::class);
 
@@ -86,6 +84,7 @@ final class LoggerMiddlewareTest extends TestCase
 
     public function testMicrotimeReturnsMilliseconds(): void
     {
+        $this->logger->expects($this->never())->method($this->anything());
         $time = $this->middleware->microtime();
 
         $this->assertIsFloat($time);

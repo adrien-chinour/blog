@@ -15,26 +15,18 @@ final readonly class ApplicationRules implements RulesInterface
 {
     public static function rules(): array
     {
-        $rules = [];
-
-        $rules[] = Rule::allClasses()
+        return [Rule::allClasses()
             ->that(new ResideInOneOfTheseNamespaces('App\Application\Query'))
             ->andThat(new NotHaveNameMatching('QueryCache'))
             ->should(new MatchOneOfTheseNames(['*Query', '*QueryHandler']))
-            ->because('queries must respect naming conventions');
-
-        $rules[] = Rule::allClasses()
+            ->because('queries must respect naming conventions'), Rule::allClasses()
             ->that(new ResideInOneOfTheseNamespaces('App\Application\Command'))
             ->should(new MatchOneOfTheseNames(['*Command', '*CommandHandler']))
-            ->because('commands must respect naming conventions');
-
-        $rules[] = Rule::allClasses()
+            ->because('commands must respect naming conventions'), Rule::allClasses()
             ->that(new ResideInOneOfTheseNamespaces('App\Application\Query', 'App\Application\Command'))
             ->andThat(new NotHaveNameMatching('*Handler'))
             ->should(new IsFinal())
             ->andShould(new IsReadonly())
-            ->because('queries and commands must be immutable objects');
-
-        return $rules;
+            ->because('queries and commands must be immutable objects')];
     }
 }

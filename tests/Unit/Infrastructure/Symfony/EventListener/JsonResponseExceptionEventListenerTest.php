@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Symfony\EventListener;
 
+use Exception;
+use RuntimeException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Symfony\Component\Messenger\Envelope;
+use stdClass;
 use App\Application\Exception\BadRequestException;
 use App\Infrastructure\Symfony\EventListener\JsonResponseExceptionEventListener;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -35,11 +40,12 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeSkipsWhenNotJsonRequest(): void
     {
+        $this->logger->expects($this->never())->method($this->anything());
         $request = Request::create('/');
         $request->headers->set('Content-Type', 'text/html');
-        $exception = new \Exception('Test error');
+        $exception = new Exception('Test error');
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $exception
@@ -56,7 +62,7 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
         $request->headers->set('Content-Type', 'application/json');
         $exception = BadRequestException::create('Invalid input');
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $exception
@@ -76,11 +82,12 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeHandlesHttpException(): void
     {
+        $this->logger->expects($this->once())->method('error');
         $request = Request::create('/');
         $request->headers->set('Content-Type', 'application/json');
         $exception = new NotFoundHttpException('Not found');
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $exception
@@ -95,14 +102,15 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeConverts5xxTo502(): void
     {
+        $this->logger->expects($this->once())->method('error');
         $request = Request::create('/');
         $request->headers->set('Content-Type', 'application/json');
-        $exception = new class extends \RuntimeException implements \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface {
+        $exception = new class extends RuntimeException implements HttpExceptionInterface {
             public function getStatusCode(): int { return 500; }
             public function getHeaders(): array { return []; }
         };
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $exception
@@ -117,11 +125,12 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeIncludesDebugInfoInTestEnvironment(): void
     {
+        $this->logger->expects($this->once())->method('error');
         $request = Request::create('/');
         $request->headers->set('Content-Type', 'application/json');
-        $exception = new \Exception('Test error', 123);
+        $exception = new Exception('Test error', 123);
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $exception
@@ -140,13 +149,14 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeUnwrapsHandlerFailedException(): void
     {
+        $this->logger->expects($this->once())->method('error');
         $request = Request::create('/');
         $request->headers->set('Content-Type', 'application/json');
-        $originalException = new \Exception('Original error');
-        $envelope = new \Symfony\Component\Messenger\Envelope(new \stdClass());
+        $originalException = new Exception('Original error');
+        $envelope = new Envelope(new stdClass());
         $handlerException = new HandlerFailedException($envelope, [$originalException]);
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $handlerException
@@ -161,12 +171,13 @@ final class JsonResponseExceptionEventListenerTest extends TestCase
 
     public function testInvokeWorksWithoutLogger(): void
     {
+        $this->logger->expects($this->never())->method($this->anything());
         $listener = new JsonResponseExceptionEventListener();
         $request = Request::create('/');
         $request->headers->set('Content-Type', 'application/json');
         $exception = BadRequestException::create('Error');
         $event = new ExceptionEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $exception

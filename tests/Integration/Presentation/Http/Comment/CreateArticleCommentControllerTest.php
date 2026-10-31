@@ -11,7 +11,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 {
     public function testCreateArticleCommentWithBadPayloadWillThrowBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest('POST', '/comments');
         $this->assertResponseIsUnprocessable();
@@ -19,7 +19,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithCorrectPayloadWillCreateComment(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -39,7 +39,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithUsernameTooShortWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -58,7 +58,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithUsernameTooLongWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -77,7 +77,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithUsernameWithInvalidCharactersWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -96,7 +96,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithUsernameWithLeadingWhitespaceWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -115,7 +115,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithUsernameWithTrailingWhitespaceWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -134,7 +134,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithValidUnicodeUsernameWillSucceed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -152,7 +152,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithUsernameAtMinLengthWillSucceed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -170,7 +170,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithUsernameAtMaxLengthWillSucceed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -190,7 +190,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageTooShortWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -209,7 +209,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageTooLongWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -228,7 +228,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageTooManyLinesWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -247,7 +247,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageContainingScriptTagWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -266,7 +266,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageContainingJavaScriptProtocolWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -285,7 +285,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageContainingEventHandlersWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -304,7 +304,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageContainingIframeWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -323,7 +323,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageContainingTooManyUrlsWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -342,7 +342,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageAtMinLengthWillSucceed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -360,7 +360,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageAtMaxLengthWillSucceed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -378,7 +378,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageWithValidUrlsWillSucceed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -396,7 +396,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithMessageWithSpecialCharactersWillSucceed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -416,7 +416,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithNonExistentArticleWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -437,7 +437,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithEmptyUsernameWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -454,7 +454,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithEmptyMessageWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',
@@ -473,7 +473,7 @@ final class CreateArticleCommentControllerTest extends WebTestCase
 
     public function testCreateArticleCommentWithWhitespaceOnlyMessageWillReturnBadRequest(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->jsonRequest(
             'POST',

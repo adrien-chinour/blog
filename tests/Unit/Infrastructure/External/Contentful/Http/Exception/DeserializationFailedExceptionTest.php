@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\External\Contentful\Http\Exception;
 
+use RuntimeException;
+use Exception;
 use App\Infrastructure\External\Contentful\Http\Exception\DeserializationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +15,7 @@ final class DeserializationFailedExceptionTest extends TestCase
     {
         $exception = new DeserializationFailedException();
 
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        $this->assertInstanceOf(RuntimeException::class, $exception);
     }
 
     public function testExceptionWithMessage(): void
@@ -36,7 +38,7 @@ final class DeserializationFailedExceptionTest extends TestCase
 
     public function testExceptionWithPreviousException(): void
     {
-        $previous = new \Exception('JSON decode error');
+        $previous = new Exception('JSON decode error');
         $exception = new DeserializationFailedException('Deserialization failed', 0, $previous);
 
         $this->assertSame($previous, $exception->getPrevious());

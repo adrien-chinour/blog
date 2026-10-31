@@ -34,7 +34,7 @@ final class RateLimiterEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $event = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -56,7 +56,7 @@ final class RateLimiterEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $event = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::SUB_REQUEST
         );
@@ -75,7 +75,7 @@ final class RateLimiterEventListenerTest extends TestCase
     {
         $request = Request::create('/');
         $event = new RequestEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );
@@ -106,10 +106,11 @@ final class RateLimiterEventListenerTest extends TestCase
 
     public function testOnResponseAddsRateLimitHeaders(): void
     {
+        $this->checker->expects($this->never())->method('isGranted');
         $request = Request::create('/');
         $response = new Response();
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $response
@@ -141,17 +142,18 @@ final class RateLimiterEventListenerTest extends TestCase
 
     public function testOnResponseConsumesTokensBasedOnStatusCode(): void
     {
+        $this->checker->expects($this->never())->method('isGranted');
         $request = Request::create('/');
         $response = new Response('', Response::HTTP_NOT_FOUND);
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $response
         );
 
         $limiter = $this->createMock(LimiterInterface::class);
-        $rateLimit = $this->createMock(RateLimit::class);
+        $rateLimit = $this->createStub(RateLimit::class);
         $rateLimit->method('getRemainingTokens')->willReturn(995);
         $rateLimit->method('getLimit')->willReturn(1000);
 
@@ -169,18 +171,19 @@ final class RateLimiterEventListenerTest extends TestCase
 
     public function testOnResponseUsesCloudflareIpWhenAvailable(): void
     {
+        $this->checker->expects($this->never())->method('isGranted');
         $request = Request::create('/');
         $request->headers->set('Cf-Connecting-Ip', '1.2.3.4');
         $response = new Response();
         $event = new ResponseEvent(
-            $this->createMock(HttpKernelInterface::class),
+            $this->createStub(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MAIN_REQUEST,
             $response
         );
 
-        $limiter = $this->createMock(LimiterInterface::class);
-        $rateLimit = $this->createMock(RateLimit::class);
+        $limiter = $this->createStub(LimiterInterface::class);
+        $rateLimit = $this->createStub(RateLimit::class);
         $rateLimit->method('getRemainingTokens')->willReturn(1000);
         $rateLimit->method('getLimit')->willReturn(1000);
         $limiter->method('consume')->willReturn($rateLimit);

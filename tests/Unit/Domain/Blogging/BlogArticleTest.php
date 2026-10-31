@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Domain\Blogging;
 
+use DateTimeInterface;
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogTag;
 use DateTimeImmutable;
@@ -79,7 +80,7 @@ final class BlogArticleTest extends TestCase
         $this->assertIsString($article->content);
         $this->assertIsString($article->imageUrl);
         $this->assertIsString($article->slug);
-        $this->assertInstanceOf(\DateTimeInterface::class, $article->publicationDate);
+        $this->assertInstanceOf(DateTimeInterface::class, $article->publicationDate);
         $this->assertIsArray($article->tags);
         $this->assertIsArray($article->recommendations);
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Symfony\Messenger\Middleware;
 
+use stdClass;
 use App\Infrastructure\Symfony\Messenger\Middleware\StopwatchMiddleware;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -25,17 +26,17 @@ final class StopwatchMiddlewareTest extends TestCase
 
     public function testHandleStartsAndStopsStopwatch(): void
     {
-        $message = new \stdClass();
+        $message = new stdClass();
         $envelope = new Envelope($message);
         $stack = $this->createMock(StackInterface::class);
 
         $this->stopwatch->expects($this->once())
             ->method('start')
-            ->with(\stdClass::class, 'messenger.message');
+            ->with(stdClass::class, 'messenger.message');
 
         $this->stopwatch->expects($this->once())
             ->method('stop')
-            ->with(\stdClass::class);
+            ->with(stdClass::class);
 
         $nextMiddleware = $this->createMock(MiddlewareInterface::class);
         $nextMiddleware->expects($this->once())

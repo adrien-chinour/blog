@@ -32,6 +32,6 @@ final class CommentFactory
      */
     public static function createMany(int $size = 10): array
     {
-        return array_map([self::class, 'create'], range(0, $size - 1));
+        return array_map(self::create(...), range(0, $size - 1));
     }
 }

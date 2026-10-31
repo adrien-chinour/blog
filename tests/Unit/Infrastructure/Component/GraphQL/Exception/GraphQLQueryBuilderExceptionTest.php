@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\Component\GraphQL\Exception;
 
+use RuntimeException;
+use Exception;
 use App\Infrastructure\Component\GraphQL\Exception\GraphQLQueryBuilderException;
 use PHPUnit\Framework\TestCase;
 
@@ -13,7 +15,7 @@ final class GraphQLQueryBuilderExceptionTest extends TestCase
     {
         $exception = new GraphQLQueryBuilderException();
 
-        $this->assertInstanceOf(\RuntimeException::class, $exception);
+        $this->assertInstanceOf(RuntimeException::class, $exception);
     }
 
     public function testExceptionWithMessage(): void
@@ -36,7 +38,7 @@ final class GraphQLQueryBuilderExceptionTest extends TestCase
 
     public function testExceptionWithPreviousException(): void
     {
-        $previous = new \Exception('Previous error');
+        $previous = new Exception('Previous error');
         $exception = new GraphQLQueryBuilderException('Query failed', 0, $previous);
 
         $this->assertSame($previous, $exception->getPrevious());

@@ -11,7 +11,7 @@ final class GetArticleBySlugControllerTest extends WebTestCase
 {
     public function testGetArticleBySlugWillReturnJsonArticle(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/construire-un-site-statique-avec-php');
 
@@ -21,7 +21,7 @@ final class GetArticleBySlugControllerTest extends WebTestCase
 
     public function testGetArticleWillReturnNotFoundOnUnknownSlug(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);

@@ -10,7 +10,7 @@ final class GetArticleCommentsControllerTest extends WebTestCase
 {
     public function testGetArticleCommentsWillReturnCollectionOfJsonArticle(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/1/comments');
 

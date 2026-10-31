@@ -9,9 +9,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final class SearchArticleControllerTest extends WebTestCase
 {
-    public function testSearchArticleWithoutQueryWillFailed()
+    public function testSearchArticleWithoutQueryWillFailed(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);
@@ -21,9 +21,9 @@ final class SearchArticleControllerTest extends WebTestCase
         $this->assertResponseStatusCodeSame(404);
     }
 
-    public function testSearchArticleWithQueryReturnCollectionOfArticle()
+    public function testSearchArticleWithQueryReturnCollectionOfArticle(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request('GET', '/search/articles', ['query' => 'php']);
 
         $this->assertResponseIsSuccessful();

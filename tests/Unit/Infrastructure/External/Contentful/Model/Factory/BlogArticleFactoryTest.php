@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Infrastructure\External\Contentful\Model\Factory;
 
+use DateTimeInterface;
 use App\Domain\Blogging\BlogArticle;
 use App\Domain\Blogging\BlogTag;
 use App\Infrastructure\Component\ContentParser\ContentParserInterface;
 use App\Infrastructure\External\Contentful\Model\ContentType\BlogPage;
 use App\Infrastructure\External\Contentful\Model\ContentType\BlogPageCollection;
 use App\Infrastructure\External\Contentful\Model\ContentType\CategoryCollection;
-use App\Infrastructure\External\Contentful\Model\ContentTypes;
 use App\Infrastructure\External\Contentful\Model\Factory\BlogArticleFactory;
 use App\Infrastructure\External\Contentful\Model\Factory\BlogTagFactory;
 use App\Infrastructure\External\Contentful\Model\Image;
-use App\Infrastructure\External\Contentful\Model\Resource;
 use App\Infrastructure\External\Contentful\Model\ResourceCollection;
 use App\Infrastructure\External\Contentful\Model\System;
 use DateTimeImmutable;
@@ -66,12 +65,12 @@ final class BlogArticleFactoryTest extends TestCase
         $blogPage = $this->createBlogPage();
         $blogPage->sys->firstPublishedAt = null;
 
-        $this->contentParser->method('parse')->willReturn('Parsed');
-        $this->blogTagFactory->method('fromCategoryCollection')->willReturn([]);
+        $this->contentParser->expects($this->once())->method('parse')->willReturn('Parsed');
+        $this->blogTagFactory->expects($this->once())->method('fromCategoryCollection')->willReturn([]);
 
         $article = $this->factory->fromBlogPage($blogPage);
 
-        $this->assertInstanceOf(\DateTimeInterface::class, $article->publicationDate);
+        $this->assertInstanceOf(DateTimeInterface::class, $article->publicationDate);
     }
 
     public function testFromBlogPageHandlesImageDescription(): void
@@ -79,8 +78,8 @@ final class BlogArticleFactoryTest extends TestCase
         $blogPage = $this->createBlogPage();
         $blogPage->image->description = '<a href="test">Link</a>';
 
-        $this->contentParser->method('parse')->willReturn('Parsed');
-        $this->blogTagFactory->method('fromCategoryCollection')->willReturn([]);
+        $this->contentParser->expects($this->once())->method('parse')->willReturn('Parsed');
+        $this->blogTagFactory->expects($this->once())->method('fromCategoryCollection')->willReturn([]);
 
         $article = $this->factory->fromBlogPage($blogPage);
 
@@ -92,8 +91,8 @@ final class BlogArticleFactoryTest extends TestCase
         $blogPage = $this->createBlogPage();
         $blogPage->image->description = null;
 
-        $this->contentParser->method('parse')->willReturn('Parsed');
-        $this->blogTagFactory->method('fromCategoryCollection')->willReturn([]);
+        $this->contentParser->expects($this->once())->method('parse')->willReturn('Parsed');
+        $this->blogTagFactory->expects($this->once())->method('fromCategoryCollection')->willReturn([]);
 
         $article = $this->factory->fromBlogPage($blogPage);
 
@@ -126,6 +125,8 @@ final class BlogArticleFactoryTest extends TestCase
 
     public function testFromBlogPageCollectionHandlesEmptyCollection(): void
     {
+        $this->contentParser->expects($this->never())->method('parse');
+        $this->blogTagFactory->expects($this->never())->method('fromCategoryCollection');
         $collection = new BlogPageCollection();
         $collection->items = [];
 

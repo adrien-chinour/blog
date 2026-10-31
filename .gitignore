@@ -17,3 +17,7 @@ phpstan.neon
 ###< symfony/phpunit-bridge ###
 
 http/http-client.private.env.json
+
+###> phpunit/phpunit ###
+/.phpunit.cache/
+###< phpunit/phpunit ###

@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Architecture\Rules;
 
-use Arkitect\Expression\ForClasses\NotResideInTheseNamespaces;
-use Arkitect\Expression\ForClasses\ResideInOneOfTheseNamespaces;
 use Arkitect\RuleBuilders\Architecture\Architecture;
-use Arkitect\Rules\Rule;
 
 final readonly class LayerRules implements RulesInterface
 {
     public static function rules(): array
     {
-        $rules = [];
-
         // Component Architecture Rules
         $layeredArchitectureRules = Architecture::withComponents()
 

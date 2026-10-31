@@ -10,7 +10,7 @@ final class ListProjectControllerTest extends WebTestCase
 {
     public function testListProjectWillReturnCollectionOfProject(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/projects');
 
@@ -20,7 +20,7 @@ final class ListProjectControllerTest extends WebTestCase
 
     public function testListProjectWithLimitWillReturnCollectionOfProjectWithSameLimit(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request('GET', '/projects', ['limit' => 1]);
 
         $this->assertResponseIsSuccessful();

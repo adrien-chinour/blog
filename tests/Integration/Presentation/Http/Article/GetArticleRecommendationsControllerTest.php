@@ -11,7 +11,7 @@ final class GetArticleRecommendationsControllerTest extends WebTestCase
 {
     public function testGetArticleRecommendationsWillReturnCollectionOfJsonArticle(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->request('GET', '/articles/1/recommendations');
 
@@ -21,7 +21,7 @@ final class GetArticleRecommendationsControllerTest extends WebTestCase
 
     public function testGetArticleRecommendationsWillReturnNotFoundOnUnknownId(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
 
         $client->catchExceptions(false);
         $this->expectException(NotFoundHttpException::class);

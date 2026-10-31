@@ -329,8 +329,9 @@ final class CommentValidatorTest extends TestCase
 
     public function testValidateArticleWithValidPublishedArticle(): void
     {
+        $this->symfonyValidator->expects($this->never())->method('validate');
         $articleRepository = $this->createMock(BlogArticleRepository::class);
-        $article = $this->createMock(BlogArticle::class);
+        $article = $this->createStub(BlogArticle::class);
 
         $articleRepository->expects($this->once())
             ->method('getById')
@@ -344,6 +345,7 @@ final class CommentValidatorTest extends TestCase
 
     public function testValidateArticleThrowsExceptionWhenArticleNotFound(): void
     {
+        $this->symfonyValidator->expects($this->never())->method('validate');
         $articleRepository = $this->createMock(BlogArticleRepository::class);
 
         $articleRepository->expects($this->once())

@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 
 final class AccessTokenHandlerTest extends TestCase
 {
-    private const VALID_TOKEN = 'valid-admin-token';
+    private const string VALID_TOKEN = 'valid-admin-token';
 
     public function testGetUserBadgeFromReturnsUserBadgeWithValidToken(): void
     {

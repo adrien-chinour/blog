@@ -46,7 +46,7 @@ final class PostArticleCommentCommandHandlerTest extends TestCase
         $command = new PostArticleCommentCommand('article-id', 'testuser', 'Test message');
 
         // Mock article exists (validator will call repository)
-        $article = $this->createMock(BlogArticle::class);
+        $article = $this->createStub(BlogArticle::class);
         $this->articleRepository->expects($this->once())
             ->method('getById')
             ->with('article-id', true)
