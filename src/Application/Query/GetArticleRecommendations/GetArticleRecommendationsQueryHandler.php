@@ -18,6 +18,8 @@ final class GetArticleRecommendationsQueryHandler
 {
     use HandleTrait;
 
+    private const FALLBACK_RECOMMENDATIONS_COUNT = 2;
+
     public function __construct(MessageBusInterface $bus)
     {
         $this->messageBus = $bus;
@@ -34,11 +36,16 @@ final class GetArticleRecommendationsQueryHandler
         }
 
         $articles = $sourceArticle->recommendations === []
-            ? $this->handle(new GetArticleListQuery(2))
+            ? []
             : $this->handle(new BatchArticleQuery($sourceArticle->recommendations));
 
-        Assert::allIsInstanceOf($articles, BlogArticle::class);
+        // No explicit recommendation (or none of them is published anymore): fallback on latest articles
+        if ($articles === []) {
+            $articles = $this->handle(new GetArticleListQuery(self::FALLBACK_RECOMMENDATIONS_COUNT));
+        }
+
         Assert::isArray($articles);
+        Assert::allIsInstanceOf($articles, BlogArticle::class);
 
         return $articles;
     }

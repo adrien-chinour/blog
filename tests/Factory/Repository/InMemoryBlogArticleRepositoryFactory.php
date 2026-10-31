@@ -26,12 +26,19 @@ final readonly class InMemoryBlogArticleRepositoryFactory
             '1' => ArticleFactory::create(
                 id: '1',
                 title: 'Gestion de messages asynchrones avec Cloud Tasks et Cloud Pub/Sub',
-                slug: 'gestion-de-messages-asynchrones-avec-cloud-tasks-et-cloud-pub-sub'
+                slug: 'gestion-de-messages-asynchrones-avec-cloud-tasks-et-cloud-pub-sub',
+                recommendations: ['2', 'unknown-article'],
             ),
             '2' => ArticleFactory::create(
                 id: '2',
                 title: 'Construire un site statique avec PHP',
                 slug: 'construire-un-site-statique-avec-php'
+            ),
+            // slug without dash: must still be resolvable by slug
+            '3' => ArticleFactory::create(
+                id: '3',
+                title: 'Docker en production',
+                slug: 'docker'
             ),
         ];
     }

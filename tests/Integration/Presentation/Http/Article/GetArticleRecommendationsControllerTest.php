@@ -19,6 +19,30 @@ final class GetArticleRecommendationsControllerTest extends WebTestCase
         $this->assertResponseFormatSame('json');
     }
 
+    public function testGetArticleRecommendationsSkipsUnknownRecommendedArticles(): void
+    {
+        $client = static::createClient();
+
+        // Article 1 recommends article 2 and an article that does not exist anymore
+        $client->request('GET', '/articles/1/recommendations');
+
+        $this->assertResponseIsSuccessful();
+        $payload = json_decode($client->getResponse()->getContent(), true);
+        $this->assertCount(1, $payload);
+        $this->assertSame('2', $payload[0]['id']);
+    }
+
+    public function testGetArticleRecommendationsFallbacksOnLatestArticles(): void
+    {
+        $client = static::createClient();
+
+        // Article 2 has no explicit recommendation
+        $client->request('GET', '/articles/2/recommendations');
+
+        $this->assertResponseIsSuccessful();
+        $this->assertCount(2, json_decode($client->getResponse()->getContent(), true));
+    }
+
     public function testGetArticleRecommendationsWillReturnNotFoundOnUnknownId(): void
     {
         $client = self::createClient();
